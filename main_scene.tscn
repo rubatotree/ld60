@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c1n7756bfbmue"]
+
+[ext_resource type="Texture2D" uid="uid://biyll7i6uicud" path="res://sprites/tama.png" id="1_0f027"]
+
+[node name="MainScene" type="Node2D" unique_id=1969188385]
+
+[node name="Control" type="Control" parent="." unique_id=182922087]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=218125837]
+modulate = Color(0.38450998, 0.42, 0.3654, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 124.0
+offset_bottom = 124.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-72, -58)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1365634285]
+texture = ExtResource("1_0f027")
+
+[node name="Camera" type="Node2D" parent="." unique_id=478343700]
+
+[node name="Camera2D" type="Camera2D" parent="Camera" unique_id=289680699]
