@@ -12,7 +12,7 @@ config_version=5
 
 config/name="LD60"
 run/main_scene="uid://c1n7756bfbmue"
-config/features=PackedStringArray("4.7", "Forward Plus")
+config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
@@ -21,6 +21,7 @@ window/size/viewport_width=1280
 window/size/viewport_height=960
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/stretch/scale_mode="integer"
 
 [dotnet]
 
@@ -33,3 +34,4 @@ project/assembly_name="LD60"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+textures/default_filters/use_nearest_mipmap_filter=true
