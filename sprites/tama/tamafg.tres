@@ -1,0 +1,27 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://d2c4oiatwpmya"]
+
+[ext_resource type="Texture2D" uid="uid://ciq1qq404my0u" path="res://sprites/tama/tama0.png" id="1_3epm8"]
+[ext_resource type="Texture2D" uid="uid://b2eyfj6dq0mp5" path="res://sprites/tama/tama1.png" id="2_xno0m"]
+[ext_resource type="Texture2D" uid="uid://7pijr6mqi2od" path="res://sprites/tama/tama2.png" id="3_x82it"]
+[ext_resource type="Texture2D" uid="uid://r3dlnwojq33s" path="res://sprites/tama/tama3.png" id="4_lbcgw"]
+
+[resource]
+resource_name = "tamafg"
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3epm8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_xno0m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_x82it")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_lbcgw")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 3.0
+}]

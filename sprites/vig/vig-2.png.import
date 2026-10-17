@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biyll7i6uicud"
-path="res://.godot/imported/tama.png-d1cd8a702d94f6be58e7da0f02797f6c.ctex"
+uid="uid://gs6y0sy11ip6"
+path="res://.godot/imported/vig-2.png-2dfacf6125522acbfd9d71f1b86d64a6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/tama.png"
-dest_files=["res://.godot/imported/tama.png-d1cd8a702d94f6be58e7da0f02797f6c.ctex"]
+source_file="res://sprites/vig/vig-2.png"
+dest_files=["res://.godot/imported/vig-2.png-2dfacf6125522acbfd9d71f1b86d64a6.ctex"]
 
 [params]
 
