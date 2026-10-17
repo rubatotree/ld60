@@ -1,19 +1,28 @@
 [gd_scene format=3 uid="uid://c1n7756bfbmue"]
 
 [ext_resource type="SpriteFrames" uid="uid://dwyy6p2kiyi4s" path="res://sprites/bg/tamabg.tres" id="1_8mm7a"]
+[ext_resource type="Script" uid="uid://rkbnokrt2fn1" path="res://scripts/World.cs" id="1_66tet"]
 [ext_resource type="SpriteFrames" uid="uid://d2c4oiatwpmya" path="res://sprites/tama/tamafg.tres" id="2_hq1ik"]
+[ext_resource type="Script" uid="uid://b4mvgfm00xjkg" path="res://scripts/AnimAutoplay.cs" id="3_7ycvg"]
 [ext_resource type="Texture2D" uid="uid://br0vqo553ba2q" path="res://sprites/nyako/nyako_base1.png" id="3_d5x1h"]
 [ext_resource type="Texture2D" uid="uid://miuav6oye8il" path="res://sprites/nyako/nyako_happy_1.png" id="4_66tet"]
+[ext_resource type="Script" uid="uid://dossm4xqhga0j" path="res://scripts/Camera.cs" id="5_7ycvg"]
 [ext_resource type="SpriteFrames" uid="uid://bogloqhqbj3p4" path="res://sprites/vig/vigf.tres" id="5_8mm7a"]
+[ext_resource type="Script" uid="uid://dmuqkl0udy3r0" path="res://scripts/NyakoMgr.cs" id="6_wr18j"]
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
+
+[node name="World" type="Node2D" parent="." unique_id=1424186671]
+position = Vector2(-102, 943)
+script = ExtResource("1_66tet")
 
 [node name="CanvasGroup_BG" type="CanvasGroup" parent="." unique_id=1119549122]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_BG" unique_id=900711253]
 scale = Vector2(1.12, 1.12)
 sprite_frames = ExtResource("1_8mm7a")
-frame_progress = 0.6269439
+frame_progress = 0.98961914
+script = ExtResource("3_7ycvg")
 
 [node name="CanvasGroup_TAMA" type="CanvasGroup" parent="." unique_id=1107537098]
 
@@ -44,22 +53,32 @@ offset_transform_position = Vector2(-144, -144)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA" unique_id=707215492]
 scale = Vector2(1.12, 1.12)
 sprite_frames = ExtResource("2_hq1ik")
-frame_progress = 0.3792187
+frame_progress = 0.7418903
+script = ExtResource("3_7ycvg")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=457817988]
-position = Vector2(-277, 3)
+[node name="Camera" type="Node2D" parent="." unique_id=152232985 node_paths=PackedStringArray("cam")]
+position = Vector2(-280, 0)
+script = ExtResource("5_7ycvg")
+cam = NodePath("Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="Camera" unique_id=457817988]
 scale = Vector2(1.25, 1.25)
 zoom = Vector2(0.8, 0.8)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Camera2D" unique_id=496569315]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Camera/Camera2D" unique_id=496569315]
 modulate = Color(1, 1, 1, 0.31764707)
 sprite_frames = ExtResource("5_8mm7a")
-frame_progress = 0.22916518
+frame_progress = 0.5918395
+script = ExtResource("3_7ycvg")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=1017450565]
 
-[node name="nyako" type="Node2D" parent="CanvasGroup" unique_id=114360856]
-position = Vector2(-691, 69)
+[node name="nyako" type="Node2D" parent="CanvasGroup" unique_id=114360856 node_paths=PackedStringArray("world", "base_spr", "face_spr")]
+position = Vector2(-720, 75)
+script = ExtResource("6_wr18j")
+world = NodePath("../../World")
+base_spr = NodePath("nyako_base")
+face_spr = NodePath("nyako_face")
 
 [node name="nyako_base" type="Sprite2D" parent="CanvasGroup/nyako" unique_id=597883521]
 position = Vector2(171, 17.5)
