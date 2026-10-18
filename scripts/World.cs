@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 public partial class World : Node2D
@@ -12,8 +13,8 @@ public partial class World : Node2D
     string autosuffix = "[/font][/font_size][/color]";
     string[] strs = {
         "",
-        "[wave amp=24.0 freq=8.0 connected=1]你好！！你可以叫我[color=red]喵喵酱[/color]！[/wave]",
-        "[wave amp=24.0 freq=8.0 connected=1]你有玩过[color=red]拓麻歌子[/color]吗？[/wave]",
+        "你好！！你可以叫我[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！",
+        "你有玩过[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]吗？",
         ""
     };
     int strc = 0;
@@ -25,10 +26,16 @@ public partial class World : Node2D
     public override void _Process(double delta)
     {
         time += (float)delta;
-        if(Input.IsMouseButtonPressed(MouseButton.Left) && strc + 1 < strs.Length && textBox1.Complete)
+        if(Input.IsMouseButtonPressed(MouseButton.Left)) 
         {
-            strc++;
-            textBox1.showText(autoprefix + strs[strc] + autosuffix);
+            if(strc + 1 < strs.Length && textBox1.Complete)
+            {
+                strc++;
+                textBox1.showText(autoprefix + strs[strc] + autosuffix);
+            }
         }
+    }
+    public void onTamaButtonPressed(string name)
+    {
     }
 }

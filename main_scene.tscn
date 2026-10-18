@@ -8,9 +8,16 @@
 [ext_resource type="Texture2D" uid="uid://miuav6oye8il" path="res://sprites/nyako/nyako_happy_1.png" id="4_66tet"]
 [ext_resource type="Script" uid="uid://dossm4xqhga0j" path="res://scripts/Camera.cs" id="5_7ycvg"]
 [ext_resource type="SpriteFrames" uid="uid://bogloqhqbj3p4" path="res://sprites/vig/vigf.tres" id="5_8mm7a"]
+[ext_resource type="Texture2D" uid="uid://uqk0wo2t2w7x" path="res://sprites/tama/buttons/a.png" id="5_671wp"]
+[ext_resource type="Script" uid="uid://dd3l0i1q618v2" path="res://scripts/TamaButton.cs" id="6_42l1d"]
 [ext_resource type="Script" uid="uid://dmuqkl0udy3r0" path="res://scripts/NyakoMgr.cs" id="6_wr18j"]
+[ext_resource type="Texture2D" uid="uid://cygr488j74ovb" path="res://sprites/tama/buttons/ah.png" id="7_2jcla"]
 [ext_resource type="Script" uid="uid://psyarpwq7d61" path="res://scripts/TextBox.cs" id="7_qwutr"]
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="7_wr18j"]
+[ext_resource type="Texture2D" uid="uid://p8qsit14pxa4" path="res://sprites/tama/buttons/b.png" id="8_7th4q"]
+[ext_resource type="Texture2D" uid="uid://dahqe6pdou2m2" path="res://sprites/tama/buttons/bh.png" id="9_6jybn"]
+[ext_resource type="Texture2D" uid="uid://brwaxcl1sklob" path="res://sprites/tama/buttons/c.png" id="10_84odl"]
+[ext_resource type="Texture2D" uid="uid://dy2na7bkrkkhy" path="res://sprites/tama/buttons/ch.png" id="11_ak604"]
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
@@ -59,6 +66,41 @@ sprite_frames = ExtResource("2_hq1ik")
 frame_progress = 0.29216734
 script = ExtResource("3_7ycvg")
 
+[node name="ButtonA" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D" unique_id=771232426 node_paths=PackedStringArray("HoverSprite", "world")]
+position = Vector2(0, 230.35715)
+texture = ExtResource("5_671wp")
+script = ExtResource("6_42l1d")
+Center = Vector2(-120, 247)
+HoverSprite = NodePath("Sprite2D")
+world = NodePath("../../../World")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D/ButtonA" unique_id=1237648380]
+texture = ExtResource("7_2jcla")
+
+[node name="ButtonB" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D" unique_id=2063608520 node_paths=PackedStringArray("HoverSprite", "world")]
+position = Vector2(0, 230.35715)
+texture = ExtResource("8_7th4q")
+script = ExtResource("6_42l1d")
+Center = Vector2(0, 270)
+HoverSprite = NodePath("Sprite2D")
+world = NodePath("../../../World")
+name = "B"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D/ButtonB" unique_id=1690753268]
+texture = ExtResource("9_6jybn")
+
+[node name="ButtonC" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D" unique_id=847989112 node_paths=PackedStringArray("HoverSprite", "world")]
+position = Vector2(0, 230.35715)
+texture = ExtResource("10_84odl")
+script = ExtResource("6_42l1d")
+Center = Vector2(120, 247)
+HoverSprite = NodePath("Sprite2D")
+world = NodePath("../../../World")
+name = "C"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D/ButtonC" unique_id=1758032516]
+texture = ExtResource("11_ak604")
+
 [node name="Camera" type="Node2D" parent="." unique_id=152232985 node_paths=PackedStringArray("cam")]
 position = Vector2(-319, 0)
 script = ExtResource("5_7ycvg")
@@ -95,7 +137,7 @@ position = Vector2(171, 17.5)
 texture = ExtResource("4_66tet")
 
 [node name="Node2D" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=607207012]
-position = Vector2(-268, -29.99997)
+position = Vector2(-266, -30.000002)
 
 [node name="TextBox" type="Control" parent="Camera/Camera2D/CanvasGroup/Node2D" unique_id=876594328 node_paths=PackedStringArray("richTextLabel", "ninePatchRect")]
 layout_mode = 3

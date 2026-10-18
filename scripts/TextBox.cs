@@ -11,7 +11,7 @@ public partial class TextBox : Control
     [Export] float textSpd = 20f;
     [Export] float texn = 0;
 
-    [Export] float sizeSpd = 6f;
+    [Export] float sizeSpd = 10f;
     [Export] float alphaSpd = 10f;
 
     Vector2 curSize = new Vector2(40f, 40f);
