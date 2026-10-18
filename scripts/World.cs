@@ -7,7 +7,11 @@ public partial class World : Node2D
 {
     [Export] TextBox textBox1;
     [Export] TextBox textBox2;
+    [Export] Camera cam;
     public float time = 0;
+    public int pressn = 0;
+    bool pressed = false;
+    bool justPressed = false;
 
     string autoprefix = "[color=black][font_size=30][font=./fonts/unifont.ttf]";
     string autosuffix = "[/font][/font_size][/color]";
@@ -26,12 +30,19 @@ public partial class World : Node2D
     public override void _Process(double delta)
     {
         time += (float)delta;
-        if(Input.IsMouseButtonPressed(MouseButton.Left)) 
+        justPressed = pressed;
+        pressed = Input.IsMouseButtonPressed(MouseButton.Left);
+
+        if(!justPressed && pressed)
         {
+            pressn++;
             if(strc + 1 < strs.Length && textBox1.Complete)
             {
                 strc++;
                 textBox1.showText(autoprefix + strs[strc] + autosuffix);
+            }
+            else
+            {
             }
         }
     }

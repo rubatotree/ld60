@@ -21,10 +21,11 @@
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/Node2D/TextBox")
+cam = NodePath("../Camera")
 
 [node name="CanvasGroup_BG" type="CanvasGroup" parent="." unique_id=1119549122]
 
@@ -101,12 +102,14 @@ name = "C"
 [node name="Sprite2D" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D/ButtonC" unique_id=1758032516]
 texture = ExtResource("11_ak604")
 
-[node name="Camera" type="Node2D" parent="." unique_id=152232985 node_paths=PackedStringArray("cam")]
-position = Vector2(-319, 0)
+[node name="Camera" type="Node2D" parent="." unique_id=152232985 node_paths=PackedStringArray("cam", "frontCards")]
 script = ExtResource("5_7ycvg")
 cam = NodePath("Camera2D")
+frontCards = NodePath("Camera2D/CanvasGroup")
+TamaZoomPos = Vector2(0, 52)
 
 [node name="Camera2D" type="Camera2D" parent="Camera" unique_id=457817988]
+position = Vector2(-320, 0)
 scale = Vector2(1.25, 1.25)
 zoom = Vector2(0.8, 0.8)
 
@@ -155,8 +158,8 @@ anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -24.0
-offset_top = -16.0
-offset_right = 16.0
+offset_top = -18.0
+offset_right = 24.0
 offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 2
