@@ -14,6 +14,7 @@ public partial class World : Node2D
     [Export] CanvasGroup tamagroup;
     [Export] NyakoMgr nyako;
     [Export] TamaScreen tamaScreen;
+    [Export] Baobao mainbaobao;
     [Export] public int Language;
     [Export] public float ScreenShakeSize = 0.0f;
     [Export] public float ScreenShakeTimer = 0.0f;
@@ -133,7 +134,7 @@ public partial class World : Node2D
                         cam.TamaRight();
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
-
+                        tamaScreen.trueTama.Visible = false;
                         string[] str = {
                             "你好！！这里是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！\n[font_size=40][/font_size]欢迎来到[shake rate=20.0 level=5 connected=1][font_size=40] 2010 年[/font_size][/shake]！", 
                             "placeholder"
@@ -145,6 +146,7 @@ public partial class World : Node2D
                     }
                     else if(dialogCounter == 1)
                     {
+                        dialogDone = false;
                         nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
                         nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
                         
@@ -153,9 +155,10 @@ public partial class World : Node2D
                             "placeholder"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
-                        regTimer(0.8f, () => { 
+                        regTimer(1.0f, () => { 
                             nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                             setTamaShow(true);
+                            dialogDone = true;
                         });
                     }
                     else if(dialogCounter == 2)
@@ -213,10 +216,17 @@ public partial class World : Node2D
                     }
                     else if(dialogCounter == 7)
                     {
+                        dialogDone = false;
                         nyako.setShow(false);
                         textBox1.showText("");
                         regTimer(0.5f, () => { cam.TamaCenter(); });
                         regTimer(1.0f, () => { cam.TamaZoom(); dialogStatus = DialogStatus.None; });
+                        regTimer(2.0f, () => { tamaScreen.trueTama.Visible = true; tamaScreen.trueTamaSprite.Stop(); tamaScreen.trueTamaSprite.Frame = 0; mainbaobao.Hoverable = false; });
+                        regTimer(2.1f, () => { tamaScreen.trueTama.Visible = false;  });
+                        regTimer(2.2f, () => { tamaScreen.trueTama.Visible = true;  });
+                        regTimer(2.3f, () => { tamaScreen.trueTama.Visible = false;  });
+                        regTimer(2.8f, () => { tamaScreen.trueTama.Visible = true; tamaScreen.trueTamaSprite.Play(); mainbaobao.targetNaturalScale = Vector2.One; });
+                        regTimer(4.8f, () => { tamaScreen.trueTamaSprite.Stop(); tamaScreen.trueTamaSprite.Frame = 0; mainbaobao.Hoverable = true; });
                     }
                     dialogCounter++;
                 }

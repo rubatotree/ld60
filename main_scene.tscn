@@ -14,7 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://b1xy5t4c3u4x6" path="res://sprites/faketama/tamascr-3.png" id="5_p8s74"]
 [ext_resource type="Script" uid="uid://dd3l0i1q618v2" path="res://scripts/TamaButton.cs" id="6_42l1d"]
 [ext_resource type="Script" uid="uid://dmuqkl0udy3r0" path="res://scripts/NyakoMgr.cs" id="6_wr18j"]
+[ext_resource type="Script" uid="uid://do4eetmtrv5f4" path="res://scripts/Baobao.cs" id="7_1n88h"]
 [ext_resource type="Texture2D" uid="uid://cygr488j74ovb" path="res://sprites/tama/buttons/ah.png" id="7_2jcla"]
+[ext_resource type="SpriteFrames" uid="uid://cpcaa28hqf801" path="res://sprites/seal/seal0/seal0.tres" id="7_gfmxp"]
 [ext_resource type="Script" uid="uid://psyarpwq7d61" path="res://scripts/TextBox.cs" id="7_qwutr"]
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="7_wr18j"]
 [ext_resource type="Texture2D" uid="uid://p8qsit14pxa4" path="res://sprites/tama/buttons/b.png" id="8_7th4q"]
@@ -50,7 +52,7 @@ animations = [{
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam", "tamagroup", "nyako", "tamaScreen")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/Node2D/TextBox")
@@ -58,6 +60,7 @@ cam = NodePath("../Camera")
 tamagroup = NodePath("../CanvasGroup_TAMA")
 nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
 tamaScreen = NodePath("../CanvasGroup_TAMA/Screen")
+mainbaobao = NodePath("../CanvasGroup_TAMA/Screen/TrueTama/TrueGame/MainBaobao")
 
 [node name="CanvasGroup_BG" type="CanvasGroup" parent="." unique_id=1119549122]
 
@@ -69,13 +72,15 @@ script = ExtResource("3_7ycvg")
 
 [node name="CanvasGroup_TAMA" type="CanvasGroup" parent="." unique_id=1107537098]
 
-[node name="Screen" type="Node2D" parent="CanvasGroup_TAMA" unique_id=1640966563 node_paths=PackedStringArray("falseTama", "falseTamaSprite")]
+[node name="Screen" type="Node2D" parent="CanvasGroup_TAMA" unique_id=1640966563 node_paths=PackedStringArray("falseTama", "trueTama", "falseTamaSprite", "trueTamaSprite")]
 texture_filter = 1
 position = Vector2(0, 24.79)
 scale = Vector2(8, 8)
 script = ExtResource("4_o4fqm")
 falseTama = NodePath("FalseTama")
+trueTama = NodePath("TrueTama")
 falseTamaSprite = NodePath("FalseTama/AnimatedSprite2D")
+trueTamaSprite = NodePath("TrueTama/TrueGame/MainBaobao/AnimatedSprite2D2")
 
 [node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen" unique_id=460820174]
 layout_mode = 3
@@ -136,7 +141,6 @@ frame_progress = 0.6418704
 script = ExtResource("3_7ycvg")
 
 [node name="TrueTama" type="Node2D" parent="CanvasGroup_TAMA/Screen" unique_id=2066843918]
-visible = false
 
 [node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=1332817570]
 layout_mode = 3
@@ -146,7 +150,7 @@ offset_right = 40.0
 offset_bottom = 36.90125
 
 [node name="ColorRect" type="ColorRect" parent="CanvasGroup_TAMA/Screen/TrueTama/Control" unique_id=1213433585]
-modulate = Color(0.52600515, 0.5694247, 0.50437635, 1)
+modulate = Color(0.74978, 0.74978, 0.74977994, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -163,10 +167,16 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=754119846]
-sprite_frames = SubResource("SpriteFrames_1vivr")
-frame_progress = 0.69223064
-script = ExtResource("3_7ycvg")
+[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949]
+scale = Vector2(0.08, 0.08)
+
+[node name="MainBaobao" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1074492689]
+position = Vector2(0, 32)
+scale = Vector2(1.563, 1.563)
+script = ExtResource("7_1n88h")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/MainBaobao" unique_id=1318370852]
+sprite_frames = ExtResource("7_gfmxp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA" unique_id=707215492]
 texture_filter = 1
@@ -216,6 +226,7 @@ cam = NodePath("Camera2D")
 frontCards = NodePath("Camera2D/CanvasGroup")
 TamaZoomPos = Vector2(0, 31)
 ZoomScale = 0.36
+ZoomSpd = 0.8
 
 [node name="Camera2D" type="Camera2D" parent="Camera" unique_id=457817988]
 position = Vector2(-320, 0)
@@ -253,6 +264,7 @@ faceSprAngry = ExtResource("24_opjno")
 faceSprCry = ExtResource("26_w30ff")
 faceSprCryBlink = ExtResource("25_meb7l")
 faceSprCry2 = ExtResource("27_xy6fp")
+spdBase = 16.0
 
 [node name="nyako_base_tama" type="Sprite2D" parent="Camera/Camera2D/CanvasGroup/nyako" unique_id=45000236]
 position = Vector2(171, 17.5)
