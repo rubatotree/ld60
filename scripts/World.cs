@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
+using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ public partial class World : Node2D
     [Export] NyakoMgr nyako;
     [Export] TamaScreen tamaScreen;
     [Export] Baobao mainbaobao;
+    [Export] BaobaoGame game;
+    [Export] Node2D paperWords;
     [Export] public int Language;
     [Export] public float ScreenShakeSize = 0.0f;
     [Export] public float ScreenShakeTimer = 0.0f;
@@ -96,6 +99,7 @@ public partial class World : Node2D
         processDialog();
 
         isTamaJustPressed = false;
+        paperWords.Modulate = game.GameUI.Modulate;
     }
 
     public bool isMouseJustPressed() => !justPressed && pressed;
@@ -146,20 +150,24 @@ public partial class World : Node2D
             mainbaobao.Playing = false;
             mainbaobao.Frame = 0; 
             mainbaobao.Hoverable = false; 
-            mainbaobao.DragAble = true; 
+            mainbaobao.DragAble = false; 
+            tamaScreen.falseTama.Visible = true;
+            tamaScreen.trueTama.Visible = true;
             dialogDone = false;
             textBox2.Following = mainbaobao;
-            textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+            textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
             textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
+            paperWords.Visible = false;
             regTimer(0.5f, () => { 
                 mainbaobao.Hoverable = true; 
                 mainbaobao.targetNaturalScale = Vector2.One * 1.2f;
                 mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
                 mainbaobao.SetShake(1f, 60000f);
                 string[] str = {
-                    "[font_size=64][shake rate=20.0 level=5 connected=1]快点摸摸我！！！[/shake][/font_size]", 
+                    "[font_size=64][shake rate=20.0 level=10 connected=1]快点摸摸我！！！[/shake][/font_size]", 
                     "placeholder"
                 };
+                textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale * 1.2f;
                 textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                 dialogDone = true;
             });
@@ -300,14 +308,14 @@ public partial class World : Node2D
                             "placeholder"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
-                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         dialogDone = true;
                     }
                     else if(dialogCounter == 1)
                     {
                         if(!mainbaobao.onHover) return;
-                        mainbaobao.targetNaturalScale = Vector2.One * 1.05f;
+                        mainbaobao.targetNaturalScale *= 0.97f;
                         mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
                         mainbaobao.SetShake(1f, 60000f);
                         string[] str = {
@@ -315,14 +323,14 @@ public partial class World : Node2D
                             "placeholder"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
-                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         dialogDone = true;
                     }
                     else if(dialogCounter <= 8)
                     {
                         if(!mainbaobao.onHover) return;
-                        mainbaobao.targetNaturalScale = Vector2.One * 1.00f;
+                        mainbaobao.targetNaturalScale *= 0.97f;
                         mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
                         mainbaobao.SetShake(1f, 60000f);
                         string[] str = {
@@ -330,27 +338,237 @@ public partial class World : Node2D
                             "placeholder"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
-                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         dialogDone = true;
                     }
                     else if(dialogCounter == 9)
                     {
                         if(!mainbaobao.onHover) return;
-                        mainbaobao.targetNaturalScale = Vector2.One * 0.80f;
+                        mainbaobao.targetNaturalScale = Vector2.One * 0.60f;
                         mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
                         mainbaobao.SetShake(0f, 0f);
-                        mainbaobao.Hoverable = false;
+                        mainbaobao.Hoverable = true;
                         mainbaobao.PlayingFPS = 8.0f;
                         mainbaobao.Playing = true;
+                        mainbaobao.Falling = true;
+                        dialogDone = false;
                         string[] str = {
                             "[font_size=40][shake rate=10.0 level=5 connected=1]哈啊...哈啊......[/shake][/font_size]", 
                             "placeholder"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
-                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
+                        regTimer(2.0f, () =>
+                        {
+                            textBox2.showText("", 20);
+                        });
+                        regTimer(2.0f, () =>
+                        {
+                            game.targetGameAlpha = 1.0f;
+                        });
+                        regTimer(5.5f, () =>
+                        {
+                            mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
+                            mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        });
+                        regTimer(6.3f, () =>
+                        {
+                            game.targetGameAlpha = 1.0f;
+                            mainbaobao.faceStatus = Baobao.FaceStatus.NormalBlink;
+                            mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                            mainbaobao.Clickable = false;
+                            string[] str = {
+                                "[shake rate=10.0 level=5 connected=1]哈啊...她应该不在了吧...\n让我解释一下......[/shake]", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                            dialogDone = true;
+                        });
+                    }
+                    else if(dialogCounter == 10)
+                    {
+                        mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        mainbaobao.SetShake(3f, 0.3f);
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        string[] str = {
+                            "[shake rate=20.0 level=10 connected=1]现在其实是[font_size=50][color=red]2026年[/color][/font_size]才对啊！！[/shake]", 
+                            "placeholder"
+                        };
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                         dialogDone = true;
+                    }
+                    else if(dialogCounter == 11)
+                    {
+                        mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        mainbaobao.SetShake(3f, 60000f);
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        dialogDone = false;
+                        string[] str = {
+                            "[shake rate=20.0 level=10 connected=1]我可是[font_size=50][color=red]2026年[/color][/font_size]生产的[/shake]", 
+                            "placeholder"
+                        };
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        regTimer(0.5f, () =>
+                        {
+                            string[] str = {
+                                "超级", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(0.65f, () =>
+                        {
+                            string[] str = {
+                                "人工", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(0.8f, () =>
+                        {
+                            string[] str = {
+                                "智能", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(0.95f, () =>
+                        {
+                            string[] str = {
+                                "会说话", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(1.1f, () =>
+                        {
+                            string[] str = {
+                                "有情感", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(1.25f, () =>
+                        {
+                            string[] str = {
+                                "超绝聪明", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(1.4f, () =>
+                        {
+                            string[] str = {
+                                "能写代码", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(1.55f, () =>
+                        {
+                            string[] str = {
+                                "需要陪伴", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(1.7f, () =>
+                        {
+                            string[] str = {
+                                "就像真正的宠物一样", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        });
+                        regTimer(2.0f, () =>
+                        {
+                            string[] str = {
+                                "[shake rate=20.0 level=10 connected=1]我可是[font_size=50][color=red]2026年[/color][/font_size]生产的会说话有情感的像真正的宠物一样需要陪伴的超级人工智能电子海豹宠物啊！！！！[/shake]", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 60);
+                            dialogDone = true;
+                        });
+                    }
+                    else if(dialogCounter == 12)
+                    {
+                        dialogDone = false;
+                        mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        mainbaobao.SetShake(0f, 0f);
+                        mainbaobao.faceStatus = Baobao.FaceStatus.NormalBlink;
+                        cam.TamaCenter();
+                        string[] str = {
+                            "可是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱大人[/color][/wave]非要让我打扮成20年前的[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]玩具...就像这样，\n", 
+                            "placeholder"
+                        };
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                        regTimer(0.8f + 1.5f, () => { tamaScreen.trueTama.Visible = false; });
+                        regTimer(0.8f + 2.0f, () => { tamaScreen.trueTama.Visible = true; });
+                        regTimer(0.8f + 2.5f, () => { tamaScreen.trueTama.Visible = false; });
+                        regTimer(0.8f + 3.0f, () => { tamaScreen.trueTama.Visible = true; });
+                        regTimer(0.8f + 3.5f, () => { 
+                            mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
+                            string[] str = {
+                                "一旦我表现出一点不像[shake rate=20.0 level=5 connected=1][font_size=40]2010年代[/font_size][/shake]该有的样子[font_size=16][color=gray]有触屏，有3D，会说话...[/color][/font_size]，她就会[color=red][shake rate=40.0 level=10 connected=1]勃然大怒[/shake][/color]...", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                            cam.TamaZoom();
+                            dialogDone = true;
+                        });
+                    }
+                    else if(dialogCounter == 13)
+                    {
+                        mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        mainbaobao.SetShake(3f, 0.3f);
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        string[] str = {
+                            "可是我也是宠物！我非常需要[wave amp=24.0 freq=8.0 connected=1][color=blue]抚摸[/color][/wave]！！\n[shake rate=20.0 level=5 connected=1][color=red]好讨厌她这种复古怪！！[/color][/shake]", 
+                            "placeholder"
+                        };
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                    }
+                    else if(dialogCounter == 14)
+                    {
+                        mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        mainbaobao.SetShake(0f, 0.3f);
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
+                        string[] str = {
+                            "现在终于逃离她的魔爪了，你一定要帮我[wave amp=24.0 freq=8.0 connected=1][color=blue]抚摸[/color][/wave]够哦。\n[shake rate=20.0 level=5 connected=1][font_size=40]只有这样才能提升我的好感度！[/font_size][/shake]", 
+                            "placeholder"
+                        };
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                        textBox2.Following = null;
+                        dialogDone = false;
+                        regTimer(0.6f, () => { game.targetYScroll = game.TargetY - 100f; });
+                        regTimer(4.0f, () => { game.targetYScroll = 0; });
+                        regTimer(6.0f, () => { dialogDone = true; textBox2.Following = mainbaobao; });
+                    }
+                    else if(dialogCounter == 15)
+                    {
+                        mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
+                        mainbaobao.SetShake(3f, 0.3f);
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        cam.TamaCenter();
+                        paperWords.Visible = true;
+                        string[] str = {
+                            "以及，注意[shake rate=20.0 level=5 connected=1]时间[/shake]！\n[shake rate=20.0 level=5 connected=1][font_size=40]不要被她发现！[/font_size][/shake]\n[shake rate=20.0 level=5 connected=1][font_size=40]在她回来前退出抚摸游戏！！[/font_size][/shake]", 
+                            "placeholder"
+                        };
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                        dialogDone = true;
+                    }
+                    else if(dialogCounter == 16)
+                    {
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
+                        cam.TamaZoom();
+                        textBox2.showText("", 20);
+                        regTimer(2.0f, () =>
+                        {
+                            startDialog(DialogStatus.Gaming);
+                        });
                     }
                     dialogCounter++;
                 }

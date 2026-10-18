@@ -1,11 +1,13 @@
 using Godot;
 using System;
+using System.Net.Mail;
 
 public partial class Baobao : Node2D
 {
     [Export] float spdScaling = 16f;
     [Export] float spdRotating = 5f;
     [Export] public bool Hoverable = true;
+    [Export] public bool Clickable = true;
     [Export] public bool DragAble = true;
     [Export] World world;
     [Export] AnimatedSprite2D sprite;
@@ -13,6 +15,7 @@ public partial class Baobao : Node2D
     [Export] SpriteFrames sprNormalBlink;
     [Export] SpriteFrames sprHappy;
     [Export] SpriteFrames sprWaaa;
+    [Export] BaobaoGame game;
     [Export] float BlinkHold = 0.2f;
     [Export] float BlinkResetTime = 2.0f;
     [Export] float BlinkNoise = 0.2f;
@@ -25,11 +28,17 @@ public partial class Baobao : Node2D
     public Vector2 targetNaturalScale = Vector2.One;
     public Vector2 targetSquashScale = Vector2.One;
     public bool Playing = false;
+    public bool Attached = false;
+    public bool Failed = false;
+    [Export] public bool isBase = false;
     public float Frame = 0;
     public float targetSquashRotation = 0;
     public bool dragged = false;
     public bool onHover => Hoverable && GetLocalMousePosition().Length() < 96;
     int dragFrame = 0;
+    [Export] public bool Falling = false;
+    [Export] public float FallingSpeed = 150f / 5f;
+
     Vector2 dragMousePos = Vector2.Zero;
     public override void _Ready()
     {
@@ -38,7 +47,7 @@ public partial class Baobao : Node2D
     public override void _Process(double delta)
     {
         Vector2 mousePos = GetGlobalMousePosition() - GlobalPosition;
-        bool onSquash = onHover && Input.IsMouseButtonPressed(MouseButton.Left);
+        bool onSquash = onHover && Clickable && Input.IsMouseButtonPressed(MouseButton.Left);
         if(onHover && !onSquash)
         {
             targetSquashScale = new Vector2(1.05f, 1.05f);
@@ -78,9 +87,26 @@ public partial class Baobao : Node2D
         if(dragged)
         {
             GlobalPosition = GetGlobalMousePosition() - dragMousePos;
-            GlobalPosition = new Vector2(Mathf.Clamp(GlobalPosition.X, -120f, 120f), GlobalPosition.Y);
             sprite.Frame = dragFrame;
         }
+        if(Falling)
+        {
+            Position += new Vector2(0.0f, FallingSpeed * (float)delta);
+        }
+        if(Position.Y > -game.YOffset && !(Attached || Failed))
+        {
+            if(isBase)
+            {
+                Attached = true;
+                onAttached();
+            }
+            else
+            {
+                Failed = true;
+                onFail();
+            }
+        }
+        Position = new Vector2(Mathf.Clamp(Position.X, -120f, 120f), Mathf.Clamp(Position.Y, -10000f, -game.YOffset));
 
         BlinkTime -= (float)delta;
         bool isBlink = BlinkTime <= BlinkHold;
@@ -111,5 +137,15 @@ public partial class Baobao : Node2D
     {
         shakeSize = size;
         shakeTime = time;
+    }
+    public void onFail()
+    {
+
+    }
+    public void onAttached()
+    {
+        Playing = false;
+        DragAble = false;
+        Scale *= new Vector2(1.2f, 0.8f);
     }
 }

@@ -11,7 +11,7 @@ public partial class TextBox : Control
     [Export] public Node2D NodeParent;
     [Export] public Node2D Following;
     [Export] public Vector2 FollowingOffset = Vector2.Zero;
-    [Export] public float FollowingSpd = 8f;
+    [Export] public float FollowingSpd = 20f;
     [Export] float textSpd = 20f;
     [Export] float texn = 0;
 
@@ -69,7 +69,7 @@ public partial class TextBox : Control
         // ninePatchRect.Scale = Scale;
         if(Following != null)
         {
-            NodeParent.GlobalPosition = NodeParent.GlobalPosition.Lerp((Following.GetScreenTransform().Origin - new Vector2(640, 480) + FollowingOffset) / world.Zoom, Mathf.Clamp(FollowingSpd, 0.0f, 1.0f));
+            NodeParent.GlobalPosition = NodeParent.GlobalPosition.Lerp((Following.GetScreenTransform().Origin - new Vector2(640, 480) + FollowingOffset) / world.Zoom, Mathf.Clamp(FollowingSpd * (float)delta, 0.0f, 1.0f));
         }
     }
     public void showText(string text, float spd = 20f)

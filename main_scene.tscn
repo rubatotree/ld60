@@ -19,14 +19,21 @@
 [ext_resource type="SpriteFrames" uid="uid://cpcaa28hqf801" path="res://sprites/seal/seal0/seal0.tres" id="7_gfmxp"]
 [ext_resource type="Script" uid="uid://psyarpwq7d61" path="res://scripts/TextBox.cs" id="7_qwutr"]
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="7_wr18j"]
+[ext_resource type="Script" uid="uid://p8psq1oc30b6" path="res://BaobaoGame.cs" id="7_xy6fp"]
 [ext_resource type="Texture2D" uid="uid://p8qsit14pxa4" path="res://sprites/tama/buttons/b.png" id="8_7th4q"]
 [ext_resource type="Texture2D" uid="uid://dahqe6pdou2m2" path="res://sprites/tama/buttons/bh.png" id="9_6jybn"]
 [ext_resource type="SpriteFrames" uid="uid://7efaap178fkj" path="res://sprites/seal/seal1/seal1.tres" id="9_w30ff"]
 [ext_resource type="Texture2D" uid="uid://brwaxcl1sklob" path="res://sprites/tama/buttons/c.png" id="10_84odl"]
+[ext_resource type="Texture2D" uid="uid://cowwkflhfpjhj" path="res://sprites/lines/3.png" id="10_jtbqm"]
 [ext_resource type="SpriteFrames" uid="uid://b2noapd00qoju" path="res://sprites/seal/seal2/seal2.tres" id="10_xy6fp"]
 [ext_resource type="Texture2D" uid="uid://dy2na7bkrkkhy" path="res://sprites/tama/buttons/ch.png" id="11_ak604"]
+[ext_resource type="Texture2D" uid="uid://bi7k1lemibdn8" path="res://sprites/lines/6.png" id="11_jip8q"]
 [ext_resource type="SpriteFrames" uid="uid://c15sdldxreds0" path="res://sprites/seal/seal3/seal3.tres" id="11_uws2o"]
+[ext_resource type="Texture2D" uid="uid://c4t7tr4rxtp3m" path="res://sprites/lines/10.png" id="12_euc68"]
+[ext_resource type="Texture2D" uid="uid://t0qt7bljagj4" path="res://sprites/lines/0_1.png" id="13_iylel"]
+[ext_resource type="Texture2D" uid="uid://bohd0gwnyqsx6" path="res://sprites/lines/0_2.png" id="14_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://c47tj71any0lt" path="res://sprites/nyako/nyako_base2.png" id="16_ijoax"]
+[ext_resource type="Texture2D" uid="uid://du2mhqrf42rol" path="res://sprites/seal/seal0/0001.png" id="16_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://b6a76npqhqn11" path="res://sprites/nyako/nyako_happy_2.png" id="18_j8kkg"]
 [ext_resource type="Texture2D" uid="uid://dojiy5xm220d0" path="res://sprites/nyako/nyako_smile.png" id="19_yh4yk"]
 [ext_resource type="Texture2D" uid="uid://dgcaxrpbys1vp" path="res://sprites/nyako/nyako_smile_2.png" id="20_p8s74"]
@@ -38,6 +45,7 @@
 [ext_resource type="Texture2D" uid="uid://cwd6v2nisot5h" path="res://sprites/nyako/nyako_cry_2.png" id="26_w30ff"]
 [ext_resource type="Texture2D" uid="uid://bod6pm05uu6hv" path="res://sprites/nyako/nyako_cry_3.png" id="27_xy6fp"]
 [ext_resource type="FontFile" uid="uid://xv5w1h33viej" path="res://fonts/unifont.ttf" id="32_p8s74"]
+[ext_resource type="FontFile" uid="uid://dt0o1a4utkun4" path="res://fonts/AaJinRiHuaQing-ChunLanMaoKun-2.ttf" id="44_ek5vw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1vivr"]
 animations = [{
@@ -53,9 +61,71 @@ animations = [{
 "speed": 2.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_8vrlf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_iylel")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_yj5sn")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ek5vw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_jtbqm")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_euc68"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_jip8q")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_38t8r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_euc68")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1vivr"]
+font = ExtResource("32_p8s74")
+font_size = 24
+font_color = Color(0.28485027, 0.28485027, 0.28485027, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jtbqm"]
+font = ExtResource("44_ek5vw")
+font_size = 48
+font_color = Color(0.29219002, 0.29219005, 0.29219002, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ek5vw"]
+font = ExtResource("32_p8s74")
+font_size = 96
+font_color = Color(0.29219002, 0.29219005, 0.29219002, 1)
+
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox1/TextBox")
@@ -64,7 +134,9 @@ cam = NodePath("../Camera")
 tamagroup = NodePath("../CanvasGroup_TAMA")
 nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
 tamaScreen = NodePath("../CanvasGroup_TAMA/Screen")
-mainbaobao = NodePath("../CanvasGroup_TAMA/Screen/TrueTama/TrueGame/MainBaobao")
+mainbaobao = NodePath("../CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/MainBaobao")
+game = NodePath("../CanvasGroup_TAMA/Screen/TrueTama/TrueGame")
+paperWords = NodePath("../PaperWords")
 
 [node name="CanvasGroup_BG" type="CanvasGroup" parent="." unique_id=1119549122]
 
@@ -84,7 +156,7 @@ script = ExtResource("4_o4fqm")
 falseTama = NodePath("FalseTama")
 trueTama = NodePath("TrueTama")
 falseTamaSprite = NodePath("FalseTama/AnimatedSprite2D")
-trueTamaSprite = NodePath("TrueTama/TrueGame/MainBaobao/AnimatedSprite2D2")
+trueTamaSprite = NodePath("TrueTama/TrueGame/GameOrigin/MainBaobao/AnimatedSprite2D2")
 
 [node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen" unique_id=460820174]
 layout_mode = 3
@@ -171,21 +243,98 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
-[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949]
+[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "GameUI", "TimeLabel", "LifeLabel")]
 scale = Vector2(0.08, 0.08)
+script = ExtResource("7_xy6fp")
+world = NodePath("../../../../World")
+GameOrigin = NodePath("GameOrigin")
+Line0m = NodePath("GameOrigin/Lines/0m")
+Line3m = NodePath("GameOrigin/Lines/3m")
+Line6m = NodePath("GameOrigin/Lines/6m")
+Line10m = NodePath("GameOrigin/Lines/10m")
+Lines = NodePath("GameOrigin/Lines")
+GameUI = NodePath("GameUI")
+TimeLabel = NodePath("GameUI/TimeLabel")
+LifeLabel = NodePath("GameUI/LifeLabel")
 
-[node name="MainBaobao" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1074492689 node_paths=PackedStringArray("world", "sprite")]
-position = Vector2(0, 32)
+[node name="GameOrigin" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1455142794]
+position = Vector2(0, 182)
+
+[node name="Lines" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin" unique_id=622030503]
+
+[node name="0m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1809170445]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_8vrlf")
+frame_progress = 0.82544106
+script = ExtResource("3_7ycvg")
+
+[node name="3m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1081323862]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_ek5vw")
+script = ExtResource("3_7ycvg")
+
+[node name="6m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1788674983]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_euc68")
+script = ExtResource("3_7ycvg")
+
+[node name="10m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1935161206]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_38t8r")
+script = ExtResource("3_7ycvg")
+
+[node name="MainBaobao" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin" unique_id=1074492689 node_paths=PackedStringArray("world", "sprite", "game")]
+position = Vector2(0, -150.42186)
 script = ExtResource("7_1n88h")
-world = NodePath("../../../../../World")
+world = NodePath("../../../../../../World")
 sprite = NodePath("AnimatedSprite2D2")
 sprNormal = ExtResource("7_gfmxp")
 sprNormalBlink = ExtResource("9_w30ff")
 sprHappy = ExtResource("10_xy6fp")
 sprWaaa = ExtResource("11_uws2o")
+game = NodePath("../..")
+isBase = true
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/MainBaobao" unique_id=1318370852]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/MainBaobao" unique_id=1318370852]
 sprite_frames = ExtResource("7_gfmxp")
+
+[node name="GameUI" type="Control" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=354606766]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TimeLabel" type="Label" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=2131550977]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 112.0
+offset_top = -216.0
+offset_right = 172.0
+offset_bottom = -192.0
+grow_horizontal = 0
+text = "08:00"
+label_settings = SubResource("LabelSettings_1vivr")
+horizontal_alignment = 2
+
+[node name="LifeLabel" type="Label" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1430728596]
+layout_mode = 1
+offset_left = -159.375
+offset_top = -215.29688
+offset_right = -99.375
+offset_bottom = -191.29688
+text = "10"
+label_settings = SubResource("LabelSettings_1vivr")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1301181072]
+layout_mode = 0
+offset_left = -242.18748
+offset_top = -249.67188
+offset_right = 269.8125
+offset_bottom = 262.32813
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("16_yj5sn")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA" unique_id=707215492]
 texture_filter = 1
@@ -228,6 +377,32 @@ name = "C"
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasGroup_TAMA/AnimatedSprite2D/ButtonC" unique_id=1758032516]
 texture = ExtResource("11_ak604")
+
+[node name="PaperWords" type="Node2D" parent="." unique_id=1302000883]
+
+[node name="Tasks" type="Label" parent="PaperWords" unique_id=2109176634]
+offset_left = 302.0
+offset_top = -315.0
+offset_right = 671.0
+offset_bottom = 74.0
+rotation = -0.2617994
+text = "喵喵酱的假日计划
+→ 10:00 aaaa
+→ 12:00 bbb
+→ 14:00 cccc
+→ 16:00 ddd
+→ 18:00 eeee
+"
+label_settings = SubResource("LabelSettings_jtbqm")
+
+[node name="Time" type="Label" parent="PaperWords" unique_id=1958450117]
+offset_left = -399.0
+offset_top = 282.99997
+offset_right = 141.0
+offset_bottom = 553.0
+rotation = 0.6194906
+text = "08:00"
+label_settings = SubResource("LabelSettings_ek5vw")
 
 [node name="Camera" type="Node2D" parent="." unique_id=152232985 node_paths=PackedStringArray("cam", "frontCards")]
 script = ExtResource("5_7ycvg")
