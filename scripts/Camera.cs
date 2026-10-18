@@ -15,6 +15,7 @@ public partial class Camera : Node2D
     [Export] float ZoomScale = 0.3f;
     [Export] float PosSpd = 2f;
     [Export] float ZoomSpd = 1f;
+    public float Zoom => 1.0f / curScale;
     public Vector2 Shake = Vector2.Zero;
     Vector2 mousePos = Vector2.Zero;
     Vector2 mouseDeltaPos = Vector2.Zero;
@@ -28,12 +29,13 @@ public partial class Camera : Node2D
     {
         targetPos = TamaCenterPos;
         targetScale = NormalScale;
-        curPos = targetPos;
-        curScale = targetScale;
+        UpdateNow();
     }
     public override void _Process(double delta)
     {
         mousePos = GetGlobalMousePosition() - Position;
+        float scale1 = MousePosScale;
+        float scale2 = MousePosScale2;
         if(status == Status.Right)
         {
             if(mousePos.Length() > 200f) 
@@ -45,6 +47,8 @@ public partial class Camera : Node2D
             if(mousePos.Length() > 50f) 
                 mousePos *= 200f / mousePos.Length();
             mousePos *= 0.3f;
+            scale1 *= 0.3f;
+            scale2 *= 0.1f;
         }
         else
         {
@@ -67,4 +71,9 @@ public partial class Camera : Node2D
     public void TamaCenter() { FocusAt(TamaCenterPos, NormalScale); status = Status.Center; }
     public void TamaRight() { FocusAt(TamaRightPos, NormalScale); status = Status.Right; }
     public void TamaZoom() { FocusAt(TamaZoomPos, ZoomScale); status = Status.Zoom; }
+    public void UpdateNow() 
+    { 
+        curPos = targetPos;
+        curScale = targetScale;
+    }
 }

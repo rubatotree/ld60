@@ -21,8 +21,11 @@
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="7_wr18j"]
 [ext_resource type="Texture2D" uid="uid://p8qsit14pxa4" path="res://sprites/tama/buttons/b.png" id="8_7th4q"]
 [ext_resource type="Texture2D" uid="uid://dahqe6pdou2m2" path="res://sprites/tama/buttons/bh.png" id="9_6jybn"]
+[ext_resource type="SpriteFrames" uid="uid://7efaap178fkj" path="res://sprites/seal/seal1/seal1.tres" id="9_w30ff"]
 [ext_resource type="Texture2D" uid="uid://brwaxcl1sklob" path="res://sprites/tama/buttons/c.png" id="10_84odl"]
+[ext_resource type="SpriteFrames" uid="uid://b2noapd00qoju" path="res://sprites/seal/seal2/seal2.tres" id="10_xy6fp"]
 [ext_resource type="Texture2D" uid="uid://dy2na7bkrkkhy" path="res://sprites/tama/buttons/ch.png" id="11_ak604"]
+[ext_resource type="SpriteFrames" uid="uid://c15sdldxreds0" path="res://sprites/seal/seal3/seal3.tres" id="11_uws2o"]
 [ext_resource type="Texture2D" uid="uid://c47tj71any0lt" path="res://sprites/nyako/nyako_base2.png" id="16_ijoax"]
 [ext_resource type="Texture2D" uid="uid://b6a76npqhqn11" path="res://sprites/nyako/nyako_happy_2.png" id="18_j8kkg"]
 [ext_resource type="Texture2D" uid="uid://dojiy5xm220d0" path="res://sprites/nyako/nyako_smile.png" id="19_yh4yk"]
@@ -52,10 +55,11 @@ animations = [{
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
-textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/Node2D/TextBox")
+textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox1/TextBox")
+textBox2 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox2/TextBox")
 cam = NodePath("../Camera")
 tamagroup = NodePath("../CanvasGroup_TAMA")
 nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
@@ -170,10 +174,15 @@ offset_transform_position = Vector2(-144, -144)
 [node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949]
 scale = Vector2(0.08, 0.08)
 
-[node name="MainBaobao" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1074492689]
+[node name="MainBaobao" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1074492689 node_paths=PackedStringArray("world", "sprite")]
 position = Vector2(0, 32)
-scale = Vector2(1.563, 1.563)
 script = ExtResource("7_1n88h")
+world = NodePath("../../../../../World")
+sprite = NodePath("AnimatedSprite2D2")
+sprNormal = ExtResource("7_gfmxp")
+sprNormalBlink = ExtResource("9_w30ff")
+sprHappy = ExtResource("10_xy6fp")
+sprWaaa = ExtResource("11_uws2o")
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/MainBaobao" unique_id=1318370852]
 sprite_frames = ExtResource("7_gfmxp")
@@ -278,20 +287,22 @@ texture = ExtResource("3_d5x1h")
 position = Vector2(171, 17.5)
 texture = ExtResource("4_66tet")
 
-[node name="Node2D" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=607207012]
+[node name="TextBox1" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=607207012]
 position = Vector2(-280, 149)
 
-[node name="TextBox" type="Control" parent="Camera/Camera2D/CanvasGroup/Node2D" unique_id=876594328 node_paths=PackedStringArray("richTextLabel", "ninePatchRect")]
+[node name="TextBox" type="Control" parent="Camera/Camera2D/CanvasGroup/TextBox1" unique_id=876594328 node_paths=PackedStringArray("world", "richTextLabel", "ninePatchRect", "NodeParent")]
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("7_qwutr")
+world = NodePath("../../../../../World")
 richTextLabel = NodePath("../RichTextLabel")
 ninePatchRect = NodePath("NinePatchRect")
+NodeParent = NodePath("..")
 textSpd = 40.0
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Camera/Camera2D/CanvasGroup/Node2D/TextBox" unique_id=189978781]
+[node name="NinePatchRect" type="NinePatchRect" parent="Camera/Camera2D/CanvasGroup/TextBox1/TextBox" unique_id=189978781]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -311,9 +322,63 @@ patch_margin_bottom = 49
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/Node2D" unique_id=158404717]
+[node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/TextBox1" unique_id=158404717]
 clip_contents = false
 offset_right = 400.0
+offset_bottom = 1147.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 8
+theme_override_constants/paragraph_separation = 8
+theme_override_fonts/normal_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_italics_font = ExtResource("32_p8s74")
+theme_override_fonts/italics_font = ExtResource("32_p8s74")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="TextBox2" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=1702778450]
+
+[node name="TextBox" type="Control" parent="Camera/Camera2D/CanvasGroup/TextBox2" unique_id=299380223 node_paths=PackedStringArray("world", "richTextLabel", "ninePatchRect", "NodeParent")]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("7_qwutr")
+world = NodePath("../../../../../World")
+richTextLabel = NodePath("../RichTextLabel")
+ninePatchRect = NodePath("NinePatchRect")
+NodeParent = NodePath("..")
+textSpd = 40.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Camera/Camera2D/CanvasGroup/TextBox2/TextBox" unique_id=414295988]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_wr18j")
+region_rect = Rect2(0, 0, 108, 108)
+patch_margin_left = 45
+patch_margin_top = 29
+patch_margin_right = 42
+patch_margin_bottom = 49
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/TextBox2" unique_id=2090288078]
+clip_contents = false
+offset_right = 600.0
 offset_bottom = 1147.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_constants/line_separation = 8

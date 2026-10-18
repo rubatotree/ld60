@@ -5,17 +5,21 @@ using System.Diagnostics;
 
 public partial class TextBox : Control
 {
+    [Export] World world;
     [Export] RichTextLabel richTextLabel;
     [Export] NinePatchRect ninePatchRect;
-    [Export] Control ninePatchRectParent;
+    [Export] public Node2D NodeParent;
+    [Export] public Node2D Following;
+    [Export] public Vector2 FollowingOffset = Vector2.Zero;
+    [Export] public float FollowingSpd = 8f;
     [Export] float textSpd = 20f;
     [Export] float texn = 0;
 
     [Export] float sizeSpd = 10f;
     [Export] float alphaSpd = 10f;
 
-    Vector2 curSize = new Vector2(40f, 40f);
-    Vector2 targetSize = new Vector2(40f, 40f);
+    public Vector2 curSize = new Vector2(40f, 40f);
+    public Vector2 targetSize = new Vector2(40f, 40f);
     public bool Complete{get;set;}
     float alpha = 0;
     float targetAlpha = 0;
@@ -61,6 +65,12 @@ public partial class TextBox : Control
 
         alpha = Mathf.Lerp(alpha, targetAlpha, alphaSpd * (float)delta);
         Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, alpha);
+        // Scale = new Vector2(1.0f / world.Zoom, 1.0f / world.Zoom);
+        // ninePatchRect.Scale = Scale;
+        if(Following != null)
+        {
+            NodeParent.GlobalPosition = NodeParent.GlobalPosition.Lerp((Following.GetScreenTransform().Origin - new Vector2(640, 480) + FollowingOffset) / world.Zoom, Mathf.Clamp(FollowingSpd, 0.0f, 1.0f));
+        }
     }
     public void showText(string text, float spd = 20f)
     {

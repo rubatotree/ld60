@@ -32,10 +32,10 @@ public partial class NyakoMgr : Node2D
     [Export] float BlinkHold = 0.2f;
     [Export] float BlinkResetTime = 2.0f;
     [Export] float BlinkNoise = 0.2f;
+    public float BlinkTime = 0.0f;
 
     [Export] float spdBase = 8.0f;
     [Export] float spdAlpha = 10.0f;
-    public float BlinkTime = 0.0f;
     public float curBase = 0.0f;
     public float targetBase = 0.0f;
     public float curAlpha = 0.0f;
@@ -70,8 +70,8 @@ public partial class NyakoMgr : Node2D
         else if(baseStatus == BaseStatus.HoldTama)
             targetBase = 1.0f;
         curBase = Mathf.Lerp(curBase, targetBase, spdBase * (float)delta);
-        base_spr_relax.Modulate = new Color(1, 1, 1, 1.0f - curBase);
-        base_spr_tama.Modulate = new Color(1, 1, 1, curBase);
+        base_spr_relax.Modulate = new Color(1, 1, 1, Mathf.Sqrt(1.0f - curBase));
+        base_spr_tama.Modulate = new Color(1, 1, 1, Mathf.Sqrt(curBase));
 
         curAlpha = Mathf.Lerp(curAlpha, targetAlpha, spdAlpha * (float)delta);
         Modulate = new Color(1, 1, 1, curAlpha);

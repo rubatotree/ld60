@@ -18,6 +18,7 @@ public partial class World : Node2D
     [Export] public int Language;
     [Export] public float ScreenShakeSize = 0.0f;
     [Export] public float ScreenShakeTimer = 0.0f;
+    public float Zoom => cam.Zoom;
     public RandomNumberGenerator rng = new RandomNumberGenerator();
     public float time = 0;
     public int pressn = 0;
@@ -29,7 +30,7 @@ public partial class World : Node2D
     string autoprefix = "";
     string autosuffix = "";
 
-    public enum DialogStatus { None, Test }
+    public enum DialogStatus { None, Init, Nyako1, Baobao1, Gaming }
     public DialogStatus dialogStatus = DialogStatus.None;
     int dialogCounter = 0;
     bool dialogDone = true;
@@ -64,7 +65,7 @@ public partial class World : Node2D
 
     public override void _Ready()
     {
-        startDialog(DialogStatus.Test);
+        startDialog(DialogStatus.Init);
     }
 
     public override void _Process(double delta)
@@ -99,52 +100,87 @@ public partial class World : Node2D
 
     public bool isMouseJustPressed() => !justPressed && pressed;
     public bool isMouseJustReleased() => justPressed && !pressed;
-    public void onTamaButtonPressed(string name)
-    {
-    }
-
-    public void startDialog(DialogStatus status)
-    {
-        dialogStatus = status;
-        dialogCounter = 0;
-        dialogDone = true;
-        if(dialogStatus == DialogStatus.Test)
-        {
-            setTamaShow(false);
-            nyako.setShow(false);
-        }
-    }
     public void SetScreenShake(float size, float time)
     {
         ScreenShakeSize = size;
         ScreenShakeTimer = time;
     }
+    public void onTamaButtonPressed(string name)
+    {
+    }
 
+    public void startDialog(DialogStatus status, bool FromInit = false)
+    {
+        dialogStatus = status;
+        dialogCounter = 0;
+        dialogDone = true;
+        if(dialogStatus == DialogStatus.Init)
+        {
+            setTamaShow(false);
+            nyako.setShow(false);
+            cam.TamaCenter();
+        }
+        else if(dialogStatus == DialogStatus.Nyako1)
+        {
+            setTamaShow(false);
+            nyako.setShow(true);
+            cam.TamaRight();
+            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+            nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+            tamaScreen.trueTama.Visible = false;
+            string[] str = {
+                "你好！！这里是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！\n[font_size=40][/font_size]欢迎来到[shake rate=20.0 level=5 connected=1][font_size=40] 2010 年[/font_size][/shake]！", 
+                "placeholder"
+            };
+            regTimer(0.5f, () => { 
+                textBox1.showText(autoprefix + str[Language] + autosuffix);
+            });
+            Debug.WriteLine("generate a timer");
+        }
+        else if(dialogStatus == DialogStatus.Baobao1)
+        {
+            setTamaShow(true);
+            nyako.setShow(false);
+            cam.TamaZoom(); 
+            if(FromInit) cam.UpdateNow();
+            mainbaobao.Playing = false;
+            mainbaobao.Frame = 0; 
+            mainbaobao.Hoverable = false; 
+            mainbaobao.DragAble = true; 
+            dialogDone = false;
+            textBox2.Following = mainbaobao;
+            textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+            textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
+            regTimer(0.5f, () => { 
+                mainbaobao.Hoverable = true; 
+                mainbaobao.targetNaturalScale = Vector2.One * 1.2f;
+                mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                mainbaobao.SetShake(1f, 60000f);
+                string[] str = {
+                    "[font_size=64][shake rate=20.0 level=5 connected=1]快点摸摸我！！！[/shake][/font_size]", 
+                    "placeholder"
+                };
+                textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                dialogDone = true;
+            });
+        }
+    }
     void processDialog()
     {
-        if(dialogStatus == DialogStatus.Test)
+        if(dialogStatus == DialogStatus.Init)
+        {
+            if(isMouseJustPressed())
+            {
+                startDialog(DialogStatus.Baobao1, true);
+            }
+        }
+        else if(dialogStatus == DialogStatus.Nyako1)
         {
             if(isMouseJustPressed() && !isTamaJustPressed)
             {
                 if(textBox1.Complete && dialogDone)
                 {
                     if(dialogCounter == 0)
-                    {
-                        nyako.setShow(true);
-                        cam.TamaRight();
-                        nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
-                        nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
-                        tamaScreen.trueTama.Visible = false;
-                        string[] str = {
-                            "你好！！这里是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！\n[font_size=40][/font_size]欢迎来到[shake rate=20.0 level=5 connected=1][font_size=40] 2010 年[/font_size][/shake]！", 
-                            "placeholder"
-                        };
-                        regTimer(0.5f, () => { 
-                            textBox1.showText(autoprefix + str[Language] + autosuffix);
-                        });
-                        Debug.WriteLine("generate a timer");
-                    }
-                    else if(dialogCounter == 1)
                     {
                         dialogDone = false;
                         nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
@@ -161,7 +197,7 @@ public partial class World : Node2D
                             dialogDone = true;
                         });
                     }
-                    else if(dialogCounter == 2)
+                    else if(dialogCounter == 1)
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
                         nyako.faceStatus = NyakoMgr.FaceStatus.HappyBlink;
@@ -174,7 +210,7 @@ public partial class World : Node2D
                             tamaScreen.initFalse();
                         });
                     }
-                    else if(dialogCounter == 3)
+                    else if(dialogCounter == 2)
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
@@ -184,7 +220,7 @@ public partial class World : Node2D
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
-                    else if(dialogCounter == 4)
+                    else if(dialogCounter == 3)
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
@@ -194,7 +230,7 @@ public partial class World : Node2D
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
-                    else if(dialogCounter == 5)
+                    else if(dialogCounter == 4)
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
@@ -204,7 +240,7 @@ public partial class World : Node2D
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
-                    else if(dialogCounter == 6)
+                    else if(dialogCounter == 5)
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
@@ -214,19 +250,107 @@ public partial class World : Node2D
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
-                    else if(dialogCounter == 7)
+                    else if(dialogCounter == 6)
                     {
                         dialogDone = false;
                         nyako.setShow(false);
                         textBox1.showText("");
                         regTimer(0.5f, () => { cam.TamaCenter(); });
-                        regTimer(1.0f, () => { cam.TamaZoom(); dialogStatus = DialogStatus.None; });
-                        regTimer(2.0f, () => { tamaScreen.trueTama.Visible = true; tamaScreen.trueTamaSprite.Stop(); tamaScreen.trueTamaSprite.Frame = 0; mainbaobao.Hoverable = false; });
+                        regTimer(1.0f, () => { cam.TamaZoom(); });
+                        regTimer(2.0f, () => { 
+                            tamaScreen.trueTama.Visible = true; 
+                            mainbaobao.Playing = false;
+                            mainbaobao.Frame = 0; 
+                            mainbaobao.Hoverable = false; 
+                            mainbaobao.Scale = Vector2.One * 1.563f;
+                            mainbaobao.targetNaturalScale = Vector2.One * 1.563f;
+                        });
                         regTimer(2.1f, () => { tamaScreen.trueTama.Visible = false;  });
                         regTimer(2.2f, () => { tamaScreen.trueTama.Visible = true;  });
                         regTimer(2.3f, () => { tamaScreen.trueTama.Visible = false;  });
-                        regTimer(2.8f, () => { tamaScreen.trueTama.Visible = true; tamaScreen.trueTamaSprite.Play(); mainbaobao.targetNaturalScale = Vector2.One; });
-                        regTimer(4.8f, () => { tamaScreen.trueTamaSprite.Stop(); tamaScreen.trueTamaSprite.Frame = 0; mainbaobao.Hoverable = true; });
+                        regTimer(2.8f, () => { 
+                            tamaScreen.trueTama.Visible = true; 
+                            mainbaobao.Playing = true;
+                            mainbaobao.targetNaturalScale = Vector2.One; 
+                            mainbaobao.PlayingFPS = 6.0f;
+                            regTimer(16.0f / mainbaobao.PlayingFPS, () => { 
+                                dialogDone = true;
+                                startDialog(DialogStatus.Baobao1);
+                            });
+                        });
+                    }
+                    dialogCounter++;
+                }
+            }
+        }
+        else if(dialogStatus == DialogStatus.Baobao1)
+        {
+            if(isMouseJustPressed())
+            {
+                if(dialogDone)
+                {
+                    if(dialogCounter == 0)
+                    {
+                        if(!mainbaobao.onHover) return;
+                        mainbaobao.targetNaturalScale = Vector2.One * 1.1f;
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        mainbaobao.SetShake(1f, 60000f);
+                        string[] str = {
+                            "[font_size=56][shake rate=20.0 level=5 connected=1]继续摸！！[/shake][/font_size]", 
+                            "placeholder"
+                        };
+                        textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
+                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        dialogDone = true;
+                    }
+                    else if(dialogCounter == 1)
+                    {
+                        if(!mainbaobao.onHover) return;
+                        mainbaobao.targetNaturalScale = Vector2.One * 1.05f;
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        mainbaobao.SetShake(1f, 60000f);
+                        string[] str = {
+                            "[font_size=52][shake rate=20.0 level=5 connected=1]还要！！[/shake][/font_size]", 
+                            "placeholder"
+                        };
+                        textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
+                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        dialogDone = true;
+                    }
+                    else if(dialogCounter <= 8)
+                    {
+                        if(!mainbaobao.onHover) return;
+                        mainbaobao.targetNaturalScale = Vector2.One * 1.00f;
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
+                        mainbaobao.SetShake(1f, 60000f);
+                        string[] str = {
+                            "[font_size=48][shake rate=20.0 level=5 connected=1]不要停！！！[/shake][/font_size]", 
+                            "placeholder"
+                        };
+                        textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
+                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
+                        dialogDone = true;
+                    }
+                    else if(dialogCounter == 9)
+                    {
+                        if(!mainbaobao.onHover) return;
+                        mainbaobao.targetNaturalScale = Vector2.One * 0.80f;
+                        mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
+                        mainbaobao.SetShake(0f, 0f);
+                        mainbaobao.Hoverable = false;
+                        mainbaobao.PlayingFPS = 8.0f;
+                        mainbaobao.Playing = true;
+                        string[] str = {
+                            "[font_size=40][shake rate=10.0 level=5 connected=1]哈啊...哈啊......[/shake][/font_size]", 
+                            "placeholder"
+                        };
+                        textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
+                        textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                        textBox2.FollowingOffset = new Vector2(160f, 160f) * mainbaobao.Scale;
+                        dialogDone = true;
                     }
                     dialogCounter++;
                 }
