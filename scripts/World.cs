@@ -172,6 +172,25 @@ public partial class World : Node2D
                 dialogDone = true;
             });
         }
+        else if(dialogStatus == DialogStatus.Gaming)
+        {
+            setTamaShow(true);
+            nyako.setShow(false);
+            cam.TamaZoom(); 
+            mainbaobao.DragAble = false;
+            if(FromInit)
+            {
+                cam.UpdateNow();
+                game.targetGameAlpha = 1.0f;
+                game.curGameAlpha = 1.0f;
+                mainbaobao.Position = new Vector2(0.0f, game.YOffset);
+                mainbaobao.targetNaturalScale = Vector2.One * 0.6f;
+                mainbaobao.Scale = mainbaobao.targetNaturalScale;
+                mainbaobao.Frame = 15;
+                mainbaobao.Clickable = true;
+                mainbaobao.Attached = true;
+            }
+        }
     }
     void processDialog()
     {
@@ -179,7 +198,7 @@ public partial class World : Node2D
         {
             if(isMouseJustPressed())
             {
-                startDialog(DialogStatus.Baobao1, true);
+                startDialog(DialogStatus.Nyako1, true);
             }
         }
         else if(dialogStatus == DialogStatus.Nyako1)
@@ -542,11 +561,29 @@ public partial class World : Node2D
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                         textBox2.Following = null;
                         dialogDone = false;
-                        regTimer(0.6f, () => { game.targetYScroll = game.TargetY - 100f; });
-                        regTimer(4.0f, () => { game.targetYScroll = 0; });
-                        regTimer(6.0f, () => { dialogDone = true; textBox2.Following = mainbaobao; });
+                        regTimer(0.6f, () => { game.targetYScroll = game.TargetY - 200f; });
+                        regTimer(3.0f, () => { dialogDone = true; });
+                        regTimer(6.0f, () => {  textBox2.Following = mainbaobao; });
                     }
                     else if(dialogCounter == 15)
+                    {
+                        mainbaobao.faceStatus = Baobao.FaceStatus.NormalBlink;
+                        textBox2.showText("", 20);
+                        textBox2.Following = null;
+                        dialogDone = false;
+                        game.targetYScroll = 0.0f;
+                        regTimer(2.0f, () => { 
+                            dialogDone = true; 
+                            textBox2.Following = mainbaobao; 
+                            mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
+                            string[] str = {
+                                "总之需要到达[wave amp=24.0 freq=8.0 connected=1][color=red]这么高[/color][/wave]~", 
+                                "placeholder"
+                            };
+                            textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
+                        });
+                    }
+                    else if(dialogCounter == 16)
                     {
                         mainbaobao.Scale *= new Vector2(1.2f, 0.8f);
                         mainbaobao.SetShake(3f, 0.3f);
@@ -560,13 +597,12 @@ public partial class World : Node2D
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                         dialogDone = true;
                     }
-                    else if(dialogCounter == 16)
+                    else if(dialogCounter == 17)
                     {
                         mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
                         cam.TamaZoom();
                         textBox2.showText("", 20);
-                        regTimer(2.0f, () =>
-                        {
+                        regTimer(2.0f, () => {
                             startDialog(DialogStatus.Gaming);
                         });
                     }

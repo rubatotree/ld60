@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="7_wr18j"]
 [ext_resource type="Script" uid="uid://p8psq1oc30b6" path="res://BaobaoGame.cs" id="7_xy6fp"]
 [ext_resource type="Texture2D" uid="uid://p8qsit14pxa4" path="res://sprites/tama/buttons/b.png" id="8_7th4q"]
+[ext_resource type="PackedScene" uid="uid://dsiormpkhxact" path="res://sprites/lines/other.tscn" id="8_38t8r"]
 [ext_resource type="Texture2D" uid="uid://dahqe6pdou2m2" path="res://sprites/tama/buttons/bh.png" id="9_6jybn"]
 [ext_resource type="SpriteFrames" uid="uid://7efaap178fkj" path="res://sprites/seal/seal1/seal1.tres" id="9_w30ff"]
 [ext_resource type="Texture2D" uid="uid://brwaxcl1sklob" path="res://sprites/tama/buttons/c.png" id="10_84odl"]
@@ -184,7 +185,6 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
 [node name="FalseTama" type="Node2D" parent="CanvasGroup_TAMA/Screen" unique_id=1197453258]
-visible = false
 
 [node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen/FalseTama" unique_id=182922087]
 layout_mode = 3
@@ -244,6 +244,7 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
 [node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "GameUI", "TimeLabel", "LifeLabel")]
+position = Vector2(0, 0.026249886)
 scale = Vector2(0.08, 0.08)
 script = ExtResource("7_xy6fp")
 world = NodePath("../../../../World")
@@ -252,6 +253,7 @@ Line0m = NodePath("GameOrigin/Lines/0m")
 Line3m = NodePath("GameOrigin/Lines/3m")
 Line6m = NodePath("GameOrigin/Lines/6m")
 Line10m = NodePath("GameOrigin/Lines/10m")
+LineOther = ExtResource("8_38t8r")
 Lines = NodePath("GameOrigin/Lines")
 GameUI = NodePath("GameUI")
 TimeLabel = NodePath("GameUI/TimeLabel")
@@ -265,20 +267,24 @@ position = Vector2(0, 182)
 [node name="0m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1809170445]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_8vrlf")
-frame_progress = 0.82544106
+frame_progress = 0.7142622
 script = ExtResource("3_7ycvg")
 
 [node name="3m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1081323862]
+modulate = Color(1, 0.45, 0.45, 1)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_ek5vw")
 script = ExtResource("3_7ycvg")
 
 [node name="6m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1788674983]
+modulate = Color(1, 0.45, 0.45, 1)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_euc68")
 script = ExtResource("3_7ycvg")
 
 [node name="10m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1935161206]
+modulate = Color(1, 0.32999998, 0.32999998, 1)
+position = Vector2(0, -0.42185783)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_38t8r")
 script = ExtResource("3_7ycvg")

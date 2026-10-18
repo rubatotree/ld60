@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dsiormpkhxact"]
+
+[ext_resource type="Texture2D" uid="uid://cnhxr12nwjwij" path="res://sprites/lines/other.png" id="1_cjg84"]
+[ext_resource type="Script" uid="uid://b4mvgfm00xjkg" path="res://scripts/AnimAutoplay.cs" id="2_twu1j"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jef5d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_cjg84")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="other" type="AnimatedSprite2D" unique_id=1158772816]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(1, 1, 1, 0.29411766)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_jef5d")
+script = ExtResource("2_twu1j")

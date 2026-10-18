@@ -9,16 +9,17 @@ public partial class BaobaoGame : Node2D
     [Export] public AnimatedSprite2D Line3m;
     [Export] public AnimatedSprite2D Line6m;
     [Export] public AnimatedSprite2D Line10m;
+    [Export] public PackedScene LineOther;
     [Export] public Node2D Lines;
     [Export] public Control GameUI;
     [Export] public Label TimeLabel;
     [Export] public Label LifeLabel;
     [Export] public float YOffset = 36f;
-    [Export] public float TargetY = 1800f;
+    [Export] public float TargetY = 2010f;
     [Export] public bool IsGaming = false;
     [Export] public float spdGameAlpha = 8f;
     [Export] public float spdYScroll = 5f;
-    [Export] public float maxspdScroll = 10f;
+    [Export] public float maxspdScroll = 6f;
     public float targetGameAlpha = 0.0f;
     public float targetYScroll = 0.0f;
     public float curYScroll = 0.0f;
@@ -30,6 +31,13 @@ public partial class BaobaoGame : Node2D
         Line3m.Position = new Vector2(0f, -TargetY * 3f / 10f);
         Line6m.Position = new Vector2(0f, -TargetY * 6f / 10f);
         Line10m.Position = new Vector2(0f, -TargetY * 10f / 10f);
+        for(int i = 0; i <= 10; i++)
+        {
+            if(i == 0 || i == 3 || i == 6 || i == 10) continue;
+            Node2D instance = LineOther.Instantiate<Node2D>();
+            Lines.AddChild(instance);
+            instance.Position = new Vector2(0f, -TargetY * i / 10f);
+        }
         originStartPos = GameOrigin.Position;
     }
     public override void _Process(double delta)
