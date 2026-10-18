@@ -39,7 +39,7 @@ public partial class TextBox : Control
     }
     public override void _Process(double delta)
     {
-        if(texn >= 0f) texn += textSpd * (float)delta;
+        if(texn >= -0.5f) texn += textSpd * (float)delta;
         richTextLabel.VisibleCharacters = (int)texn;
         string parsedText = richTextLabel.GetParsedText();
         Complete = parsedText == "" || richTextLabel.VisibleCharacters >= parsedText.Length;
@@ -64,7 +64,7 @@ public partial class TextBox : Control
     }
     public void showText(string text, float spd = 20f)
     {
-        if(spd < 0)
+        if(spd < -0.5)
         {
             textSpd = 0;
             texn = -1;
@@ -76,5 +76,6 @@ public partial class TextBox : Control
         }
         richTextLabel.Text = text;
         richTextLabel.VisibleCharacters = (int)texn;
+        Debug.WriteLine("Show: ", text);
     }
 }

@@ -13,8 +13,8 @@ public partial class Camera : Node2D
     [Export] Vector2 TamaZoomPos = new Vector2(0, -120);
     [Export] float NormalScale = 1.25f;
     [Export] float ZoomScale = 0.5f;
-    [Export] float PosSpd = 8f;
-    [Export] float ZoomSpd = 8f;
+    [Export] float PosSpd = 4f;
+    [Export] float ZoomSpd = 4f;
     Vector2 mousePos = Vector2.Zero;
     Vector2 mouseDeltaPos = Vector2.Zero;
     Vector2 targetPos;
@@ -25,8 +25,8 @@ public partial class Camera : Node2D
     public Status status;
     public override void _Ready()
     {
-        targetPos = cam.Position;
-        targetScale = cam.Scale.X;
+        targetPos = TamaCenterPos;
+        targetScale = NormalScale;
         curPos = targetPos;
         curScale = targetScale;
     }

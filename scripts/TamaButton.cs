@@ -24,6 +24,7 @@ public partial class TamaButton : Sprite2D
             if(!pressed)
             {
                 world.onTamaButtonPressed(name);
+                world.isTamaJustPressed = true;
             }
             pressed = true;
         }

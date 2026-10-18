@@ -18,14 +18,27 @@
 [ext_resource type="Texture2D" uid="uid://dahqe6pdou2m2" path="res://sprites/tama/buttons/bh.png" id="9_6jybn"]
 [ext_resource type="Texture2D" uid="uid://brwaxcl1sklob" path="res://sprites/tama/buttons/c.png" id="10_84odl"]
 [ext_resource type="Texture2D" uid="uid://dy2na7bkrkkhy" path="res://sprites/tama/buttons/ch.png" id="11_ak604"]
+[ext_resource type="Texture2D" uid="uid://c47tj71any0lt" path="res://sprites/nyako/nyako_base2.png" id="16_ijoax"]
+[ext_resource type="Texture2D" uid="uid://b6a76npqhqn11" path="res://sprites/nyako/nyako_happy_2.png" id="18_j8kkg"]
+[ext_resource type="Texture2D" uid="uid://dojiy5xm220d0" path="res://sprites/nyako/nyako_smile.png" id="19_yh4yk"]
+[ext_resource type="Texture2D" uid="uid://dgcaxrpbys1vp" path="res://sprites/nyako/nyako_smile_2.png" id="20_p8s74"]
+[ext_resource type="Texture2D" uid="uid://b3gp6kdknuvya" path="res://sprites/nyako/nyako_happy_3.png" id="21_o4fqm"]
+[ext_resource type="Texture2D" uid="uid://1et4sey86mop" path="res://sprites/nyako/nyako_unhappy_1.png" id="22_gfmxp"]
+[ext_resource type="Texture2D" uid="uid://0e1bunciyb0h" path="res://sprites/nyako/nyako_unhappy_2.png" id="23_1n88h"]
+[ext_resource type="Texture2D" uid="uid://wul835v2go6n" path="res://sprites/nyako/nyako_angry.png" id="24_opjno"]
+[ext_resource type="Texture2D" uid="uid://b874yvj2xy2of" path="res://sprites/nyako/nyako_cry_1.png" id="25_meb7l"]
+[ext_resource type="Texture2D" uid="uid://cwd6v2nisot5h" path="res://sprites/nyako/nyako_cry_2.png" id="26_w30ff"]
+[ext_resource type="Texture2D" uid="uid://bod6pm05uu6hv" path="res://sprites/nyako/nyako_cry_3.png" id="27_xy6fp"]
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam", "tamagroup", "nyako")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/Node2D/TextBox")
 cam = NodePath("../Camera")
+tamagroup = NodePath("../CanvasGroup_TAMA")
+nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
 
 [node name="CanvasGroup_BG" type="CanvasGroup" parent="." unique_id=1119549122]
 
@@ -123,15 +136,33 @@ script = ExtResource("3_7ycvg")
 [node name="CanvasGroup" type="CanvasGroup" parent="Camera/Camera2D" unique_id=1017450565]
 scale = Vector2(0.79999995, 0.79999995)
 
-[node name="nyako" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=114360856 node_paths=PackedStringArray("world", "base_spr", "face_spr")]
-position = Vector2(-436, 39.000008)
+[node name="nyako" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=114360856 node_paths=PackedStringArray("world", "base_spr_relax", "base_spr_tama", "face_spr")]
+position = Vector2(-436, 72)
 scale = Vector2(0.99999994, 0.99999994)
 script = ExtResource("6_wr18j")
 world = NodePath("../../../../World")
-base_spr = NodePath("nyako_base")
+base_spr_relax = NodePath("nyako_base_relax")
+base_spr_tama = NodePath("nyako_base_tama")
 face_spr = NodePath("nyako_face")
+baseSprRelax = ExtResource("3_d5x1h")
+baseSprHoldTama = ExtResource("16_ijoax")
+faceSprHappy = ExtResource("4_66tet")
+faceSprHappyBlink = ExtResource("18_j8kkg")
+faceSprSmile = ExtResource("19_yh4yk")
+faceSprSmileBlink = ExtResource("20_p8s74")
+faceSprWink = ExtResource("21_o4fqm")
+faceSprUnhappy = ExtResource("22_gfmxp")
+faceSprUnhappyBlink = ExtResource("23_1n88h")
+faceSprAngry = ExtResource("24_opjno")
+faceSprCry = ExtResource("25_meb7l")
+faceSprCryBlink = ExtResource("26_w30ff")
+faceSprCry2 = ExtResource("27_xy6fp")
 
-[node name="nyako_base" type="Sprite2D" parent="Camera/Camera2D/CanvasGroup/nyako" unique_id=597883521]
+[node name="nyako_base_tama" type="Sprite2D" parent="Camera/Camera2D/CanvasGroup/nyako" unique_id=45000236]
+position = Vector2(171, 17.5)
+texture = ExtResource("16_ijoax")
+
+[node name="nyako_base_relax" type="Sprite2D" parent="Camera/Camera2D/CanvasGroup/nyako" unique_id=597883521]
 position = Vector2(171, 17.5)
 texture = ExtResource("3_d5x1h")
 
