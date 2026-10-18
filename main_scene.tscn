@@ -6,9 +6,12 @@
 [ext_resource type="Script" uid="uid://b4mvgfm00xjkg" path="res://scripts/AnimAutoplay.cs" id="3_7ycvg"]
 [ext_resource type="Texture2D" uid="uid://br0vqo553ba2q" path="res://sprites/nyako/nyako_base1.png" id="3_d5x1h"]
 [ext_resource type="Texture2D" uid="uid://miuav6oye8il" path="res://sprites/nyako/nyako_happy_1.png" id="4_66tet"]
+[ext_resource type="Script" uid="uid://dkf2h3gtonp8v" path="res://scripts/TamaScreen.cs" id="4_o4fqm"]
+[ext_resource type="Texture2D" uid="uid://cckfcu665e732" path="res://sprites/faketama/tamascr-2.png" id="4_yh4yk"]
 [ext_resource type="Script" uid="uid://dossm4xqhga0j" path="res://scripts/Camera.cs" id="5_7ycvg"]
 [ext_resource type="SpriteFrames" uid="uid://bogloqhqbj3p4" path="res://sprites/vig/vigf.tres" id="5_8mm7a"]
 [ext_resource type="Texture2D" uid="uid://uqk0wo2t2w7x" path="res://sprites/tama/buttons/a.png" id="5_671wp"]
+[ext_resource type="Texture2D" uid="uid://b1xy5t4c3u4x6" path="res://sprites/faketama/tamascr-3.png" id="5_p8s74"]
 [ext_resource type="Script" uid="uid://dd3l0i1q618v2" path="res://scripts/TamaButton.cs" id="6_42l1d"]
 [ext_resource type="Script" uid="uid://dmuqkl0udy3r0" path="res://scripts/NyakoMgr.cs" id="6_wr18j"]
 [ext_resource type="Texture2D" uid="uid://cygr488j74ovb" path="res://sprites/tama/buttons/ah.png" id="7_2jcla"]
@@ -29,16 +32,32 @@
 [ext_resource type="Texture2D" uid="uid://b874yvj2xy2of" path="res://sprites/nyako/nyako_cry_1.png" id="25_meb7l"]
 [ext_resource type="Texture2D" uid="uid://cwd6v2nisot5h" path="res://sprites/nyako/nyako_cry_2.png" id="26_w30ff"]
 [ext_resource type="Texture2D" uid="uid://bod6pm05uu6hv" path="res://sprites/nyako/nyako_cry_3.png" id="27_xy6fp"]
+[ext_resource type="FontFile" uid="uid://xv5w1h33viej" path="res://fonts/unifont.ttf" id="32_p8s74"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1vivr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_yh4yk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_p8s74")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 2.0
+}]
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam", "tamagroup", "nyako")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "cam", "tamagroup", "nyako", "tamaScreen")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/Node2D/TextBox")
 cam = NodePath("../Camera")
 tamagroup = NodePath("../CanvasGroup_TAMA")
 nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
+tamaScreen = NodePath("../CanvasGroup_TAMA/Screen")
 
 [node name="CanvasGroup_BG" type="CanvasGroup" parent="." unique_id=1119549122]
 
@@ -50,14 +69,23 @@ script = ExtResource("3_7ycvg")
 
 [node name="CanvasGroup_TAMA" type="CanvasGroup" parent="." unique_id=1107537098]
 
-[node name="Control" type="Control" parent="CanvasGroup_TAMA" unique_id=182922087]
+[node name="Screen" type="Node2D" parent="CanvasGroup_TAMA" unique_id=1640966563 node_paths=PackedStringArray("falseTama", "falseTamaSprite")]
+texture_filter = 1
+position = Vector2(0, 24.79)
+scale = Vector2(8, 8)
+script = ExtResource("4_o4fqm")
+falseTama = NodePath("FalseTama")
+falseTamaSprite = NodePath("FalseTama/AnimatedSprite2D")
+
+[node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen" unique_id=460820174]
 layout_mode = 3
 anchors_preset = 0
+offset_top = -3.09875
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 36.90125
 
-[node name="ColorRect" type="ColorRect" parent="CanvasGroup_TAMA/Control" unique_id=218125837]
-modulate = Color(0.38450998, 0.42, 0.3654, 1)
+[node name="ColorRect" type="ColorRect" parent="CanvasGroup_TAMA/Screen/Control" unique_id=219709175]
+modulate = Color(0.32303986, 0.35678992, 0.30613574, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -74,7 +102,74 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
+[node name="FalseTama" type="Node2D" parent="CanvasGroup_TAMA/Screen" unique_id=1197453258]
+visible = false
+
+[node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen/FalseTama" unique_id=182922087]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -3.09875
+offset_right = 40.0
+offset_bottom = 36.90125
+
+[node name="ColorRect" type="ColorRect" parent="CanvasGroup_TAMA/Screen/FalseTama/Control" unique_id=218125837]
+modulate = Color(0.52600515, 0.5694247, 0.50437635, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 5.0
+offset_right = 268.0
+offset_bottom = 293.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(144, 144)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-144, -144)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/FalseTama" unique_id=1858501822]
+sprite_frames = SubResource("SpriteFrames_1vivr")
+frame_progress = 0.6418704
+script = ExtResource("3_7ycvg")
+
+[node name="TrueTama" type="Node2D" parent="CanvasGroup_TAMA/Screen" unique_id=2066843918]
+visible = false
+
+[node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=1332817570]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -3.09875
+offset_right = 40.0
+offset_bottom = 36.90125
+
+[node name="ColorRect" type="ColorRect" parent="CanvasGroup_TAMA/Screen/TrueTama/Control" unique_id=1213433585]
+modulate = Color(0.52600515, 0.5694247, 0.50437635, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 5.0
+offset_right = 268.0
+offset_bottom = 293.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(144, 144)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-144, -144)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=754119846]
+sprite_frames = SubResource("SpriteFrames_1vivr")
+frame_progress = 0.69223064
+script = ExtResource("3_7ycvg")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA" unique_id=707215492]
+texture_filter = 1
 scale = Vector2(1.12, 1.12)
 sprite_frames = ExtResource("2_hq1ik")
 frame_progress = 0.29216734
@@ -119,7 +214,8 @@ texture = ExtResource("11_ak604")
 script = ExtResource("5_7ycvg")
 cam = NodePath("Camera2D")
 frontCards = NodePath("Camera2D/CanvasGroup")
-TamaZoomPos = Vector2(0, 52)
+TamaZoomPos = Vector2(0, 31)
+ZoomScale = 0.36
 
 [node name="Camera2D" type="Camera2D" parent="Camera" unique_id=457817988]
 position = Vector2(-320, 0)
@@ -154,8 +250,8 @@ faceSprWink = ExtResource("21_o4fqm")
 faceSprUnhappy = ExtResource("22_gfmxp")
 faceSprUnhappyBlink = ExtResource("23_1n88h")
 faceSprAngry = ExtResource("24_opjno")
-faceSprCry = ExtResource("25_meb7l")
-faceSprCryBlink = ExtResource("26_w30ff")
+faceSprCry = ExtResource("26_w30ff")
+faceSprCryBlink = ExtResource("25_meb7l")
 faceSprCry2 = ExtResource("27_xy6fp")
 
 [node name="nyako_base_tama" type="Sprite2D" parent="Camera/Camera2D/CanvasGroup/nyako" unique_id=45000236]
@@ -171,7 +267,7 @@ position = Vector2(171, 17.5)
 texture = ExtResource("4_66tet")
 
 [node name="Node2D" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=607207012]
-position = Vector2(-266, -30.000002)
+position = Vector2(-280, 149)
 
 [node name="TextBox" type="Control" parent="Camera/Camera2D/CanvasGroup/Node2D" unique_id=876594328 node_paths=PackedStringArray("richTextLabel", "ninePatchRect")]
 layout_mode = 3
@@ -188,10 +284,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -24.0
-offset_top = -18.0
+offset_left = -26.0
+offset_top = -24.0
 offset_right = 24.0
-offset_bottom = 18.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_wr18j")
@@ -207,6 +303,18 @@ axis_stretch_vertical = 1
 clip_contents = false
 offset_right = 400.0
 offset_bottom = 1147.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 8
+theme_override_constants/paragraph_separation = 8
+theme_override_fonts/normal_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_italics_font = ExtResource("32_p8s74")
+theme_override_fonts/italics_font = ExtResource("32_p8s74")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
 bbcode_enabled = true
 fit_content = true
 scroll_active = false

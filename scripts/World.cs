@@ -13,7 +13,10 @@ public partial class World : Node2D
     [Export] Camera cam;
     [Export] CanvasGroup tamagroup;
     [Export] NyakoMgr nyako;
+    [Export] TamaScreen tamaScreen;
     [Export] public int Language;
+    [Export] public float ScreenShakeSize = 0.0f;
+    [Export] public float ScreenShakeTimer = 0.0f;
     public RandomNumberGenerator rng = new RandomNumberGenerator();
     public float time = 0;
     public int pressn = 0;
@@ -22,12 +25,13 @@ public partial class World : Node2D
     public float targetTamaAlpha = 0.0f;
     public float curTamaAlpha = 0.0f;
 
-    string autoprefix = "[color=black][font_size=30][font=./fonts/unifont.ttf]";
-    string autosuffix = "[/font][/font_size][/color]";
+    string autoprefix = "";
+    string autosuffix = "";
 
     public enum DialogStatus { None, Test }
     public DialogStatus dialogStatus = DialogStatus.None;
     int dialogCounter = 0;
+    bool dialogDone = true;
     public bool isTamaJustPressed;
     int strc = 0;
 
@@ -68,6 +72,11 @@ public partial class World : Node2D
         justPressed = pressed;
         pressed = Input.IsMouseButtonPressed(MouseButton.Left);
 
+        ScreenShakeTimer -= (float)delta;
+        if(ScreenShakeTimer > 0.0f)
+            cam.Shake = new Vector2(2.0f * rng.Randf() - 1.0f, 2.0f * rng.Randf() - 1.0f) * ScreenShakeSize;
+        else cam.Shake = Vector2.Zero;
+
         if(isMouseJustPressed()) Debug.WriteLine("Mouse Pos: " + GetGlobalMousePosition());
 
         curTamaAlpha = Mathf.Lerp(curTamaAlpha, targetTamaAlpha, 8.0f * (float)delta);
@@ -97,11 +106,17 @@ public partial class World : Node2D
     {
         dialogStatus = status;
         dialogCounter = 0;
+        dialogDone = true;
         if(dialogStatus == DialogStatus.Test)
         {
             setTamaShow(false);
             nyako.setShow(false);
         }
+    }
+    public void SetScreenShake(float size, float time)
+    {
+        ScreenShakeSize = size;
+        ScreenShakeTimer = time;
     }
 
     void processDialog()
@@ -110,7 +125,7 @@ public partial class World : Node2D
         {
             if(isMouseJustPressed() && !isTamaJustPressed)
             {
-                if(textBox1.Complete)
+                if(textBox1.Complete && dialogDone)
                 {
                     if(dialogCounter == 0)
                     {
@@ -120,7 +135,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
 
                         string[] str = {
-                            "你好！！这里是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！", 
+                            "你好！！这里是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！\n[font_size=40][/font_size]欢迎来到[shake rate=20.0 level=5 connected=1][font_size=40] 2010 年[/font_size][/shake]！", 
                             "placeholder"
                         };
                         regTimer(0.5f, () => { 
@@ -132,40 +147,76 @@ public partial class World : Node2D
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
                         nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+                        
                         string[] str = {
-                            "你有玩过[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]吗？",
+                            "你有玩过[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]吗？\n就是右边的小游戏机哦！",
                             "placeholder"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
+                        regTimer(0.8f, () => { 
+                            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+                            setTamaShow(true);
+                        });
                     }
                     else if(dialogCounter == 2)
                     {
-                        nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
-                        nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
-                        setTamaShow(true);
+                        nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.HappyBlink;
                         string[] str = {
-                            "就是右边的小游戏机哦！",
+                            "这是我养的小海豹宠物！\n他叫[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]哦！",
                             "placeholder"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
+                        regTimer(0.5f, () => { 
+                            tamaScreen.initFalse();
+                        });
                     }
                     else if(dialogCounter == 3)
                     {
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
-                        nyako.faceStatus = NyakoMgr.FaceStatus.Angry;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
                         string[] str = {
-                            "[font_size=64][color=red]（哈！）[/color][/font_size]",
+                            "上了这么久班终于放了三天假了，我要好好出去玩！\n所以[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]就拜托你寄养了！",
                             "placeholder"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
                     else if(dialogCounter == 4)
                     {
-                        nyako.setShow(false);
+                        nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
+                        string[] str = {
+                            "不知道为什么，[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]的[wave amp=24.0 freq=8.0 connected=1][color=pink]好感度[/color][/wave]一直很低，好像不喜欢我一样......",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                    }
+                    else if(dialogCounter == 5)
+                    {
+                        nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
+                        string[] str = {
+                            "如果这几天你有办法提升[wave amp=24.0 freq=8.0 connected=1][color=pink]好感度[/color][/wave]就好啦！",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                    }
+                    else if(dialogCounter == 6)
+                    {
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
+                        string[] str = {
+                            "那么我走啦！拜拜~",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                    }
+                    else if(dialogCounter == 7)
+                    {
+                        nyako.setShow(false);
                         textBox1.showText("");
                         regTimer(0.5f, () => { cam.TamaCenter(); });
+                        regTimer(1.0f, () => { cam.TamaZoom(); dialogStatus = DialogStatus.None; });
                     }
                     dialogCounter++;
                 }

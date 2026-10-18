@@ -58,7 +58,7 @@ public partial class NyakoMgr : Node2D
         mousePos = GetGlobalMousePosition() - originPos;
         if(mousePos.Length() > 200f) mousePos *= 200f / mousePos.Length();
         mouseDeltaPos = mouseDeltaPos.Lerp(mousePos, MousePosLerpCoeff * (float)delta);
-        Position = originPos - mouseDeltaPos * MousePosScale;
+        Position = originPos - mouseDeltaPos * MousePosScale + (1.0f - curAlpha) * new Vector2(-300f, 0f);
 
         BlinkTime -= (float)delta;
         bool isBlink = BlinkTime <= BlinkHold;

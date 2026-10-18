@@ -8,13 +8,14 @@ public partial class Camera : Node2D
     [Export] float MousePosLerpCoeff = 4f;
     [Export] float MousePosScale = 0.04f;
     [Export] float MousePosScale2 = -0.02f;
-    [Export] Vector2 TamaRightPos = new Vector2(-320, 0);
+    [Export] Vector2 TamaRightPos = new Vector2(-340, 0);
     [Export] Vector2 TamaCenterPos = new Vector2(0, 0);
-    [Export] Vector2 TamaZoomPos = new Vector2(0, -120);
+    [Export] Vector2 TamaZoomPos = new Vector2(0, -130);
     [Export] float NormalScale = 1.25f;
-    [Export] float ZoomScale = 0.5f;
-    [Export] float PosSpd = 4f;
-    [Export] float ZoomSpd = 4f;
+    [Export] float ZoomScale = 0.3f;
+    [Export] float PosSpd = 2f;
+    [Export] float ZoomSpd = 1f;
+    public Vector2 Shake = Vector2.Zero;
     Vector2 mousePos = Vector2.Zero;
     Vector2 mouseDeltaPos = Vector2.Zero;
     Vector2 targetPos;
@@ -52,8 +53,8 @@ public partial class Camera : Node2D
         mouseDeltaPos = mouseDeltaPos.Lerp(mousePos, MousePosLerpCoeff * (float)delta);
         curPos = curPos.Lerp(targetPos, PosSpd * (float)delta);
         curScale = Mathf.Lerp(curScale, targetScale, ZoomSpd * (float)delta);
-        cam.Position = curPos - mouseDeltaPos * MousePosScale;
-        frontCards.Position = -mouseDeltaPos * MousePosScale2;
+        cam.Position = curPos - mouseDeltaPos * MousePosScale + Shake;
+        frontCards.Position = -mouseDeltaPos * MousePosScale2 + Shake * 0.5f;
         cam.Scale = new Vector2(curScale, curScale);
         cam.Zoom = new Vector2(1.0f / curScale, 1.0f / curScale);
     }
