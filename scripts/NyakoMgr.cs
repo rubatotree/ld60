@@ -98,6 +98,7 @@ public partial class NyakoMgr : Node2D
             face_spr.Texture = faceSprAngry;
         else if(faceStatus == FaceStatus.Cry2)
             face_spr.Texture = faceSprWink;
+        Scale = Scale.Lerp(Vector2.One, Mathf.Clamp(12.0f * (float)delta, 0, 1));
     }
 
     public void setShow(bool show)

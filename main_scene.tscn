@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://c58itd87l8kwo" path="res://sprites/seal/main_baobao.tscn" id="14_ek5vw"]
 [ext_resource type="Texture2D" uid="uid://bohd0gwnyqsx6" path="res://sprites/lines/0_2.png" id="14_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://c47tj71any0lt" path="res://sprites/nyako/nyako_base2.png" id="16_ijoax"]
+[ext_resource type="Texture2D" uid="uid://cjwo8v80mwstv" path="res://sprites/ui/arrow.png" id="17_jip8q"]
 [ext_resource type="Texture2D" uid="uid://b6a76npqhqn11" path="res://sprites/nyako/nyako_happy_2.png" id="18_j8kkg"]
 [ext_resource type="Texture2D" uid="uid://clr164j7m815i" path="res://sprites/ui/Lines/linetex.png" id="19_jef5d"]
 [ext_resource type="Texture2D" uid="uid://dojiy5xm220d0" path="res://sprites/nyako/nyako_smile.png" id="19_yh4yk"]
@@ -41,6 +42,8 @@
 [ext_resource type="Texture2D" uid="uid://cwd6v2nisot5h" path="res://sprites/nyako/nyako_cry_2.png" id="26_w30ff"]
 [ext_resource type="Texture2D" uid="uid://bod6pm05uu6hv" path="res://sprites/nyako/nyako_cry_3.png" id="27_xy6fp"]
 [ext_resource type="FontFile" uid="uid://xv5w1h33viej" path="res://fonts/unifont.ttf" id="32_p8s74"]
+[ext_resource type="Script" uid="uid://d0xkpw3hklpgd" path="res://scripts/SelectBoxMgr.cs" id="43_ek5vw"]
+[ext_resource type="Texture2D" uid="uid://sslcodfnjsh6" path="res://sprites/ui/selectbox.png" id="43_jtbqm"]
 [ext_resource type="FontFile" uid="uid://dt0o1a4utkun4" path="res://fonts/AaJinRiHuaQing-ChunLanMaoKun-2.ttf" id="44_ek5vw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1vivr"]
@@ -124,11 +127,12 @@ font_color = Color(0.29219002, 0.29219005, 0.29219002, 1)
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "selectBox", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox1/TextBox")
 textBox2 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox2/TextBox")
+selectBox = NodePath("../Camera/Camera2D/CanvasGroup/SelectBoxs")
 cam = NodePath("../Camera")
 tamagroup = NodePath("../CanvasGroup_TAMA")
 nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
@@ -240,7 +244,7 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
-[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "TimeLabelOut")]
+[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "TimeLabelOut", "UpArrow", "DownArrow")]
 scale = Vector2(0.08, 0.08)
 script = ExtResource("7_xy6fp")
 world = NodePath("../../../../World")
@@ -255,8 +259,10 @@ HintLine = NodePath("GameOrigin/Line2D")
 GameUI = NodePath("GameUI")
 TimeLabel = NodePath("GameUI/TimeLabel")
 TimeLabelOut = NodePath("../../../../PaperWords/Time")
+UpArrow = NodePath("GameUI/UpArrow")
+DownArrow = NodePath("GameUI/DownArrow")
 BaobaoScene = ExtResource("14_ek5vw")
-MouseYScrollUp = -120.0
+MouseYScrollUp = -100.0
 EachHeight = 72.0
 
 [node name="GameOrigin" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1455142794]
@@ -311,14 +317,27 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -49.6875
+offset_left = 130.0
 offset_top = -218.42189
-offset_right = 10.3125
+offset_right = 190.0
 offset_bottom = -194.42189
 grow_horizontal = 2
 text = "08:00"
 label_settings = SubResource("LabelSettings_1vivr")
 horizontal_alignment = 1
+
+[node name="UpArrow" type="Sprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1433578196]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-191.625, -201.23438)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_jip8q")
+
+[node name="DownArrow" type="Sprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1490000445]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-191.625, 205.01563)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_jip8q")
+flip_v = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA" unique_id=707215492]
 texture_filter = 1
@@ -380,11 +399,11 @@ text = "喵喵酱的假日计划
 label_settings = SubResource("LabelSettings_jtbqm")
 
 [node name="Time" type="Label" parent="PaperWords" unique_id=1958450117]
-offset_left = 127.0
-offset_top = 444.0
-offset_right = 667.0
-offset_bottom = 714.0
-rotation = -0.60172194
+offset_left = -460.99994
+offset_top = -360.0
+offset_right = 79.00006
+offset_bottom = -90.0
+rotation = -0.3038425
 text = "08:00"
 label_settings = SubResource("LabelSettings_ek5vw")
 
@@ -495,6 +514,7 @@ fit_content = true
 scroll_active = false
 
 [node name="TextBox2" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=1702778450]
+scale = Vector2(0.99999994, 0.99999994)
 
 [node name="TextBox" type="Control" parent="Camera/Camera2D/CanvasGroup/TextBox2" unique_id=299380223 node_paths=PackedStringArray("world", "richTextLabel", "ninePatchRect", "NodeParent")]
 layout_mode = 3
@@ -548,3 +568,192 @@ theme_override_font_sizes/mono_font_size = 32
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
+
+[node name="SelectBoxs" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=1179727682 node_paths=PackedStringArray("world", "Seleboxs", "Labels")]
+position = Vector2(0, 3)
+script = ExtResource("43_ek5vw")
+world = NodePath("../../../../World")
+Seleboxs = [NodePath("SelectBox1"), NodePath("SelectBox2"), NodePath("SelectBox3")]
+Labels = [NodePath("SelectBox1/RichTextLabel"), NodePath("SelectBox2/RichTextLabel"), NodePath("SelectBox3/RichTextLabel")]
+ShowOptions = false
+OptionN = 2
+
+[node name="SelectBox1" type="Control" parent="Camera/Camera2D/CanvasGroup/SelectBoxs" unique_id=2035614275]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -616.0
+offset_top = 420.0
+offset_right = -236.0
+offset_bottom = 528.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Camera/Camera2D/CanvasGroup/SelectBoxs/SelectBox1" unique_id=1071407126]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("43_jtbqm")
+region_rect = Rect2(0, 0, 108, 108)
+patch_margin_left = 45
+patch_margin_top = 29
+patch_margin_right = 42
+patch_margin_bottom = 49
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/SelectBoxs/SelectBox1" unique_id=1261803353]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 8
+theme_override_constants/paragraph_separation = 8
+theme_override_fonts/normal_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_italics_font = ExtResource("32_p8s74")
+theme_override_fonts/italics_font = ExtResource("32_p8s74")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+text = "aaaaaaaaaaaaaaa"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectBox2" type="Control" parent="Camera/Camera2D/CanvasGroup/SelectBoxs" unique_id=659701139]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -616.0
+offset_top = 420.0
+offset_right = -236.0
+offset_bottom = 528.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Camera/Camera2D/CanvasGroup/SelectBoxs/SelectBox2" unique_id=95475523]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("43_jtbqm")
+region_rect = Rect2(0, 0, 108, 108)
+patch_margin_left = 45
+patch_margin_top = 29
+patch_margin_right = 42
+patch_margin_bottom = 49
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/SelectBoxs/SelectBox2" unique_id=1505954813]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 8
+theme_override_constants/paragraph_separation = 8
+theme_override_fonts/normal_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_italics_font = ExtResource("32_p8s74")
+theme_override_fonts/italics_font = ExtResource("32_p8s74")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+text = "bbbbb"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectBox3" type="Control" parent="Camera/Camera2D/CanvasGroup/SelectBoxs" unique_id=1712106918]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -616.0
+offset_top = 420.0
+offset_right = -236.0
+offset_bottom = 528.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Camera/Camera2D/CanvasGroup/SelectBoxs/SelectBox3" unique_id=704377180]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("43_jtbqm")
+region_rect = Rect2(0, 0, 108, 108)
+patch_margin_left = 45
+patch_margin_top = 29
+patch_margin_right = 42
+patch_margin_bottom = 49
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/SelectBoxs/SelectBox3" unique_id=1572733936]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 8
+theme_override_constants/paragraph_separation = 8
+theme_override_fonts/normal_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_font = ExtResource("32_p8s74")
+theme_override_fonts/bold_italics_font = ExtResource("32_p8s74")
+theme_override_fonts/italics_font = ExtResource("32_p8s74")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+text = "ccccccc"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

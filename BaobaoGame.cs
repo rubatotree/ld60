@@ -18,13 +18,15 @@ public partial class BaobaoGame : Node2D
     [Export] public Control GameUI;
     [Export] public Label TimeLabel;
     [Export] public Label TimeLabelOut;
+    [Export] public Sprite2D UpArrow;
+    [Export] public Sprite2D DownArrow;
     [Export] public PackedScene BaobaoScene;
     [Export] public float YOffset = 36f;
     [Export] public float TargetY = 2.0f * 2010f;
     [Export] public bool IsGaming = false;
     [Export] public bool IsTiming = false;
     [Export] public float MaxGameTime = 400;
-    public float GameTimer = 0;
+    public float GameTimer = 0.0f;
     [Export] public float spdGameAlpha = 8f;
     [Export] public float spdYScroll = 5f;
     [Export] public float maxspdScroll = 6f;
@@ -48,6 +50,7 @@ public partial class BaobaoGame : Node2D
     public int maxStackN = 0;
     public int sumStackN = 0;
     public int FailN = 0;
+    public int EarthQuakeN = 0;
     public int prevFailN = 0;
     bool firstfail = false;
     float normalized_timing => GameTimer / MaxGameTime * 5;
@@ -94,14 +97,40 @@ public partial class BaobaoGame : Node2D
             int scrolld = 0;
             if(MousePos.Y < MouseYScrollUp)
             {
-                scrolld += 1;
+                UpArrow.Scale = UpArrow.Scale.Lerp(Vector2.One * 0.5f, 16f * (float)delta);
+                if(Input.IsMouseButtonPressed(MouseButton.Left))
+                {
+                    UpArrow.Scale = UpArrow.Scale.Lerp(Vector2.One * 0.6f, 16f * (float)delta);
+                    scrolld = 1;
+                    doAutoScrollUp = false;
+                }
             }
-            if(MousePos.Y > MouseYScrollDown) 
+            else
             {
-                scrolld -= 1;
-                doAutoScrollUp = false;
+                UpArrow.Scale = UpArrow.Scale.Lerp(Vector2.One * 0.4f, 16f * (float)delta);
+            }
+            if(MousePos.Y > MouseYScrollDown)
+            {
+                DownArrow.Scale = DownArrow.Scale.Lerp(Vector2.One * 0.5f, 16f * (float)delta);
+                if(Input.IsMouseButtonPressed(MouseButton.Left) && (!world.selectBox.OptionActive || world.selectBox.Hovering == -1))
+                {
+                    DownArrow.Scale = DownArrow.Scale.Lerp(Vector2.One * 0.6f, 16f * (float)delta);
+                    scrolld = -1;
+                    doAutoScrollUp = false;
+                }
+            }
+            else
+            {
+                DownArrow.Scale = DownArrow.Scale.Lerp(Vector2.One * 0.4f, 16f * (float)delta);
             }
             targetYScroll += scrolld * MouseScrollSpeed;
+            if(Input.IsMouseButtonPressed(MouseButton.WheelUp))
+            {
+                targetYScroll += 10;
+                Debug.WriteLine("up");
+            }
+            else if(Input.IsMouseButtonPressed(MouseButton.WheelDown))
+                targetYScroll -= 10;
 
             if(baobaostack.Count > 0)
             {
@@ -118,6 +147,13 @@ public partial class BaobaoGame : Node2D
                 Vector2 HintLineVec = HintLine.Points[0]  - HintLine.Points[1];
                 if(scrolld == 0 && doAutoScrollUp) targetYScroll = Mathf.Lerp(targetYScroll, NextTargetGamePos.Y - 144f, 2f * (float)delta);
                 targetYScroll = Mathf.Clamp(targetYScroll, 0f, NextTargetGamePos.Y);
+                float sinalpha = Mathf.Sin(world.time) * 0.2f + 0.6f;
+                float upalpha = UpArrow.Modulate.A;
+                float downalpha = DownArrow.Modulate.A;
+                upalpha = Mathf.Lerp(upalpha, NextTargetGamePos.Y - targetYScroll > 5f ? sinalpha : 0, 8f * (float)delta);
+                downalpha = Mathf.Lerp(downalpha, targetYScroll > 5f ? sinalpha : 0, 8f * (float)delta);
+                UpArrow.Modulate = new Color(0,0,0,upalpha);
+                DownArrow.Modulate = new Color(0,0,0,downalpha);
 
                 if(AnyDragged != null)
                 {
@@ -176,12 +212,14 @@ public partial class BaobaoGame : Node2D
     {
         IsGaming = true;
         IsTiming = true;
+        world.textBox2.Following = world.mainbaobao;
+        world.textBox2.FollowingOffset = new Vector2(208f, 240f) * world.mainbaobao.GlobalScale;
         string[] str = {
-            "[font_size=18][wave amp=24.0 freq=8.0 connected=1][color=red]抚摸[/color][/wave]每一只掉下来的[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]，把他们放在我的头上吧！[/font_size]", 
+            "你需要[wave amp=24.0 freq=8.0 connected=1][color=red]抚摸[/color][/wave]每一只掉下来的[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]，把他们放在我的头上！", 
             "placeholder"
         };
-        world.mainbaobao.cowsayBox.showText(str[world.Language]);
-        world.regTimer(5f, ()=>{world.mainbaobao.cowsayBox.showText("");});
+        world.textBox2.showText(str[world.Language]);
+        world.regTimer(5f, ()=>{world.textBox2.showText("");});
     }
     public void OnFail(Baobao failinst)
     {
@@ -197,6 +235,7 @@ public partial class BaobaoGame : Node2D
             world.regTimer(2f, ()=>{failinst.cowsayBox.showText("");});
         }
         FailN++;
+        EarthQuakeN++;
         if(baobaostack.Count > 1)
         {
             float killratio = world.rng.RandfRange(0.05f, 0.4f);
@@ -235,6 +274,36 @@ public partial class BaobaoGame : Node2D
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
             }
+            // if(maxStackN == 3)
+            // {
+            //     string[] str = {
+            //         "[font_size=24][wave amp=24.0 freq=8.0 connected=1]aaaaa[/wave][/font_size]", 
+            //         "placeholder"
+            //     };
+            //     attachinst.faceStatus = Baobao.FaceStatus.Happy;
+            //     attachinst.cowsayBox.showText(str[world.Language]);
+            //     string[][] options = {
+            //         new string[]{
+            //             "AAA",
+            //             "BBB",
+            //             "CCC"
+            //         },
+            //         new string[]{
+            //             "placeholder",
+            //             "placeholder",
+            //             "placeholder"
+            //         }
+            //     };
+            //     world.selectBox.ShowSelection("test_baobao", options[world.Language], (name, selection) =>
+            //     {
+            //         if(selection == -1)
+            //         {
+            //             attachinst.cowsayBox.showText("nothing happens!");
+            //             return;
+            //         }
+            //         attachinst.cowsayBox.showText(options[world.Language][selection] + "!");
+            //     });
+            // }
             if(maxStackN == 4)
             {
                 string[] str = {
@@ -243,6 +312,7 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
+                world.selectBox.CancelSelection();
             }
             if(maxStackN == 5)
             {
@@ -285,16 +355,6 @@ public partial class BaobaoGame : Node2D
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
             }
-            if(FailN > 0 && !firstfail)
-            {
-                firstfail = true;
-                string[] str = {
-                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]不要灰心，摔倒了还能继续~[/wave][font_size]", 
-                    "placeholder"
-                };
-                attachinst.faceStatus = Baobao.FaceStatus.Waaa;
-                attachinst.cowsayBox.showText(str[world.Language]);
-            }
             if(maxHeight >= 0.3f * TargetY - 2 * EachHeight && maxHeight < 0.3f * TargetY - EachHeight)
             {
                 string[] str = {
@@ -313,6 +373,16 @@ public partial class BaobaoGame : Node2D
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
             }
+        }            
+        if(FailN > 0 && !firstfail)
+        {
+            firstfail = true;
+            string[] str = {
+                "[font_size=24][wave amp=24.0 freq=8.0 connected=1]摔倒了就要从头再来了呢。[/wave][font_size]", 
+                "placeholder"
+            };
+            attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+            attachinst.cowsayBox.showText(str[world.Language]);
         }
         prevFailN = FailN;
     }
@@ -326,6 +396,7 @@ public partial class BaobaoGame : Node2D
                 };
             stacktop.faceStatus = Baobao.FaceStatus.Waaa;
             stacktop.cowsayBox.showText(str[world.Language]);
+            stacktop.SetShake(3f, 1f);
         }
         if(hour == 8 && minute == 55)
         {
@@ -335,6 +406,7 @@ public partial class BaobaoGame : Node2D
                 };
             stacktop.faceStatus = Baobao.FaceStatus.Waaa;
             stacktop.cowsayBox.showText(str[world.Language]);
+            stacktop.SetShake(3f, 0.5f);
         }
         world.FirstGetTime(hour, minute);
     }

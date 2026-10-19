@@ -50,6 +50,7 @@ public partial class Baobao : Node2D
     bool FailFalling = false;
     public Vector2 FailFallingSpd = Vector2.Zero;
     public Vector2 FailFallingGravity = new Vector2(0.0f, 800f);
+    public float breath = 0.0f;
     public override void _Ready()
     {
         targetNaturalScale = Scale;
@@ -60,6 +61,7 @@ public partial class Baobao : Node2D
     }
     public override void _Process(double delta)
     {
+        breath += (float)delta;
         if(game != null && (game.IsTiming || isBase))
         {
             Vector2 mousePos = GetGlobalMousePosition() - GlobalPosition;
@@ -112,6 +114,7 @@ public partial class Baobao : Node2D
                         Scale *= new Vector2(1.05f, 1.05f);
                     }
                 }
+                dragMousePos = dragMousePos.Lerp(Vector2.Zero, 8f * (float)delta);
                 if(dragged)
                 {
                     if(!onMagnet) GlobalPosition = GlobalPosition.Lerp(GetGlobalMousePosition() - dragMousePos, Mathf.Clamp(30f * (float)delta, 0.0f, 1.0f));
@@ -180,7 +183,8 @@ public partial class Baobao : Node2D
             sprite.Frame = ((int)Frame + 16 * 32) % 16;
         }
 
-        Scale = Scale.Lerp(targetNaturalScale * targetSquashScale, spdScaling * (float)delta);
+        Vector2 BreathScale = new Vector2(Mathf.Cos(breath * 3), Mathf.Sin(breath * 3)) * 0.04f + Vector2.One;
+        Scale = Scale.Lerp(targetNaturalScale * targetSquashScale * BreathScale, spdScaling * (float)delta);
         curAlpha = Mathf.Lerp(curAlpha, TargetAlpha, 16.0f * (float)delta);
 
         Modulate = new Color(1, 1, 1, curAlpha);

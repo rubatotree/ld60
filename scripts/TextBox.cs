@@ -23,8 +23,10 @@ public partial class TextBox : Control
     public Vector2 curSize = new Vector2(40f, 40f);
     public Vector2 targetSize = new Vector2(40f, 40f);
     public bool Complete{get;set;}
+    public bool prevComplete = false;
     public float alpha = 0;
     public float targetAlpha = 0;
+    World.Behavior behavior = null;
 
     public override void _Ready()
     {
@@ -32,6 +34,7 @@ public partial class TextBox : Control
         richTextLabel.VisibleCharacters = (int)texn;
         targetSize = new Vector2(richTextLabel.GetContentWidth(), richTextLabel.GetContentHeight());
         Complete = true;
+        prevComplete = true;
         if(richTextLabel.Text == "")
         {
             alpha = 0;
@@ -77,10 +80,17 @@ public partial class TextBox : Control
         fadeTimer -= (float)delta;
         if(fadeTime > 0 && fadeTimer < 0)
         {
+            Complete = true;
             showText("");
         }
+        if(!prevComplete && Complete && behavior != null)
+        {
+            behavior();
+            behavior = null;
+        }
+        prevComplete = Complete;
     }
-    public void showText(string text, float spd = 20f)
+    public void showText(string text, float spd = 20f, World.Behavior behaviorHook = null)
     {
         if(spd < -0.5)
         {
@@ -95,6 +105,7 @@ public partial class TextBox : Control
         fadeTimer = fadeTime;
         richTextLabel.Text = text;
         richTextLabel.VisibleCharacters = (int)texn;
-        Debug.WriteLine("Show: ", text);
+        behavior = behaviorHook;
+        // Debug.WriteLine("Show: ", text);
     }
 }

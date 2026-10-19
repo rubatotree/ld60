@@ -41,6 +41,7 @@ textSpd = 40.0
 fadeTime = 3.0
 
 [node name="NinePatchRect" type="NinePatchRect" parent="TextBox1/TextBox" unique_id=1727929701]
+modulate = Color(1, 1, 1, 0.89411765)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
