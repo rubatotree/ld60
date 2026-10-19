@@ -17,6 +17,7 @@ public partial class Baobao : Node2D
     [Export] SpriteFrames sprHappy;
     [Export] SpriteFrames sprWaaa;
     [Export] SpriteFrames sprDie;
+    [Export] SpriteFrames sprClear;
     [Export] public TextBox cowsayBox;
     public BaobaoGame game;
     [Export] float BlinkHold = 0.2f;
@@ -28,6 +29,7 @@ public partial class Baobao : Node2D
     public FaceStatus faceStatus;
     public float BlinkTime = 0.0f;
     public float PlayingFPS = 12.0f;
+    public bool Clearing = false;
     public bool PlayingInverse = false;
     public Vector2 targetNaturalScale = Vector2.One;
     public Vector2 targetSquashScale = Vector2.One;
@@ -66,7 +68,7 @@ public partial class Baobao : Node2D
         {
             Vector2 mousePos = GetGlobalMousePosition() - GlobalPosition;
             bool onSquash = onHover && Clickable && Input.IsMouseButtonPressed(MouseButton.Left);
-            if(!FailFalling)
+            if(!FailFalling && !Clearing)
             {
                 if(onHover && !onSquash)
                 {
@@ -169,11 +171,19 @@ public partial class Baobao : Node2D
                     sprite.SpriteFrames = sprDie;
 
             }
-            else
+            else if(FailFalling)
             {
                 FailFallingSpd += FailFallingGravity * (float)delta;
                 Position += FailFallingSpd * (float)delta;
                 if(Position.Y > 200)
+                {
+                    QueueFree();
+                }
+            }
+            else if(Clearing)
+            {
+                Position -= new Vector2(0.0f, 100f) * (float)delta;
+                if(curAlpha < 0.01f)
                 {
                     QueueFree();
                 }
@@ -185,7 +195,7 @@ public partial class Baobao : Node2D
 
         Vector2 BreathScale = new Vector2(Mathf.Cos(breath * 3), Mathf.Sin(breath * 3)) * 0.04f + Vector2.One;
         Scale = Scale.Lerp(targetNaturalScale * targetSquashScale * BreathScale, spdScaling * (float)delta);
-        curAlpha = Mathf.Lerp(curAlpha, TargetAlpha, 16.0f * (float)delta);
+        curAlpha = Mathf.Lerp(curAlpha, TargetAlpha, (Clearing ? 2.0f : 16.0f) * (float)delta);
 
         Modulate = new Color(1, 1, 1, curAlpha);
     }
@@ -206,6 +216,12 @@ public partial class Baobao : Node2D
         TargetAlpha = 0.8f;
         Playing = false;
         sprite.SpriteFrames = sprDie;
+    }
+    public void MakeClearing()
+    {
+        Clearing = true;
+        sprite.SpriteFrames = sprClear;
+        TargetAlpha = 0.0f;
     }
     public void onAttached()
     {

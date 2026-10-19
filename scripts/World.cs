@@ -35,7 +35,7 @@ public partial class World : Node2D
     string autoprefix = "";
     string autosuffix = "";
 
-    public enum DialogStatus { None, Init, Nyako1, Nyako2, Nyako3, Nyako4, Nyako5, Baobao1, Baobao2, Baobao3, Gaming }
+    public enum DialogStatus { None, Init, Nyako1, Nyako2, Nyako3, Nyako4, Nyako5, Baobao1, HappyEnd, Gaming }
     public DialogStatus dialogStatus = DialogStatus.None;
     int dialogCounter = 0;
     bool dialogDone = true;
@@ -145,7 +145,6 @@ public partial class World : Node2D
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
             });
-            Debug.WriteLine("generate a timer");
         }
         else if(dialogStatus == DialogStatus.Nyako2)
         {
@@ -161,7 +160,36 @@ public partial class World : Node2D
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
             });
-            Debug.WriteLine("generate a timer");
+        }
+        else if(dialogStatus == DialogStatus.Nyako3)
+        {
+            setTamaShow(true);
+            nyako.setShow(true);
+            cam.TamaRight();
+            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+            nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
+            string[] str = {
+                "哈啊，我回来了！", 
+                "placeholder"
+            };
+            regTimer(0.5f, () => { 
+                textBox1.showText(autoprefix + str[Language] + autosuffix);
+            });
+        }
+        else if(dialogStatus == DialogStatus.Nyako4)
+        {
+            setTamaShow(true);
+            nyako.setShow(true);
+            cam.TamaRight();
+            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+            nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
+            string[] str = {
+                "一天的旅行终于结束了！", 
+                "placeholder"
+            };
+            regTimer(0.5f, () => { 
+                textBox1.showText(autoprefix + str[Language] + autosuffix);
+            });
         }
         else if(dialogStatus == DialogStatus.Baobao1)
         {
@@ -226,7 +254,7 @@ public partial class World : Node2D
         {
             if(isMouseJustPressed())
             {
-                startDialog(DialogStatus.Nyako1, true);
+                startDialog(DialogStatus.Gaming, true);
             }
         }
         else if(dialogStatus == DialogStatus.Nyako1)
@@ -1062,6 +1090,167 @@ public partial class World : Node2D
                 }
             }
         }
+        else if(dialogStatus == DialogStatus.Nyako3)
+        {
+            if(isMouseJustPressed() && !isTamaJustPressed)
+            {
+                if(textBox1.Complete && dialogDone)
+                {
+                    if(dialogCounter == 0)
+                    {
+                        tmpEarthQuakeN = game.EarthQuakeN;
+                        tmpFailN = game.FailN;
+                        nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+                        
+                        string[] str = {
+                            "aaa",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                        dialogCounter = 100;
+                    }
+                    else if(dialogCounter == 100)
+                    {
+                        tamaScreen.setTrue(true);
+                        startDialog(DialogStatus.Gaming);
+                        game.targetYScroll = 0;
+                        textBox1.showText("");
+                        regTimer(0.3f, () => { 
+                            int earthquake_n = game.EarthQuakeN - tmpEarthQuakeN;
+                            int lost_n = game.FailN - tmpFailN;
+                            textBox2.Following = mainbaobao;
+                            textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
+                            if(earthquake_n > 0)
+                            {
+                                {
+                                    string[] str = {
+                                        $"[font_size=36]刚刚一共发生了{earthquake_n}起地震，伤亡[color=blue]豹[/color]数为{lost_n}...[/font_size]", 
+                                        "placeholder"
+                                    };
+                                    textBox2.showText(str[Language]);
+                                    mainbaobao.faceStatus = Baobao.FaceStatus.Die;
+                                }
+                                regTimer(2.0f,()=>{textBox2.showText("");});
+                            }
+                            else
+                            {
+                                string[] str = {
+                                    $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]哇哦，全员幸存！[/wave][/font_size]", 
+                                    "placeholder"
+                                };
+                                textBox2.showText(str[Language]);
+                                mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
+                                regTimer(2.0f,()=>{textBox2.showText("");});
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        else if(dialogStatus == DialogStatus.Nyako4)
+        {
+            if(isMouseJustPressed() && !isTamaJustPressed)
+            {
+                if(textBox1.Complete && dialogDone)
+                {
+                    if(dialogCounter == 0)
+                    {
+                        tmpEarthQuakeN = game.EarthQuakeN;
+                        tmpFailN = game.FailN;
+                        nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+                        
+                        string[] str = {
+                            "bbb",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                        dialogCounter = 100;
+                    }
+                    else if(dialogCounter == 100)
+                    {
+                        tamaScreen.setTrue(true);
+                        startDialog(DialogStatus.Gaming);
+                        game.targetYScroll = 0;
+                        textBox1.showText("");
+                        regTimer(0.3f, () => { 
+                            int earthquake_n = game.EarthQuakeN - tmpEarthQuakeN;
+                            int lost_n = game.FailN - tmpFailN;
+                            textBox2.Following = mainbaobao;
+                            textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
+                            if(earthquake_n > 0)
+                            {
+                                {
+                                    string[] str = {
+                                        $"[font_size=36]刚刚一共发生了{earthquake_n}起地震，伤亡[color=blue]豹[/color]数为{lost_n}...[/font_size]", 
+                                        "placeholder"
+                                    };
+                                    textBox2.showText(str[Language]);
+                                    mainbaobao.faceStatus = Baobao.FaceStatus.Die;
+                                }
+                                regTimer(2.0f,()=>{textBox2.showText("");});
+                            }
+                            else
+                            {
+                                string[] str = {
+                                    $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]哇哦，全员幸存！[/wave][/font_size]", 
+                                    "placeholder"
+                                };
+                                textBox2.showText(str[Language]);
+                                mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
+                                regTimer(2.0f,()=>{textBox2.showText("");});
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        else if(dialogStatus == DialogStatus.Nyako5)
+        {
+            if(isMouseJustPressed() && !isTamaJustPressed)
+            {
+                if(textBox1.Complete && dialogDone)
+                {
+                    if(dialogCounter == 0)
+                    {
+                        tmpEarthQuakeN = game.EarthQuakeN;
+                        tmpFailN = game.FailN;
+                        nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+                        
+                        string[] str = {
+                            "aaa",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                    }
+                }
+            }
+        }
+        else if(dialogStatus == DialogStatus.HappyEnd)
+        {
+            if(isMouseJustPressed() && !isTamaJustPressed)
+            {
+                if(textBox1.Complete && dialogDone)
+                {
+                    if(dialogCounter == 0)
+                    {
+                        tmpEarthQuakeN = game.EarthQuakeN;
+                        tmpFailN = game.FailN;
+                        dialogDone = false;
+                        nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+                        
+                        string[] str = {
+                            "happyhappy",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                    }
+                }
+            }
+        }
     }
     public void setTamaShow(bool show)
     {
@@ -1077,9 +1266,40 @@ public partial class World : Node2D
                 startDialog(DialogStatus.Nyako2);
             });
         }
+        if(hour == 12 && minute == 0)
+        {
+            tamaScreen.setTrue(false);
+            cam.TamaCenter();
+            regTimer(2.0f, () => {
+                startDialog(DialogStatus.Nyako3);
+            });
+        }
+        if(hour == 15 && minute == 0)
+        {
+            tamaScreen.setTrue(false);
+            cam.TamaCenter();
+            regTimer(2.0f, () => {
+                startDialog(DialogStatus.Nyako4);
+            });
+        }
+        if(hour == 18 && minute == 0)
+        {
+            tamaScreen.setTrue(false);
+            cam.TamaCenter();
+            regTimer(2.0f, () => {
+                startDialog(DialogStatus.Nyako5);
+            });
+        }
     }
     public void TriggerSelection(string name, int option)
     {
         processDialog();
+    }
+    public void TriggerHappyEnd()
+    {
+        cam.TamaCenter();
+        regTimer(2.0f, () => {
+            startDialog(DialogStatus.HappyEnd);
+        });
     }
 }

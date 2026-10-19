@@ -48,6 +48,8 @@ public partial class BaobaoGame : Node2D
     public bool doAutoScrollUp = false;
 
     public int maxStackN = 0;
+    public int curStackN = 0;
+    public int prevStackN = 0;
     public int sumStackN = 0;
     public int FailN = 0;
     public int EarthQuakeN = 0;
@@ -203,6 +205,9 @@ public partial class BaobaoGame : Node2D
         TimeLabel.Text = time_text;
         bool redText = false;
         if(normalized_hour == 8 && normalized_minute >= 45) redText = true;
+        if(normalized_hour == 11 && normalized_minute >= 45) redText = true;
+        if(normalized_hour == 14 && normalized_minute >= 45) redText = true;
+        if(normalized_hour == 17 && normalized_minute >= 45) redText = true;
         TimeLabel.Modulate = redText ? new Color(1f, 0.2f, 0.2f, 1f) : new Color(0.5f, 0.5f, 0.5f, 1f);
         TimeLabelOut.Text = time_text;
     }
@@ -250,6 +255,7 @@ public partial class BaobaoGame : Node2D
                 FailN++;
             }
         }
+        curStackN = baobaostack.Count;
     }
     public void OnAttached(Baobao attachinst)
     {
@@ -261,8 +267,11 @@ public partial class BaobaoGame : Node2D
         baobaostack.Add(attachinst);
         sumStackN++;
         int prevMaxStackN = maxStackN;
+        int prevStackN = curStackN;
         maxStackN = Mathf.Max(baobaostack.Count, maxStackN);
+        curStackN = baobaostack.Count;
         float maxHeight = maxStackN * EachHeight;
+        float curHeight = curStackN * EachHeight;
         if(maxStackN > prevMaxStackN)
         {
             if(maxStackN == 2)
@@ -373,7 +382,41 @@ public partial class BaobaoGame : Node2D
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
             }
-        }            
+        }    
+        if(curStackN > prevStackN)
+        {
+            if(curHeight >= 0.3f * TargetY && maxHeight < 0.3f * TargetY + EachHeight)
+            {
+                string[] str = {
+                    "[font_size=24]好耶，达到[wave amp=24.0 freq=8.0 connected=1][color=red]3点好感度！[/color][/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                ClearBaobaos();
+            }
+            else if(curHeight >= 0.6f * TargetY && maxHeight < 0.6f * TargetY + EachHeight)
+            {
+                string[] str = {
+                    "[font_size=24]达到[wave amp=24.0 freq=8.0 connected=1][color=red]6点好感度！[/color][/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                ClearBaobaos();
+            }
+            else if(curHeight >= 1.0f * TargetY && maxHeight < 1.0f * TargetY + EachHeight)
+            {
+                string[] str = {
+                    "[font_size=24]达到[wave amp=24.0 freq=8.0 connected=1][color=red]10点好感度！！[/color][/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                ClearBaobaos();
+                world.TriggerHappyEnd();
+            }
+        }        
         if(FailN > 0 && !firstfail)
         {
             firstfail = true;
@@ -408,6 +451,52 @@ public partial class BaobaoGame : Node2D
             stacktop.cowsayBox.showText(str[world.Language]);
             stacktop.SetShake(3f, 0.5f);
         }
+        if(hour == 11 && minute == 45)
+        {
+            string[] str = {
+                "[font_size=24][wave amp=24.0 freq=8.0 connected=1]不好，她又要回来了！[/wave][/font_size]", 
+                "placeholder"
+            };
+            stacktop.faceStatus = Baobao.FaceStatus.Waaa;
+            stacktop.cowsayBox.showText(str[world.Language]);
+            stacktop.SetShake(3f, 1f);
+        }
+        if(hour == 14 && minute == 55)
+        {
+            string[] str = {
+                "[font_size=24][wave amp=24.0 freq=8.0 connected=1]快躲起来！[/wave][/font_size]", 
+                "placeholder"
+            };
+            stacktop.faceStatus = Baobao.FaceStatus.Waaa;
+            stacktop.cowsayBox.showText(str[world.Language]);
+            stacktop.SetShake(3f, 1f);
+        }
+        if(hour == 17 && minute == 45)
+        {
+            string[] str = {
+                "[font_size=24][shake rate=20.0 level=5 connected=1]再见啦，我的朋友...\n这次躲起来之后还能再见面吗？[/shake][/font_size]", 
+                "placeholder"
+            };
+            stacktop.faceStatus = Baobao.FaceStatus.NormalBlink;
+            stacktop.cowsayBox.showText(str[world.Language]);
+            stacktop.SetShake(2f, 0.5f);
+        }
         world.FirstGetTime(hour, minute);
+    }
+    void ClearBaobaos()
+    {
+        foreach(Node child in GameOrigin.GetChildren())
+        {
+            Debug.WriteLine("Debug!");
+            if(child is Baobao bb)
+            {
+                Debug.WriteLine("isbb!");
+                if(!bb.Attached)
+                {
+                    Debug.WriteLine("makeclear!");
+                    bb.MakeClearing();
+                }
+            }
+        }
     }
 }

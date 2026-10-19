@@ -7,6 +7,7 @@
 [ext_resource type="SpriteFrames" uid="uid://c15sdldxreds0" path="res://sprites/seal/seal3/seal3.tres" id="5_ge6cg"]
 [ext_resource type="SpriteFrames" uid="uid://bnhirbyyviacc" path="res://sprites/seal/seal4/seal4.tres" id="6_ogkky"]
 [ext_resource type="Script" uid="uid://psyarpwq7d61" path="res://scripts/TextBox.cs" id="7_ge6cg"]
+[ext_resource type="SpriteFrames" uid="uid://bl3ccof740djm" path="res://sprites/seal/seal5/seal5.tres" id="7_vxlwm"]
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="8_vxlwm"]
 [ext_resource type="FontFile" uid="uid://xv5w1h33viej" path="res://fonts/unifont.ttf" id="9_su06w"]
 
@@ -18,6 +19,7 @@ sprNormalBlink = ExtResource("3_hgynf")
 sprHappy = ExtResource("4_sqxx5")
 sprWaaa = ExtResource("5_ge6cg")
 sprDie = ExtResource("6_ogkky")
+sprClear = ExtResource("7_vxlwm")
 cowsayBox = NodePath("TextBox1/TextBox")
 isBase = true
 
