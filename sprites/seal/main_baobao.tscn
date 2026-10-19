@@ -65,7 +65,7 @@ axis_stretch_vertical = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TextBox1" unique_id=871464766]
 clip_contents = false
-offset_right = 320.0
+offset_right = 300.0
 offset_bottom = 1147.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_constants/line_separation = 8

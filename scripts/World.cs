@@ -35,7 +35,7 @@ public partial class World : Node2D
     string autoprefix = "";
     string autosuffix = "";
 
-    public enum DialogStatus { None, Init, Nyako1, Nyako2, Nyako3, Nyako4, Nyako5, Baobao1, HappyEnd, Gaming }
+    public enum DialogStatus { None, Init, Nyako1, Nyako2, Nyako3, Nyako4, BadEnd, Baobao1, HappyEnd, Gaming }
     public DialogStatus dialogStatus = DialogStatus.None;
     int dialogCounter = 0;
     bool dialogDone = true;
@@ -184,7 +184,37 @@ public partial class World : Node2D
             nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
             nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
             string[] str = {
+                "我又回来了！", 
+                "placeholder"
+            };
+            regTimer(0.5f, () => { 
+                textBox1.showText(autoprefix + str[Language] + autosuffix);
+            });
+        }
+        else if(dialogStatus == DialogStatus.BadEnd)
+        {
+            setTamaShow(true);
+            nyako.setShow(true);
+            cam.TamaRight();
+            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+            nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
+            string[] str = {
                 "一天的旅行终于结束了！", 
+                "placeholder"
+            };
+            regTimer(0.5f, () => { 
+                textBox1.showText(autoprefix + str[Language] + autosuffix);
+            });
+        }
+        else if(dialogStatus == DialogStatus.HappyEnd)
+        {
+            setTamaShow(true);
+            nyako.setShow(true);
+            cam.TamaRight();
+            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+            nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
+            string[] str = {
+                "好结局耶！", 
                 "placeholder"
             };
             regTimer(0.5f, () => { 
@@ -1041,6 +1071,7 @@ public partial class World : Node2D
                         tamaScreen.setTrue(true);
                         startDialog(DialogStatus.Gaming);
                         game.targetYScroll = 0;
+                        game.curYScroll = 0;
                         textBox1.showText("");
                         regTimer(0.3f, () => { 
                             int earthquake_n = game.EarthQuakeN - tmpEarthQuakeN;
@@ -1115,6 +1146,7 @@ public partial class World : Node2D
                         tamaScreen.setTrue(true);
                         startDialog(DialogStatus.Gaming);
                         game.targetYScroll = 0;
+                        game.curYScroll = 0;
                         textBox1.showText("");
                         regTimer(0.3f, () => { 
                             int earthquake_n = game.EarthQuakeN - tmpEarthQuakeN;
@@ -1173,6 +1205,7 @@ public partial class World : Node2D
                         tamaScreen.setTrue(true);
                         startDialog(DialogStatus.Gaming);
                         game.targetYScroll = 0;
+                        game.curYScroll = 0;
                         textBox1.showText("");
                         regTimer(0.3f, () => { 
                             int earthquake_n = game.EarthQuakeN - tmpEarthQuakeN;
@@ -1206,7 +1239,7 @@ public partial class World : Node2D
                 }
             }
         }
-        else if(dialogStatus == DialogStatus.Nyako5)
+        else if(dialogStatus == DialogStatus.BadEnd)
         {
             if(isMouseJustPressed() && !isTamaJustPressed)
             {
@@ -1284,11 +1317,7 @@ public partial class World : Node2D
         }
         if(hour == 18 && minute == 0)
         {
-            tamaScreen.setTrue(false);
-            cam.TamaCenter();
-            regTimer(2.0f, () => {
-                startDialog(DialogStatus.Nyako5);
-            });
+            TriggerBadEnd();
         }
     }
     public void TriggerSelection(string name, int option)
@@ -1298,8 +1327,21 @@ public partial class World : Node2D
     public void TriggerHappyEnd()
     {
         cam.TamaCenter();
+        game.IsGaming = false;
+        game.IsTiming = false;
+        tamaScreen.setTrue(false);
         regTimer(2.0f, () => {
             startDialog(DialogStatus.HappyEnd);
+        });
+    }
+    public void TriggerBadEnd()
+    {
+        cam.TamaCenter();
+        game.IsGaming = false;
+        game.IsTiming = false;
+        tamaScreen.setTrue(false);
+        regTimer(2.0f, () => {
+            startDialog(DialogStatus.BadEnd);
         });
     }
 }
