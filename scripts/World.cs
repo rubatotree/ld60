@@ -82,7 +82,7 @@ public partial class World : Node2D
 
     public override void _Process(double delta)
     {
-        string[] tasklabel = {"喵喵酱的假日计划\n→ 08:00 起床\n→ 09:00 出门旅行\n→ 12:00 回家吃午餐\n→ 15:00 整理购物战利品\n→ 18:00 回家休息啦\n第二天还要上班！！", "placeholder"};
+        string[] tasklabel = {"喵喵酱的假日计划\n→ 08:00 起床\n→ 09:00 出门旅行\n→ 12:00 回家吃午餐\n→ 15:00 整理购物战利品\n→ 18:00 回家休息啦\n第二天还要上班！！", "Nyako-chan's Day Off\n→ 08:00 Wake up\n→ 09:00 Head out on a trip\n→ 12:00 Come home for lunch\n→ 15:00 Sort out the shopping haul\n→ 18:00 Back home to rest!\nAnd work again tomorrow!!"};
         TasksLabel.Text = tasklabel[Language];
         time += (float)delta;
         justPressed = pressed;
@@ -113,11 +113,8 @@ public partial class World : Node2D
         paperWords.Modulate = game.GameUI.Modulate;
         if(badending)
         {
-            cam.Modulate = new Color(1,1,1,Mathf.Lerp(cam.Modulate.A,0,Mathf.Clamp(0.2f*(float)delta,0,0.2f)));
-            if(cam.Modulate.A < 0.05f)
-            {
-                GetTree().Quit();
-            }
+            cam.Modulate = new Color(1,1,1,Mathf.Lerp(cam.Modulate.A,0,Mathf.Clamp(0.15f*(float)delta,0,0.2f)));
+            
         }
         if(happyending)
         {
@@ -169,7 +166,7 @@ public partial class World : Node2D
             tamaScreen.trueTama.Visible = false;
             string[] str = {
                 "你好！！这里是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱[/color][/wave]！\n[font_size=40][/font_size]欢迎来到[shake rate=20.0 level=5 connected=1][font_size=40] 2010 年[/font_size][/shake]！", 
-                "placeholder"
+                "Hello!! I'm [wave amp=24.0 freq=8.0 connected=1][color=red]Nyako-chan[/color][/wave]!\n[font_size=40][/font_size]Welcome to [shake rate=20.0 level=5 connected=1][font_size=40] 2010[/font_size][/shake]!"
             };
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -184,7 +181,7 @@ public partial class World : Node2D
             nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
             string[] str = {
                 "哈啊，我回来了！", 
-                "placeholder"
+                "Ahh, I'm back!"
             };
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -199,7 +196,7 @@ public partial class World : Node2D
             nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
             string[] str = {
                 "哈啊，我回来了！", 
-                "placeholder"
+                "Ahh, I'm back!"
             };
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -214,7 +211,7 @@ public partial class World : Node2D
             nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
             string[] str = {
                 "我又回来了！", 
-                "placeholder"
+                "I'm back again!"
             };
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -229,7 +226,7 @@ public partial class World : Node2D
             nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
             string[] str = {
                 "一天的旅行终于结束了！", 
-                "placeholder"
+                "The day trip is finally over!"
             };
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -244,7 +241,7 @@ public partial class World : Node2D
             nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
             string[] str = {
                 "哼哼，我回来了~", 
-                "placeholder"
+                "Heh heh, I'm home~"
             };
             regTimer(0.5f, () => { 
                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -274,7 +271,7 @@ public partial class World : Node2D
                 mainbaobao.SetShake(1f, 60000f);
                 string[] str = {
                     "[font_size=64][shake rate=20.0 level=10 connected=1]快点摸摸我！！！[/shake][/font_size]", 
-                    "placeholder"
+                    "[font_size=64][shake rate=20.0 level=10 connected=1]Pet me right now!!![/shake][/font_size]"
                 };
                 textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale * 1.2f;
                 textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
@@ -328,7 +325,7 @@ public partial class World : Node2D
                         
                         string[] str = {
                             "你有玩过[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]吗？",
-                            "placeholder"
+                            "Have you ever played with a [wave amp=24.0 freq=8.0 connected=1][color=red]Tamagotchi[/color][/wave]?"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(1.0f, () =>
@@ -339,8 +336,8 @@ public partial class World : Node2D
                                     "没有"
                                 },
                                 new string[]{
-                                    "placeholder",
-                                    "placeholder"
+                                    "I've played it",
+                                    "Never"
                                 }
                             };
                             selectBox.ShowSelection("played_or_not", options[Language]);
@@ -359,7 +356,7 @@ public partial class World : Node2D
                             {
                                 string[] str = {
                                     "太好了！找到同好啦~给你看看我的[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]吧！",
-                                    "placeholder"
+                                    "Yay! A fellow fan~ Let me show you my [wave amp=24.0 freq=8.0 connected=1][color=red]Tamagotchi[/color][/wave]!"
                                 };
                                 nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
                                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -369,7 +366,7 @@ public partial class World : Node2D
                             {
                                 string[] str = {
                                     "右边的小游戏机就是[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]哦~\n这是[shake rate=20.0 level=5 connected=1]2010年[/shake]的女孩子之间最流行的[wave amp=24.0 freq=8.0 connected=1]电子宠物[/wave]游戏机！",
-                                    "placeholder"
+                                    "The little console on the right is a [wave amp=24.0 freq=8.0 connected=1][color=red]Tamagotchi[/color][/wave]~\nIt was the most popular [wave amp=24.0 freq=8.0 connected=1]virtual pet[/wave] toy among girls in [shake rate=20.0 level=5 connected=1]2010[/shake]!"
                                 };
                                 nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
                                 textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -383,7 +380,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.HappyBlink;
                         string[] str = {
                             "这是我养的小海豹宠物！\n他叫[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]哦！",
-                            "placeholder"
+                            "This is the little seal I raised!\nHis name is [wave amp=24.0 freq=8.0 connected=1][color=blue]Baobao[/color][/wave]!"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(0.5f, () => { 
@@ -396,7 +393,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
                         string[] str = {
                             "上了这么久班终于放了一天假了，今天我要好好出去玩！\n所以[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]就拜托你寄养了！",
-                            "placeholder"
+                            "I finally got a day off after working so long, so I'm going out to have fun today!\nSo please look after [wave amp=24.0 freq=8.0 connected=1][color=blue]Baobao[/color][/wave] for me!"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
@@ -406,7 +403,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
                         string[] str = {
                             "不知道为什么，[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]的[wave amp=24.0 freq=8.0 connected=1][color=red]好感度[/color][/wave]一直很低，好像不喜欢我一样......",
-                            "placeholder"
+                            "For some reason, [wave amp=24.0 freq=8.0 connected=1][color=blue]Baobao[/color][/wave]'s [wave amp=24.0 freq=8.0 connected=1][color=red]affection[/color][/wave] has always been low, like he doesn't like me..."
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
@@ -416,7 +413,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
                         string[] str = {
                             "如果这几天你有办法提升[wave amp=24.0 freq=8.0 connected=1][color=red]好感度[/color][/wave]就好啦！",
-                            "placeholder"
+                            "If you can find a way to raise his [wave amp=24.0 freq=8.0 connected=1][color=red]affection[/color][/wave] these next few days, that'd be great!"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
@@ -426,7 +423,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
                         string[] str = {
                             "那么我准备出门啦！拜拜，九点见~",
-                            "placeholder"
+                            "Well, I'm heading out! Bye, see you at nine~"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                     }
@@ -477,7 +474,7 @@ public partial class World : Node2D
                         mainbaobao.SetShake(1f, 60000f);
                         string[] str = {
                             "[font_size=56][shake rate=20.0 level=5 connected=1]继续摸！！[/shake][/font_size]", 
-                            "placeholder"
+                            "[font_size=56][shake rate=20.0 level=5 connected=1]Keep petting!![/shake][/font_size]"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
                         textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
@@ -492,7 +489,7 @@ public partial class World : Node2D
                         mainbaobao.SetShake(1f, 60000f);
                         string[] str = {
                             "[font_size=52][shake rate=20.0 level=5 connected=1]还要！！[/shake][/font_size]", 
-                            "placeholder"
+                            "[font_size=52][shake rate=20.0 level=5 connected=1]More!![/shake][/font_size]"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
                         textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
@@ -507,7 +504,7 @@ public partial class World : Node2D
                         mainbaobao.SetShake(1f, 60000f);
                         string[] str = {
                             "[font_size=48][shake rate=20.0 level=5 connected=1]不要停！！！[/shake][/font_size]", 
-                            "placeholder"
+                            "[font_size=48][shake rate=20.0 level=5 connected=1]Don't stop!!![/shake][/font_size]"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
                         textBox2.FollowingOffset = new Vector2(208f, 240f) * mainbaobao.GlobalScale;
@@ -527,7 +524,7 @@ public partial class World : Node2D
                         dialogDone = false;
                         string[] str = {
                             "[font_size=40][shake rate=10.0 level=5 connected=1]哈啊...哈啊......[/shake][/font_size]", 
-                            "placeholder"
+                            "[font_size=40][shake rate=10.0 level=5 connected=1]Hah... hah......[/shake][/font_size]"
                         };
                         textBox2.curSize = new Vector2(40f, textBox2.curSize.Y);
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
@@ -553,7 +550,7 @@ public partial class World : Node2D
                             mainbaobao.Clickable = false;
                             string[] str = {
                                 "[shake rate=10.0 level=5 connected=1]哈啊...她应该不在了吧...\n让我解释一下......[/shake]", 
-                                "placeholder"
+                                "[shake rate=10.0 level=5 connected=1]Hah... she should be gone now...\nLet me explain......[/shake]"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                             dialogDone = true;
@@ -566,7 +563,7 @@ public partial class World : Node2D
                         mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
                         string[] str = {
                             "[shake rate=20.0 level=10 connected=1]现在其实是[font_size=50][color=red]2026年[/color][/font_size]才对啊！！[/shake]", 
-                            "placeholder"
+                            "[shake rate=20.0 level=10 connected=1]It's actually [font_size=50][color=red]2026[/color][/font_size] now!![/shake]"
                         };
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                         dialogDone = true;
@@ -579,14 +576,14 @@ public partial class World : Node2D
                         dialogDone = false;
                         string[] str = {
                             "[shake rate=20.0 level=10 connected=1]我可是[font_size=50][color=red]2026年[/color][/font_size]生产的[/shake]", 
-                            "placeholder"
+                            "[shake rate=20.0 level=10 connected=1]I was made in [font_size=50][color=red]2026[/color][/font_size], and I'm[/shake]"
                         };
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         regTimer(0.5f, () =>
                         {
                             string[] str = {
                                 "超级", 
-                                "placeholder"
+                                "Super"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -594,7 +591,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "人工", 
-                                "placeholder"
+                                "Artificial"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -602,7 +599,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "智能", 
-                                "placeholder"
+                                "Intelligent"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -610,7 +607,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "会说话", 
-                                "placeholder"
+                                "Can talk"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -618,7 +615,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "有情感", 
-                                "placeholder"
+                                "Has emotions"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -626,7 +623,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "超绝聪明", 
-                                "placeholder"
+                                "Super smart"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -634,7 +631,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "能写代码", 
-                                "placeholder"
+                                "Can write code"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -642,7 +639,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "需要陪伴", 
-                                "placeholder"
+                                "Needs company"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -650,7 +647,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "就像真正的宠物一样", 
-                                "placeholder"
+                                "Just like a real pet"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 40);
                         });
@@ -658,7 +655,7 @@ public partial class World : Node2D
                         {
                             string[] str = {
                                 "[shake rate=20.0 level=10 connected=1]我可是[font_size=50][color=red]2026年[/color][/font_size]生产的会说话有情感的像真正的宠物一样需要陪伴的超级人工智能电子海豹宠物啊！！！！[/shake]", 
-                                "placeholder"
+                                "[shake rate=20.0 level=10 connected=1]I'm a super artificial-intelligence electronic seal pet, made in [font_size=50][color=red]2026[/color][/font_size], who can talk, has emotions, needs company, and is just like a real pet!!!![/shake]"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 60);
                             dialogDone = true;
@@ -673,7 +670,7 @@ public partial class World : Node2D
                         cam.TamaCenter();
                         string[] str = {
                             "可是[wave amp=24.0 freq=8.0 connected=1][color=red]喵喵酱大人[/color][/wave]非要让我打扮成20年前的[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]玩具...就像这样，\n", 
-                            "placeholder"
+                            "But [wave amp=24.0 freq=8.0 connected=1][color=red]Nyako-chan[/color][/wave] insists I dress up as a [wave amp=24.0 freq=8.0 connected=1][color=red]Tamagotchi[/color][/wave] toy from 20 years ago... like this,\n"
                         };
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                         regTimer(0.8f + 1.5f, () => { tamaScreen.trueTama.Visible = false; });
@@ -684,7 +681,7 @@ public partial class World : Node2D
                             mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
                             string[] str = {
                                 "一旦我表现出一点不像[shake rate=20.0 level=5 connected=1][font_size=40]2010年代[/font_size][/shake]该有的样子[font_size=28][color=gray]有触屏，有3D，会说话...[/color][/font_size]，她就会[color=red][shake rate=40.0 level=10 connected=1]勃然大怒[/shake][/color]...", 
-                                "placeholder"
+                                "The moment I show anything that doesn't fit [shake rate=20.0 level=5 connected=1][font_size=40]the 2010s[/font_size][/shake][font_size=28][color=gray] — touchscreens, 3D, speech...[/color][/font_size], she gets [color=red][shake rate=40.0 level=10 connected=1]furious[/shake][/color]..."
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                             cam.TamaZoom();
@@ -698,7 +695,7 @@ public partial class World : Node2D
                         mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
                         string[] str = {
                             "可是我也是宠物！我非常需要[wave amp=24.0 freq=8.0 connected=1][color=blue]抚摸[/color][/wave]！！\n[shake rate=20.0 level=5 connected=1][color=red]好讨厌她这种复古怪！！[/color][/shake]", 
-                            "placeholder"
+                            "But I'm a pet too! I really need to be [wave amp=24.0 freq=8.0 connected=1][color=blue]petted[/color][/wave]!!\n[shake rate=20.0 level=5 connected=1][color=red]I hate this retro obsession of hers!![/color][/shake]"
                         };
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                     }
@@ -709,7 +706,7 @@ public partial class World : Node2D
                         mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
                         string[] str = {
                             "现在终于逃离她的魔爪了，你一定要一直[wave amp=24.0 freq=8.0 connected=1][color=blue]抚摸[/color][/wave]我哦。\n[shake rate=20.0 level=5 connected=1][font_size=40]只有这样才能提升我的好感度！[/font_size][/shake]", 
-                            "placeholder"
+                            "Now I've finally escaped her clutches, so you have to keep [wave amp=24.0 freq=8.0 connected=1][color=blue]petting[/color][/wave] me, okay?\n[shake rate=20.0 level=5 connected=1][font_size=40]That's the only way to raise my affection![/font_size][/shake]"
                         };
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                         textBox2.Following = null;
@@ -729,7 +726,7 @@ public partial class World : Node2D
                             mainbaobao.faceStatus = Baobao.FaceStatus.Normal;
                             string[] str = {
                                 "总之[wave amp=24.0 freq=8.0 connected=1][color=red]好感度[/color][/wave]需要到达[wave amp=24.0 freq=8.0 connected=1][color=red]这么高[/color][/wave]~", 
-                                "placeholder"
+                                "Anyway, my [wave amp=24.0 freq=8.0 connected=1][color=red]affection[/color][/wave] needs to reach [wave amp=24.0 freq=8.0 connected=1][color=red]this high[/color][/wave]~"
                             };
                             textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
                             dialogDone = true; 
@@ -744,7 +741,7 @@ public partial class World : Node2D
                         paperWords.Visible = true;
                         string[] str = {
                             "以及，注意[shake rate=20.0 level=5 connected=1]时间[/shake]！\n[shake rate=20.0 level=5 connected=1][font_size=40]不要被她发现！[/font_size][/shake]\n[shake rate=20.0 level=5 connected=1][font_size=40]在她回来前我会躲起来！！[/font_size][/shake]", 
-                            "placeholder"
+                            "Also, watch the [shake rate=20.0 level=5 connected=1]time[/shake]!\n[shake rate=20.0 level=5 connected=1][font_size=40]Don't let her find out![/font_size][/shake]\n[shake rate=20.0 level=5 connected=1][font_size=40]I'll hide before she gets back!![/font_size][/shake]"
                         };
                         textBox2.showText(autoprefix + str[Language] + autosuffix, 20);
 
@@ -782,7 +779,7 @@ public partial class World : Node2D
                         
                         string[] str = {
                             "我的[wave amp=24.0 freq=8.0 connected=1][color=red]拓麻歌子[/color][/wave]好玩吗？",
-                            "placeholder"
+                            "Is my [wave amp=24.0 freq=8.0 connected=1][color=red]Tamagotchi[/color][/wave] fun?"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(1.0f, () =>
@@ -793,8 +790,8 @@ public partial class World : Node2D
                                     "不好玩"
                                 },
                                 new string[]{
-                                    "placeholder",
-                                    "placeholder"
+                                    "Yeah, it's fun",
+                                    "Not really"
                                 }
                             };
                             selectBox.ShowSelection("good_or_not", options[Language], (name, selection) =>
@@ -819,7 +816,7 @@ public partial class World : Node2D
                         
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]太好了！[color=blue]豹豹[/color]很可爱吧！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Yay! [color=blue]Baobao[/color] is adorable, right![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 3;
@@ -832,7 +829,7 @@ public partial class World : Node2D
                         
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1][font_size=40]怎么这样！！[/font_size]\n[color=blue]豹豹[/color]可是我最喜欢最喜欢的宠物！！罚你回去重选！！[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1][font_size=40]What?![/font_size]\n[color=blue]Baobao[/color] is my absolute favorite pet!! Go back and choose again!![/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 20);
                         regTimer(2.0f, () => { dialogDone = true; dialogCounter = 0; });
@@ -843,7 +840,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
                         string[] str = {
                             "我喜欢他[wave amp=24.0 freq=8.0 connected=1][color=blue]1bit[/color][/wave]的模样！",
-                            "placeholder"
+                            "I love his [wave amp=24.0 freq=8.0 connected=1][color=blue]1-bit[/color][/wave] look!"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 4;
@@ -856,7 +853,7 @@ public partial class World : Node2D
                         
                         string[] str = {
                             "你和[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]玩了一些什么？",
-                            "placeholder"
+                            "What did you and [wave amp=24.0 freq=8.0 connected=1][color=blue]Baobao[/color][/wave] do together?"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(1.0f, () =>
@@ -867,8 +864,8 @@ public partial class World : Node2D
                                     "我一直在[wave amp=24.0 freq=8.0 connected=1][color=blue]抚摸[/color][/wave]他！"
                                 },
                                 new string[]{
-                                    "placeholder",
-                                    "placeholder"
+                                    "I [wave amp=24.0 freq=8.0 connected=1][color=red]talked[/color][/wave] with him!",
+                                    "I kept [wave amp=24.0 freq=8.0 connected=1][color=blue]petting[/color][/wave] him!"
                                 }
                             };
                             selectBox.ShowSelection("playing_what", options[Language], (name, selection) =>
@@ -893,7 +890,7 @@ public partial class World : Node2D
                             nyako.Scale = Vector2.One * 1.05f;
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1][font_size=40]什么？！[/font_size][/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1][font_size=40]What?![/font_size][/shake]"
                             };
                             SetScreenShake(8f, 0.2f);
                             textBox1.showText(autoprefix + str[Language] + autosuffix, 20);
@@ -903,7 +900,7 @@ public partial class World : Node2D
                             nyako.Scale = Vector2.One * 1.05f;
                             string[] str = {
                                 "噢，也许是我想多了...",
-                                "placeholder"
+                                "Oh, maybe I'm overthinking it..."
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
@@ -911,7 +908,7 @@ public partial class World : Node2D
                             nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
                                 string[] str = {
                                 "抱歉抱歉被吓了一跳...你也很喜欢豹豹[wave amp=24.0 freq=8.0 connected=1][color=blue]1bit[/color][/wave]的画风吧？你也很喜欢[wave amp=24.0 freq=8.0 connected=1][color=blue]按键[/color][/wave]的手感吧！",
-                                "placeholder"
+                                "Sorry, sorry, you startled me... You really like Baobao's [wave amp=24.0 freq=8.0 connected=1][color=blue]1-bit[/color][/wave] art style, right? And you love the feel of the [wave amp=24.0 freq=8.0 connected=1][color=blue]buttons[/color][/wave], right!"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix, 30f);
                             regTimer(1.0f, () =>
@@ -922,8 +919,8 @@ public partial class World : Node2D
                                         "[shake rate=20.0 level=5 connected=1]可是他明明是[color=red]3D[/color]的...[/shake]"
                                     },
                                     new string[]{
-                                        "placeholder",
-                                        "placeholder",
+                                        "[wave amp=24.0 freq=8.0 connected=1]I love it![/wave]",
+                                        "[shake rate=20.0 level=5 connected=1]But he's clearly [color=red]3D[/color]...[/shake]",
                                     }
                                 };
                                 selectBox.ShowSelection("is_new_tech", options[Language], (name, selection) =>
@@ -948,7 +945,7 @@ public partial class World : Node2D
                             nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
                             string[] str = {
                                 "（果然是想多了...）",
-                                "placeholder"
+                                "(I was overthinking it after all...)"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         }
@@ -957,7 +954,7 @@ public partial class World : Node2D
                             nyako.Scale = Vector2.One * 1.05f;
                             string[] str = {
                                 "看来你有把[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]当作[wave amp=24.0 freq=8.0 connected=1][color=red]真正的朋友哇！[/color][/wave]\n[wave amp=24.0 freq=8.0 connected=1]（嘿嘿你好可爱...）[/wave]",
-                                "placeholder"
+                                "So you really treat [wave amp=24.0 freq=8.0 connected=1][color=blue]Baobao[/color][/wave] as [wave amp=24.0 freq=8.0 connected=1][color=red]a real friend![/color][/wave]\n[wave amp=24.0 freq=8.0 connected=1](Hehe, you're so cute...)[/wave]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                             dialogCounter = 7;
@@ -971,7 +968,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]那就不打扰你们继续玩啦~我要出门啦，拜拜咯！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Then I'll leave you two to keep playing~ I'm heading out, bye![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 100;
@@ -984,7 +981,7 @@ public partial class World : Node2D
                         nyako.Scale = Vector2.One * 1.05f;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1][font_size=40][color=blue]豹豹[/color]是2010年的拓麻歌子！他不可能是3D的！[/font_size][/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1][font_size=40][color=blue]Baobao[/color] is a 2010 Tamagotchi! He can't possibly be 3D![/font_size][/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 40);
                         regTimer(1.0f, () => { dialogCounter = 9; dialogDone = true; });
@@ -997,7 +994,7 @@ public partial class World : Node2D
                         nyako.Scale = Vector2.One * 1.05f;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1][font_size=40]我最讨厌你们这些[color=red]新技术[/color]了！[/font_size][/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1][font_size=40]I hate all this [color=red]new technology[/color]![/font_size][/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 40);
                         regTimer(1.0f, () => { dialogCounter = 10; dialogDone = true; });
@@ -1010,7 +1007,7 @@ public partial class World : Node2D
                         nyako.Scale = Vector2.One * 1.05f;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1][font_size=40]我小时候[color=blue]豹豹[/color]是什么样，他现在就该是什么样！[/font_size][/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1][font_size=40]Whatever [color=blue]Baobao[/color] looked like when I was a kid, that's what he should look like now![/font_size][/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 40);
                         regTimer(1.0f, () => { dialogCounter = 11; dialogDone = true; });
@@ -1021,7 +1018,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Unhappy;
                             string[] str = {
                             "所以你很喜欢豹豹[wave amp=24.0 freq=8.0 connected=1][color=blue]1bit[/color][/wave]的画风吧？你很喜欢[wave amp=24.0 freq=8.0 connected=1][color=blue]按键[/color][/wave]的手感吧?！",
-                            "placeholder"
+                            "So you really love Baobao's [wave amp=24.0 freq=8.0 connected=1][color=blue]1-bit[/color][/wave] art style, right? You really love the feel of the [wave amp=24.0 freq=8.0 connected=1][color=blue]buttons[/color][/wave], right?!"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(1.0f, () =>
@@ -1032,8 +1029,8 @@ public partial class World : Node2D
                                     "[shake rate=20.0 level=5 connected=1][color=red]可是他明明是...[/color][/shake]"
                                 },
                                 new string[]{
-                                    "placeholder",
-                                    "placeholder",
+                                    "[wave amp=24.0 freq=8.0 connected=1]I love it![/wave]",
+                                    "[shake rate=20.0 level=5 connected=1][color=red]But he's clearly...[/color][/shake]",
                                 }
                             };
                             selectBox.ShowSelection("is_new_tech2", options[Language], (name, selection) =>
@@ -1060,7 +1057,7 @@ public partial class World : Node2D
                             SetScreenShake(8f, 0.5f);
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1][font_size=40][color=red]你不许说了！！[/color][/font_size][/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1][font_size=40][color=red]Don't say another word!![/color][/font_size][/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix, 40);
                         }
@@ -1070,7 +1067,7 @@ public partial class World : Node2D
                             nyako.Scale = Vector2.One * 1.05f;
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1][font_size=40]............[/font_size][/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1][font_size=40]............[/font_size][/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix, 2);
                         });
@@ -1085,7 +1082,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.UnhappyBlink;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1]总之你接下来也要帮我照看[color=blue]豹豹[/color]！[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1]Anyway, you're looking after [color=blue]Baobao[/color] for me from now on![/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 100;
@@ -1107,7 +1104,7 @@ public partial class World : Node2D
                                 {
                                     string[] str = {
                                         $"[font_size=36]刚刚一共发生了{earthquake_n}起地震，伤亡[color=blue]豹[/color]数为{lost_n}...[/font_size]", 
-                                        "placeholder"
+                                        $"[font_size=36]{earthquake_n} earthquakes just now, [color=blue]seal[/color] casualties: {lost_n}...[/font_size]"
                                     };
                                     textBox2.showText(str[Language]);
                                     mainbaobao.faceStatus = Baobao.FaceStatus.Die;
@@ -1115,7 +1112,7 @@ public partial class World : Node2D
                                 regTimer(2.0f,()=>{
                                     string[] str = {
                                         $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]总之还是要选择[color=red]正确的选项[/color]！\n别让她继续唠叨了！[/wave][/font_size]", 
-                                        "placeholder"
+                                        $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]Anyway, you have to pick the [color=red]right options[/color]!\nDon't let her keep nagging![/wave][/font_size]"
                                     };
                                     textBox2.showText(str[Language]);
                                     mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
@@ -1126,14 +1123,14 @@ public partial class World : Node2D
                             {
                                 string[] str = {
                                     $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]哇哦，全员幸存！\n你也太懂[color=red]她[/color]了！[/wave][/font_size]", 
-                                    "placeholder"
+                                    $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]Wow, everyone survived!\nYou really understand [color=red]her[/color]![/wave][/font_size]"
                                 };
                                 textBox2.showText(str[Language]);
                                 mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
                                 regTimer(2.0f,()=>{
                                     string[] str = {
                                         $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]以后也继续选择[color=red]正确的选项[/color]吧！\n别让她继续唠叨了！[/wave][/font_size]", 
-                                        "placeholder"
+                                        $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]Keep picking the [color=red]right options[/color] from now on!\nDon't let her keep nagging![/wave][/font_size]"
                                     };
                                     textBox2.showText(str[Language]);
                                     mainbaobao.faceStatus = Baobao.FaceStatus.Waaa;
@@ -1160,7 +1157,7 @@ public partial class World : Node2D
                         
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]该做中饭啦！在哪里可以找到[color=blue]菜谱[/color]呢...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Time to make lunch! Now where can I find a [color=blue]recipe[/color]...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogDone = false;
@@ -1173,9 +1170,9 @@ public partial class World : Node2D
                                     "问AI"
                                 },
                                 new string[]{
-                                    "placeholder",
-                                    "placeholder",
-                                    "placeholder",
+                                    "Check a cookbook",
+                                    "Look it up online",
+                                    "Ask AI",
                                 }
                             };
                             selectBox.ShowSelection("where_recipe", options[Language], (name, selection) =>
@@ -1202,7 +1199,7 @@ public partial class World : Node2D
                         dialogDone = false;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]有道理，我来翻翻...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Good point, let me look...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
 
@@ -1218,7 +1215,7 @@ public partial class World : Node2D
                             nyako.faceStatus = NyakoMgr.FaceStatus.Cry;
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]我看不进去书啦！\n[color=red]工作[/color]把脑子全都吞掉了！！[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]I can't focus on books anymore!\n[color=red]Work[/color] has eaten my whole brain!![/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                             dialogDone=true;
@@ -1232,7 +1229,7 @@ public partial class World : Node2D
                         SetScreenShake(8f, 0.3f);
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1][font_size=40]那种毁掉我的[color=red]工作[/color]的东西，我才不用呢！[/font_size][/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1][font_size=40]I'm not using something that destroyed my [color=red]job[/color]![/font_size][/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 40);
 
@@ -1240,7 +1237,7 @@ public partial class World : Node2D
                             nyako.faceStatus = NyakoMgr.FaceStatus.Cry;
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]呜呜......[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]Waaah......[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix, 2);
                         });
@@ -1248,7 +1245,7 @@ public partial class World : Node2D
                             nyako.faceStatus = NyakoMgr.FaceStatus.UnhappyBlink;
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]以后再别和我提这个了！[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]Don't ever bring that up with me again![/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                             dialogDone=true;
@@ -1260,7 +1257,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]果然还是得求助万能的[color=blue]互联网[/color]！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]I guess I'll have to ask the almighty [color=blue]internet[/color]![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 4;
@@ -1277,7 +1274,7 @@ public partial class World : Node2D
                                     "这是在干什么？"
                                 },
                                 new string[]{
-                                    "placeholder"
+                                    "What are you doing?"
                                 }
                             };
                             selectBox.ShowSelection("what_r_u_doing", options[Language], (name, selection) =>
@@ -1292,7 +1289,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Unhappy;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]这是[color=red]拨号上网[/color]啦！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]It's [color=red]dial-up internet[/color]![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 6;
@@ -1302,7 +1299,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.UnhappyBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]网页还在加载中......[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]The page is still loading......[/wave]"
                         };
                         dialogDone = false;
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 5);
@@ -1314,8 +1311,8 @@ public partial class World : Node2D
                                     "为什么不换更快的？"
                                 },
                                 new string[]{
-                                    "placeholder",
-                                    "placeholder"
+                                    "Want to try my connection?",
+                                    "Why not switch to something faster?"
                                 }
                             };
                             selectBox.ShowSelection("why_not_faster", options[Language], (name, selection) =>
@@ -1330,7 +1327,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Unhappy;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1]网速快了，就要天天回[color=red]老板[/color]的消息了！[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1]If the internet gets faster, I'll have to answer [color=red]my boss[/color]'s messages every day![/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 8;
@@ -1340,7 +1337,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]好啦，你继续陪[color=red]豹豹[/color]吧！我去做饭了~[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Alright, keep [color=red]Baobao[/color] company! I'm off to cook~[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 100;
@@ -1362,7 +1359,7 @@ public partial class World : Node2D
                                 {
                                     string[] str = {
                                         $"[font_size=36]刚刚一共发生了{earthquake_n}起地震，伤亡[color=blue]豹[/color]数为{lost_n}...[/font_size]", 
-                                        "placeholder"
+                                        $"[font_size=36]{earthquake_n} earthquakes just now, [color=blue]seal[/color] casualties: {lost_n}...[/font_size]"
                                     };
                                     textBox2.showText(str[Language]);
                                     mainbaobao.faceStatus = Baobao.FaceStatus.Die;
@@ -1373,7 +1370,7 @@ public partial class World : Node2D
                             {
                                 string[] str = {
                                     $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]哇哦，全员幸存！[/wave][/font_size]", 
-                                    "placeholder"
+                                    $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]Wow, everyone survived![/wave][/font_size]"
                                 };
                                 textBox2.showText(str[Language]);
                                 mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
@@ -1398,7 +1395,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.UnhappyBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]哈啊，好累...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Hahh, I'm so tired...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 1;
@@ -1410,7 +1407,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.HappyBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]好久没有这样购物的感觉了...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]It's been so long since I had that shopping feeling...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 2;
@@ -1422,7 +1419,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Unhappy;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]你是说网上购物？[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]You mean online shopping?[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 3;
@@ -1434,7 +1431,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.UnhappyBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]嘛，2010年的确很流行这个啦...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Well, that was definitely popular in 2010...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 4;
@@ -1446,7 +1443,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.HappyBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]但线下购物的仪式感是代替不了的！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]But nothing can replace the ritual of shopping in person![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 5;
@@ -1458,7 +1455,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Wink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]趁今天还有空，我要去[color=red]街机厅[/color]啦~[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]While I still have time today, I'm heading to the [color=red]arcade[/color]~[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 100;
@@ -1480,7 +1477,7 @@ public partial class World : Node2D
                                 {
                                     string[] str = {
                                         $"[font_size=36]刚刚一共发生了{earthquake_n}起地震，伤亡[color=blue]豹[/color]数为{lost_n}...[/font_size]", 
-                                        "placeholder"
+                                        $"[font_size=36]{earthquake_n} earthquakes just now, [color=blue]seal[/color] casualties: {lost_n}...[/font_size]"
                                     };
                                     textBox2.showText(str[Language]);
                                     mainbaobao.faceStatus = Baobao.FaceStatus.Die;
@@ -1491,7 +1488,7 @@ public partial class World : Node2D
                             {
                                 string[] str = {
                                     $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]哇哦，全员幸存！[/wave][/font_size]", 
-                                    "placeholder"
+                                    $"[font_size=36][wave amp=24.0 freq=8.0 connected=1]Wow, everyone survived![/wave][/font_size]"
                                 };
                                 textBox2.showText(str[Language]);
                                 mainbaobao.faceStatus = Baobao.FaceStatus.Happy;
@@ -1514,7 +1511,7 @@ public partial class World : Node2D
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]哈啊，今天玩得真开心啊...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Hahh, I had so much fun today...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 1;
@@ -1524,7 +1521,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1]可是明天还要[color=red]上班[/color]！[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1]But I have to go to [color=red]work[/color] again tomorrow![/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 2;
@@ -1536,7 +1533,7 @@ public partial class World : Node2D
                         setTamaShow(false);
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1][color=blue]豹豹[/color]看起来还是不喜欢我...他就是这种性格...[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1][color=blue]Baobao[/color] still doesn't seem to like me... That's just how he is...[/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 3;
@@ -1548,7 +1545,7 @@ public partial class World : Node2D
                         setTamaShow(false);
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1]要是[color=blue]豹豹[/color]的[color=red]好感度[/color]再高一点就好了...[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1]If only [color=blue]Baobao[/color]'s [color=red]affection[/color] were a little higher...[/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 4;
@@ -1558,7 +1555,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1]还是谢谢你的照顾啦！[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1]Thanks for looking after him, anyway![/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 5;
@@ -1568,7 +1565,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Cry;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]我除了[color=blue]豹豹[/color]外就没有可以倾诉的人了...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Besides [color=blue]Baobao[/color], I have no one to confide in...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 6;
@@ -1580,48 +1577,48 @@ public partial class World : Node2D
                         badending = true;
                         string[] str = {
                             "[shake rate=20.0 level=5 connected=1]不想上班...[/shake]",
-                            "placeholder"
+                            "[shake rate=20.0 level=5 connected=1]I don't want to go to work...[/shake]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(1.0f,()=>{
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]豹豹你知道吗？[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]Baobao, you know...?[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
                         regTimer(2.0f,()=>{
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]我的那个老板啊...[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]My boss, you see...[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
                         regTimer(3.0f,()=>{
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]公司的同事感觉人也不太好...[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]My coworkers don't seem that great either...[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
                         regTimer(4.0f,()=>{
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]好焦虑...[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]I'm so anxious...[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
                         regTimer(5.0f,()=>{
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]你觉得我明年还有班上吗？[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]Do you think I'll still have a job next year?[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
                         regTimer(6.0f,()=>{
                             string[] str = {
                                 "[shake rate=20.0 level=5 connected=1]好讨厌 2026...[/shake]",
-                                "placeholder"
+                                "[shake rate=20.0 level=5 connected=1]I hate 2026...[/shake]"
                             };
                             textBox1.showText(autoprefix + str[Language] + autosuffix);
                         });
@@ -1641,7 +1638,7 @@ public partial class World : Node2D
                         nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]哈啊，今天玩得真开心啊...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Hahh, I had so much fun today...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 1;
@@ -1653,7 +1650,7 @@ public partial class World : Node2D
                         setTamaShow(false);
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]哇，你居然真的做到了！[color=red]10点好感度[/color]耶！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Wow, you actually did it! [color=red]10 affection points[/color]![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 2;
@@ -1663,7 +1660,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.UnhappyBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]你是说，[color=blue]豹豹[/color]其实很关心我吗？[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]You mean [color=blue]Baobao[/color] actually cares about me?[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 3;
@@ -1673,7 +1670,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]可是我不喜欢他那种AI口气的安慰啦！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]But I don't like that AI-sounding comfort of his![/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 4;
@@ -1683,7 +1680,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Cry;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]他只要做一个[color=blue]1bit[/color]的电子宠物，\n听听我的倾诉就好了！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]He just needs to be a [color=blue]1-bit[/color] virtual pet,\nand listen to me vent![/wave]"
                         };
                         dialogDone = false;
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
@@ -1694,7 +1691,7 @@ public partial class World : Node2D
                                     "他答应了",
                                 },
                                 new string[]{
-                                    "placeholder",
+                                    "He agreed",
                                 }
                             };
                             selectBox.ShowSelection("he_agreed", options[Language], (name, selection) =>
@@ -1709,7 +1706,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Unhappy;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]诶？[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Huh?[/wave]"
                         };
                         dialogDone = false;
                         textBox1.showText(autoprefix + str[Language] + autosuffix, 5);
@@ -1720,7 +1717,7 @@ public partial class World : Node2D
                                     "只要多摸摸他就好",
                                 },
                                 new string[]{
-                                    "placeholder",
+                                    "Just pet him more",
                                 }
                             };
                             selectBox.ShowSelection("pat_more", options[Language], (name, selection) =>
@@ -1735,7 +1732,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.CryBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]嗯...知道了...[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Mm... I see...[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         dialogCounter = 7;
@@ -1746,7 +1743,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]就算如此，我依旧不喜欢2026。[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Even so, I still don't like 2026.[/wave]"
                         };
                         textBox1.showText(autoprefix + str[Language] + autosuffix);
                         regTimer(1.0f, () =>
@@ -1756,7 +1753,7 @@ public partial class World : Node2D
                                     "[font_size=28]没关系哦。\n你可以喜欢你自己。[/font_size]",
                                 },
                                 new string[]{
-                                    "placeholder",
+                                    "[font_size=28]That's okay.\nYou're allowed to love yourself.[/font_size]",
                                 }
                             };
                             selectBox.ShowSelection("loveyourself", options[Language], (name, selection) =>
@@ -1771,7 +1768,7 @@ public partial class World : Node2D
                         nyako.faceStatus = NyakoMgr.FaceStatus.SmileBlink;
                         string[] str = {
                             "[wave amp=24.0 freq=8.0 connected=1]嘿嘿，谢谢你！\n我也会继续喜欢[color=blue]豹豹[/color]的。\n我以后会多摸摸他哦！[/wave]",
-                            "placeholder"
+                            "[wave amp=24.0 freq=8.0 connected=1]Hehe, thank you!\nI'll keep loving [color=blue]Baobao[/color] too.\nI'll pet him more from now on![/wave]"
                         };
                         dialogDone = false;
                         textBox1.showText(autoprefix + str[Language] + autosuffix);

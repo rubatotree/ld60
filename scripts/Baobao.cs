@@ -63,6 +63,7 @@ public partial class Baobao : Node2D
     }
     public override void _Process(double delta)
     {
+        cowsayBox.world = world;
         breath += (float)delta;
         if(game != null && (game.IsTiming || isBase))
         {

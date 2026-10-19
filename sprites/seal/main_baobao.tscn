@@ -41,6 +41,7 @@ ninePatchRect = NodePath("NinePatchRect")
 NodeParent = NodePath("..")
 textSpd = 40.0
 fadeTime = 3.0
+iscowsay = true
 
 [node name="NinePatchRect" type="NinePatchRect" parent="TextBox1/TextBox" unique_id=1727929701]
 modulate = Color(1, 1, 1, 0.89411765)

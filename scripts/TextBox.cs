@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 public partial class TextBox : Control
 {
-    [Export] World world;
+    [Export] public World world;
     [Export] RichTextLabel richTextLabel;
     [Export] NinePatchRect ninePatchRect;
     [Export] public Node2D NodeParent;
@@ -27,6 +27,7 @@ public partial class TextBox : Control
     public float alpha = 0;
     public float targetAlpha = 0;
     World.Behavior behavior = null;
+    [Export] public bool iscowsay = false;
 
     public override void _Ready()
     {
@@ -73,7 +74,7 @@ public partial class TextBox : Control
         Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, alpha);
         // Scale = new Vector2(1.0f / world.Zoom, 1.0f / world.Zoom);
         // ninePatchRect.Scale = Scale;
-        if(Following != null && world != null)
+        if(Following != null && !iscowsay)
         {
             NodeParent.GlobalPosition = NodeParent.GlobalPosition.Lerp((Following.GetScreenTransform().Origin - new Vector2(640, 480) + FollowingOffset) / world.Zoom, Mathf.Clamp(FollowingSpd * (float)delta, 0.0f, 1.0f));
         }
@@ -92,6 +93,7 @@ public partial class TextBox : Control
     }
     public void showText(string text, float spd = 20f, World.Behavior behaviorHook = null)
     {
+        if(world != null && world.Language == 1) spd *= 2;
         if(spd < -0.5)
         {
             textSpd = 0;
