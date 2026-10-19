@@ -35,7 +35,7 @@ public partial class NyakoMgr : Node2D
     public float BlinkTime = 0.0f;
 
     [Export] float spdBase = 8.0f;
-    [Export] float spdAlpha = 10.0f;
+    [Export] public float spdAlpha = 10.0f;
     public float curBase = 0.0f;
     public float targetBase = 0.0f;
     public float curAlpha = 0.0f;
@@ -97,7 +97,7 @@ public partial class NyakoMgr : Node2D
         else if(faceStatus == FaceStatus.Angry)
             face_spr.Texture = faceSprAngry;
         else if(faceStatus == FaceStatus.Cry2)
-            face_spr.Texture = faceSprWink;
+            face_spr.Texture = faceSprCry2;
         Scale = Scale.Lerp(Vector2.One, Mathf.Clamp(12.0f * (float)delta, 0, 1));
     }
 

@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://dkf2h3gtonp8v" path="res://scripts/TamaScreen.cs" id="4_o4fqm"]
 [ext_resource type="Texture2D" uid="uid://cckfcu665e732" path="res://sprites/faketama/tamascr-2.png" id="4_yh4yk"]
 [ext_resource type="Script" uid="uid://dossm4xqhga0j" path="res://scripts/Camera.cs" id="5_7ycvg"]
+[ext_resource type="SpriteFrames" uid="uid://bogloqhqbj3p4" path="res://sprites/vig/vigf.tres" id="5_8mm7a"]
 [ext_resource type="Texture2D" uid="uid://uqk0wo2t2w7x" path="res://sprites/tama/buttons/a.png" id="5_671wp"]
 [ext_resource type="Texture2D" uid="uid://b1xy5t4c3u4x6" path="res://sprites/faketama/tamascr-3.png" id="5_p8s74"]
 [ext_resource type="Script" uid="uid://dd3l0i1q618v2" path="res://scripts/TamaButton.cs" id="6_42l1d"]
@@ -117,7 +118,7 @@ font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_jtbqm"]
 font = ExtResource("44_ek5vw")
-font_size = 48
+font_size = 36
 font_color = Color(0.29219002, 0.29219005, 0.29219002, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ek5vw"]
@@ -127,12 +128,13 @@ font_color = Color(0.29219002, 0.29219005, 0.29219002, 1)
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "selectBox", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "selectBox", "TasksLabel", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox1/TextBox")
 textBox2 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox2/TextBox")
 selectBox = NodePath("../Camera/Camera2D/CanvasGroup/SelectBoxs")
+TasksLabel = NodePath("../PaperWords/Tasks")
 cam = NodePath("../Camera")
 tamagroup = NodePath("../CanvasGroup_TAMA")
 nyako = NodePath("../Camera/Camera2D/CanvasGroup/nyako")
@@ -244,7 +246,7 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
-[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "TimeLabelOut", "UpArrow", "DownArrow")]
+[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "TimeLabelOut", "UpArrow", "DownArrow", "Vignette")]
 scale = Vector2(0.08, 0.08)
 script = ExtResource("7_xy6fp")
 world = NodePath("../../../../World")
@@ -262,6 +264,7 @@ TimeLabelOut = NodePath("../../../../PaperWords/Time")
 UpArrow = NodePath("GameUI/UpArrow")
 DownArrow = NodePath("GameUI/DownArrow")
 BaobaoScene = ExtResource("14_ek5vw")
+Vignette = NodePath("../../../../Camera/Camera2D/CanvasGroup/AnimatedSprite2D")
 MouseYScrollUp = -100.0
 EachHeight = 72.0
 
@@ -327,13 +330,13 @@ label_settings = SubResource("LabelSettings_1vivr")
 horizontal_alignment = 1
 
 [node name="UpArrow" type="Sprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1433578196]
-modulate = Color(0, 0, 0, 1)
+modulate = Color(0, 0, 0, 0)
 position = Vector2(-191.625, -201.23438)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_jip8q")
 
 [node name="DownArrow" type="Sprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1490000445]
-modulate = Color(0, 0, 0, 1)
+modulate = Color(0, 0, 0, 0)
 position = Vector2(-191.625, 205.01563)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_jip8q")
@@ -384,17 +387,18 @@ texture = ExtResource("11_ak604")
 [node name="PaperWords" type="Node2D" parent="." unique_id=1302000883]
 
 [node name="Tasks" type="Label" parent="PaperWords" unique_id=2109176634]
-offset_left = 302.0
-offset_top = -315.0
-offset_right = 671.0
-offset_bottom = 74.0
+offset_left = 268.0
+offset_top = -304.0
+offset_right = 658.0
+offset_bottom = 85.0
 rotation = -0.2617994
 text = "喵喵酱的假日计划
-→ 10:00 aaaa
-→ 12:00 bbb
-→ 14:00 cccc
-→ 16:00 ddd
-→ 18:00 eeee
+→ 08:00 起床
+→ 09:00 出门旅行
+→ 12:00 回家吃午餐
+→ 15:00 整理购物战利品
+→ 18:00 回家休息啦
+第二天还要上班！！
 "
 label_settings = SubResource("LabelSettings_jtbqm")
 
@@ -757,3 +761,9 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Camera/Camera2D/CanvasGroup" unique_id=129522465]
+modulate = Color(1, 1, 1, 0.3372549)
+scale = Vector2(1.27, 1.27)
+sprite_frames = ExtResource("5_8mm7a")
+script = ExtResource("3_7ycvg")

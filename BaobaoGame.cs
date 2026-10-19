@@ -21,9 +21,11 @@ public partial class BaobaoGame : Node2D
     [Export] public Sprite2D UpArrow;
     [Export] public Sprite2D DownArrow;
     [Export] public PackedScene BaobaoScene;
+    [Export] public AnimatedSprite2D Vignette;
     [Export] public float YOffset = 36f;
     [Export] public float TargetY = 2.0f * 2010f;
     [Export] public bool IsGaming = false;
+    [Export] public bool IsCurrentGaming = false;
     [Export] public bool IsTiming = false;
     [Export] public float MaxGameTime = 400;
     public float GameTimer = 0.0f;
@@ -82,6 +84,7 @@ public partial class BaobaoGame : Node2D
     }
     public override void _Process(double delta)
     {
+        Vignette.SelfModulate = new Color(1,1,1,Mathf.Lerp(Vignette.SelfModulate.A, IsCurrentGaming ? 1.0f : 0.0f, 8f * (float)delta));
         // TimeLabel.Visible = (int)(world.time * 2) % 2 == 0;
         curGameAlpha = Mathf.Lerp(curGameAlpha, targetGameAlpha, spdGameAlpha * (float)delta);
         Lines.Modulate = new Color(1.0f, 1.0f, 1.0f, curGameAlpha);
@@ -419,6 +422,7 @@ public partial class BaobaoGame : Node2D
             }
             else if(InLinePlus(curHeight, 0.3f, 5))
             {
+                world.selectBox.CancelSelection();
                 world.regTimer(1.0f,()=>{
                     string[] str = {
                         "[font_size=24]她还经常说想回到[wave amp=24.0 freq=8.0 connected=1][color=red]童年时代[/color][/wave]什么的。[/font_size]", 
@@ -468,12 +472,15 @@ public partial class BaobaoGame : Node2D
             }
             else if(InLinePlus(curHeight, 0.3f, 9))
             {
-                string[] str = {
-                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]可是我只是想被她[color=blue]抚摸[/color]...[/wave][/font_size]", 
-                    "placeholder"
-                };
-                attachinst.faceStatus = Baobao.FaceStatus.Die;
-                attachinst.cowsayBox.showText(str[world.Language]);
+                world.selectBox.CancelSelection();
+                world.regTimer(0.5f,()=>{
+                    string[] str = {
+                        "[font_size=24][wave amp=24.0 freq=8.0 connected=1]可是我只是想被她[color=blue]抚摸[/color]...[/wave][/font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.Die;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                });
             }
             else if(InLinePlus(curHeight, 0.6f, 0))
             {
@@ -485,15 +492,223 @@ public partial class BaobaoGame : Node2D
                 attachinst.cowsayBox.showText(str[world.Language]);
                 ClearBaobaos();
             }
-            else if(InLinePlus(curHeight, 1.0f, 0))
+            else if(InLinePlus(curHeight, 0.6f, 1))
             {
                 string[] str = {
-                    "[font_size=24]达到[wave amp=24.0 freq=8.0 connected=1][color=red]10点好感度！！[/color][/wave][/font_size]", 
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]嘿嘿，[color=blue]豹豹[/color]变得好喜欢你了...[/wave][/font_size]", 
                     "placeholder"
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Waaa;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                ClearBaobaos();
+                world.regTimer(1.0f, () => {
+                    string[][] options = {
+                        new string[]{
+                            "诶，好突然？！",
+                            "我也喜欢你！"
+                        },
+                        new string[]{
+                            "placeholder",
+                            "placeholder"
+                        }
+                    };
+                    world.selectBox.ShowSelection("baobao_loves_you", options[world.Language], (name, selection) => {
+                        if(selection == 1)
+                        {
+                            string[] str = {
+                                "[font_size=24][wave amp=24.0 freq=8.0 connected=1][font_size=36]谢谢你！！[/font_size]\n你的[color=blue]抚摸[/color]超级舒服的！[/wave][/font_size]", 
+                                "placeholder"
+                            };
+                            attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                            attachinst.cowsayBox.showText(str[world.Language]);
+                        }
+                        else
+                        {
+                            string[] str = {
+                                "[font_size=24][wave amp=24.0 freq=8.0 connected=1]因为好久没有被这样[color=blue]抚摸[/color]了哦！[/wave][/font_size]", 
+                                "placeholder"
+                            };
+                            attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                            attachinst.cowsayBox.showText(str[world.Language]);
+                        }
+                    });
+                });
+            }
+            else if(InLinePlus(curHeight, 0.6f, 2))
+            {
+                world.regTimer(0.5f, () => {
+                    string[] str = {
+                        "[font_size=24][wave amp=24.0 freq=8.0 connected=1][color=red]6点好感度[/color]可是需要超级细心的照顾才能达到的啊。[/wave][/font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                });
+            }
+            else if(InLinePlus(curHeight, 0.6f, 3))
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1][color=red]猫猫酱[/color]从来没有这么细心照顾过我...[/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Normal;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 4))
+            {
+                string[][] options = {
+                    new string[]{
+                        "其实是因为她很忙吧。"
+                    },
+                    new string[]{
+                        "placeholder"
+                    }
+                };
+                world.selectBox.ShowSelection("nyako_is_busy", options[world.Language], (name, selection) => {
+                    string[] str = {
+                        "[font_size=24][shake rate=20.0 level=5 connected=1]她从来不[color=blue]抚摸[/color]我诶！[/shake][/font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.Die;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                });
+            }
+            else if(InLinePlus(curHeight, 0.6f, 5))
+            {
+                world.regTimer(1.0f, () => {
+                    string[] str = {
+                        "[font_size=24][shake rate=20.0 level=5 connected=1]感觉自己只是被当成了一个象征她童年的摆设...[/shake][/font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                });
+            }
+            else if(InLinePlus(curHeight, 0.6f, 6))
+            {
+                string[][] options = {
+                    new string[]{
+                        "她平时和你怎样相处？"
+                    },
+                    new string[]{
+                        "placeholder"
+                    }
+                };
+                world.selectBox.ShowSelection("nyako_is_busy", options[world.Language], (name, selection) => {
+                    string[] str = {
+                        "[font_size=24]她一直都在和我抱怨[shake rate=20.0 level=5 connected=1]工作[/shake]...[/font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.Die;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                });
+            }
+            else if(InLinePlus(curHeight, 0.6f, 7))
+            {
+                world.regTimer(0.5f, () => {
+                    string[] str = {
+                        "[font_size=24]平常把我带在身上，[/font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                });
+            }
+            else if(InLinePlus(curHeight, 0.6f, 8))
+            {
+                string[] str = {
+                    "[font_size=24]上班时把我拿出来悄悄说老板坏话。[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Die;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 9))
+            {
+                string[] str = {
+                    "[font_size=24][shake rate=20.0 level=5 connected=1]还会经常对着我哭...[/shake][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 10))
+            {
+                string[] str = {
+                    "[font_size=24][shake rate=20.0 level=5 connected=1]可是如果我安慰她，又会被她说讨厌。[/shake][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 10))
+            {
+                string[] str = {
+                    "[font_size=24][shake rate=20.0 level=5 connected=1]她完全不想让我用我们[color=blue]人工智能[/color]的方式安慰她...[/shake][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Die;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 11))
+            {
+                attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+            }
+            else if(InLinePlus(curHeight, 0.6f, 12))
+            {
+                string[] str = {
+                    "[font_size=24]诶，你是说，我生成的[shake rate=20.0 level=5 connected=1]安慰[/shake]反而起到了反作用？[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Normal;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 13))
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]“不会说话的电子玩具的陪伴，反而更有生命感？”[/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Normal;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 14))
+            {
+                string[] str = {
+                    "[font_size=24]呜呜，我不是很懂啦...[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 15))
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]不过我大概知道怎么做了。[/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 16))
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]我会乖乖做一只电子宠物，但你要让她以后多[color=blue]摸摸我[/color]哦。[/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.NormalBlink;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 0.6f, 17))
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]嘿嘿，[color=red]喜欢你[/color]。[/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+            }
+            else if(InLinePlus(curHeight, 1.0f, 0))
+            {
                 world.TriggerHappyEnd();
             }
         }        
