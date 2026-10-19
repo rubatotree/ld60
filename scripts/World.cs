@@ -68,6 +68,8 @@ public partial class World : Node2D
 
     public override void _Ready()
     {
+        mainbaobao.world = this;
+        mainbaobao.game = game;
         startDialog(DialogStatus.Init);
     }
 
@@ -178,6 +180,8 @@ public partial class World : Node2D
             nyako.setShow(false);
             cam.TamaZoom(); 
             mainbaobao.DragAble = false;
+            game.baobaostack.Add(mainbaobao);
+            game.StartGame();
             if(FromInit)
             {
                 cam.UpdateNow();
@@ -198,7 +202,7 @@ public partial class World : Node2D
         {
             if(isMouseJustPressed())
             {
-                startDialog(DialogStatus.Nyako1, true);
+                startDialog(DialogStatus.Gaming, true);
             }
         }
         else if(dialogStatus == DialogStatus.Nyako1)

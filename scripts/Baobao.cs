@@ -5,17 +5,17 @@ using System.Net.Mail;
 public partial class Baobao : Node2D
 {
     [Export] float spdScaling = 16f;
-    [Export] float spdRotating = 5f;
+    [Export] float spdRotating = 3f;
     [Export] public bool Hoverable = true;
     [Export] public bool Clickable = true;
     [Export] public bool DragAble = true;
-    [Export] World world;
+    public World world;
     [Export] AnimatedSprite2D sprite;
     [Export] SpriteFrames sprNormal;
     [Export] SpriteFrames sprNormalBlink;
     [Export] SpriteFrames sprHappy;
     [Export] SpriteFrames sprWaaa;
-    [Export] BaobaoGame game;
+    public BaobaoGame game;
     [Export] float BlinkHold = 0.2f;
     [Export] float BlinkResetTime = 2.0f;
     [Export] float BlinkNoise = 0.2f;
@@ -25,6 +25,7 @@ public partial class Baobao : Node2D
     public FaceStatus faceStatus;
     public float BlinkTime = 0.0f;
     public float PlayingFPS = 12.0f;
+    public bool PlayingInverse = false;
     public Vector2 targetNaturalScale = Vector2.One;
     public Vector2 targetSquashScale = Vector2.One;
     public bool Playing = false;
@@ -38,8 +39,11 @@ public partial class Baobao : Node2D
     int dragFrame = 0;
     [Export] public bool Falling = false;
     [Export] public float FallingSpeed = 150f / 5f;
-
     Vector2 dragMousePos = Vector2.Zero;
+    public Vector2 MagnetPos = Vector2.Zero;
+    public bool onMagnet = false;
+    public float TargetAlpha = 1.0f;
+    public float curAlpha = 1.0f;
     public override void _Ready()
     {
         targetNaturalScale = Scale;
@@ -74,22 +78,35 @@ public partial class Baobao : Node2D
             targetSquashRotation = 0;
         }
 
-        if(!Input.IsMouseButtonPressed(MouseButton.Left)) dragged = false;
-        if(onSquash && !dragged)
+        if(!Input.IsMouseButtonPressed(MouseButton.Left))
+        {
+            dragged = false;
+            game.AnyDragged = null;
+            if(onMagnet && !Attached)
+            {
+                Attached = true;
+                onAttached();
+                game.baobaostack.Add(this);
+            }
+        }
+        if(onSquash && !dragged && game.AnyDragged == null)
         {
             if(DragAble)
             {
                 dragMousePos = mousePos;
                 dragged = true;
+                game.AnyDragged = this;
                 dragFrame = sprite.Frame;
+                Scale *= new Vector2(1.05f, 1.05f);
             }
         }
         if(dragged)
         {
-            GlobalPosition = GetGlobalMousePosition() - dragMousePos;
+            if(!onMagnet) GlobalPosition = GlobalPosition.Lerp(GetGlobalMousePosition() - dragMousePos, 12f * (float)delta);
             sprite.Frame = dragFrame;
         }
-        if(Falling)
+        if(onMagnet) Position = Position.Lerp(MagnetPos, 12f * (float)delta);
+        if(Falling && !dragged && !onMagnet)
         {
             Position += new Vector2(0.0f, FallingSpeed * (float)delta);
         }
@@ -122,8 +139,8 @@ public partial class Baobao : Node2D
         else if(faceStatus == FaceStatus.Waaa)
             sprite.SpriteFrames = sprWaaa;
 
-        if(Playing && !dragged) Frame += PlayingFPS * (float)delta;
-        sprite.Frame = ((int)Frame) % 16;
+        if(Playing && !dragged) Frame += PlayingFPS * (float)delta * (PlayingInverse ? -1f : 1f);
+        sprite.Frame = ((int)Frame + 16 * 32) % 16;
 
         Scale = Scale.Lerp(targetNaturalScale * targetSquashScale, spdScaling * (float)delta);
         Rotation = Mathf.Lerp(Rotation, targetSquashRotation, spdRotating * (float)delta);
@@ -132,6 +149,9 @@ public partial class Baobao : Node2D
         if(shakeTime > 0 && !onSquash)
             sprite.Position = new Vector2(world.rng.Randf() * 2.0f - 1.0f, world.rng.Randf() * 2.0f - 1.0f) * shakeSize;
         else sprite.Position = Vector2.Zero;
+
+        curAlpha = Mathf.Lerp(curAlpha, TargetAlpha, 8.0f * (float)delta);
+        Modulate = new Color(1, 1, 1, curAlpha);
     }
     public void SetShake(float size, float time)
     {
@@ -147,5 +167,8 @@ public partial class Baobao : Node2D
         Playing = false;
         DragAble = false;
         Scale *= new Vector2(1.2f, 0.8f);
+        Falling = false;
+        game.doAutoScrollUp = true;
+        game.SummonTimer = Mathf.Min(game.SummonTimer, 0.5f);
     }
 }

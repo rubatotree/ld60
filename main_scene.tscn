@@ -14,28 +14,25 @@
 [ext_resource type="Texture2D" uid="uid://b1xy5t4c3u4x6" path="res://sprites/faketama/tamascr-3.png" id="5_p8s74"]
 [ext_resource type="Script" uid="uid://dd3l0i1q618v2" path="res://scripts/TamaButton.cs" id="6_42l1d"]
 [ext_resource type="Script" uid="uid://dmuqkl0udy3r0" path="res://scripts/NyakoMgr.cs" id="6_wr18j"]
-[ext_resource type="Script" uid="uid://do4eetmtrv5f4" path="res://scripts/Baobao.cs" id="7_1n88h"]
 [ext_resource type="Texture2D" uid="uid://cygr488j74ovb" path="res://sprites/tama/buttons/ah.png" id="7_2jcla"]
-[ext_resource type="SpriteFrames" uid="uid://cpcaa28hqf801" path="res://sprites/seal/seal0/seal0.tres" id="7_gfmxp"]
 [ext_resource type="Script" uid="uid://psyarpwq7d61" path="res://scripts/TextBox.cs" id="7_qwutr"]
 [ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="7_wr18j"]
 [ext_resource type="Script" uid="uid://p8psq1oc30b6" path="res://BaobaoGame.cs" id="7_xy6fp"]
 [ext_resource type="Texture2D" uid="uid://p8qsit14pxa4" path="res://sprites/tama/buttons/b.png" id="8_7th4q"]
 [ext_resource type="PackedScene" uid="uid://dsiormpkhxact" path="res://sprites/lines/other.tscn" id="8_38t8r"]
 [ext_resource type="Texture2D" uid="uid://dahqe6pdou2m2" path="res://sprites/tama/buttons/bh.png" id="9_6jybn"]
-[ext_resource type="SpriteFrames" uid="uid://7efaap178fkj" path="res://sprites/seal/seal1/seal1.tres" id="9_w30ff"]
 [ext_resource type="Texture2D" uid="uid://brwaxcl1sklob" path="res://sprites/tama/buttons/c.png" id="10_84odl"]
 [ext_resource type="Texture2D" uid="uid://cowwkflhfpjhj" path="res://sprites/lines/3.png" id="10_jtbqm"]
-[ext_resource type="SpriteFrames" uid="uid://b2noapd00qoju" path="res://sprites/seal/seal2/seal2.tres" id="10_xy6fp"]
 [ext_resource type="Texture2D" uid="uid://dy2na7bkrkkhy" path="res://sprites/tama/buttons/ch.png" id="11_ak604"]
 [ext_resource type="Texture2D" uid="uid://bi7k1lemibdn8" path="res://sprites/lines/6.png" id="11_jip8q"]
-[ext_resource type="SpriteFrames" uid="uid://c15sdldxreds0" path="res://sprites/seal/seal3/seal3.tres" id="11_uws2o"]
 [ext_resource type="Texture2D" uid="uid://c4t7tr4rxtp3m" path="res://sprites/lines/10.png" id="12_euc68"]
 [ext_resource type="Texture2D" uid="uid://t0qt7bljagj4" path="res://sprites/lines/0_1.png" id="13_iylel"]
+[ext_resource type="PackedScene" uid="uid://c58itd87l8kwo" path="res://sprites/seal/main_baobao.tscn" id="14_ek5vw"]
 [ext_resource type="Texture2D" uid="uid://bohd0gwnyqsx6" path="res://sprites/lines/0_2.png" id="14_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://c47tj71any0lt" path="res://sprites/nyako/nyako_base2.png" id="16_ijoax"]
 [ext_resource type="Texture2D" uid="uid://du2mhqrf42rol" path="res://sprites/seal/seal0/0001.png" id="16_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://b6a76npqhqn11" path="res://sprites/nyako/nyako_happy_2.png" id="18_j8kkg"]
+[ext_resource type="Texture2D" uid="uid://clr164j7m815i" path="res://sprites/ui/Lines/linetex.png" id="19_jef5d"]
 [ext_resource type="Texture2D" uid="uid://dojiy5xm220d0" path="res://sprites/nyako/nyako_smile.png" id="19_yh4yk"]
 [ext_resource type="Texture2D" uid="uid://dgcaxrpbys1vp" path="res://sprites/nyako/nyako_smile_2.png" id="20_p8s74"]
 [ext_resource type="Texture2D" uid="uid://b3gp6kdknuvya" path="res://sprites/nyako/nyako_happy_3.png" id="21_o4fqm"]
@@ -109,6 +106,10 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_uacds"]
+diffuse_texture = ExtResource("19_jef5d")
+texture_repeat = 2
+
 [sub_resource type="LabelSettings" id="LabelSettings_1vivr"]
 font = ExtResource("32_p8s74")
 font_size = 24
@@ -149,7 +150,7 @@ script = ExtResource("3_7ycvg")
 
 [node name="CanvasGroup_TAMA" type="CanvasGroup" parent="." unique_id=1107537098]
 
-[node name="Screen" type="Node2D" parent="CanvasGroup_TAMA" unique_id=1640966563 node_paths=PackedStringArray("falseTama", "trueTama", "falseTamaSprite", "trueTamaSprite")]
+[node name="Screen" type="Node2D" parent="CanvasGroup_TAMA" unique_id=1640966563 node_paths=PackedStringArray("falseTama", "trueTama", "falseTamaSprite")]
 texture_filter = 1
 position = Vector2(0, 24.79)
 scale = Vector2(8, 8)
@@ -157,7 +158,6 @@ script = ExtResource("4_o4fqm")
 falseTama = NodePath("FalseTama")
 trueTama = NodePath("TrueTama")
 falseTamaSprite = NodePath("FalseTama/AnimatedSprite2D")
-trueTamaSprite = NodePath("TrueTama/TrueGame/GameOrigin/MainBaobao/AnimatedSprite2D2")
 
 [node name="Control" type="Control" parent="CanvasGroup_TAMA/Screen" unique_id=460820174]
 layout_mode = 3
@@ -243,8 +243,7 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
-[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "GameUI", "TimeLabel", "LifeLabel")]
-position = Vector2(0, 0.026249886)
+[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "LifeLabel")]
 scale = Vector2(0.08, 0.08)
 script = ExtResource("7_xy6fp")
 world = NodePath("../../../../World")
@@ -255,9 +254,13 @@ Line6m = NodePath("GameOrigin/Lines/6m")
 Line10m = NodePath("GameOrigin/Lines/10m")
 LineOther = ExtResource("8_38t8r")
 Lines = NodePath("GameOrigin/Lines")
+HintLine = NodePath("GameOrigin/Line2D")
 GameUI = NodePath("GameUI")
 TimeLabel = NodePath("GameUI/TimeLabel")
 LifeLabel = NodePath("GameUI/LifeLabel")
+BaobaoScene = ExtResource("14_ek5vw")
+MouseYScrollUp = -120.0
+EachHeight = 72.0
 
 [node name="GameOrigin" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=1455142794]
 position = Vector2(0, 182)
@@ -265,9 +268,10 @@ position = Vector2(0, 182)
 [node name="Lines" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin" unique_id=622030503]
 
 [node name="0m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1809170445]
+position = Vector2(0, -0.7499933)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_8vrlf")
-frame_progress = 0.7142622
+frame_progress = 0.62796146
 script = ExtResource("3_7ycvg")
 
 [node name="3m" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/Lines" unique_id=1081323862]
@@ -289,20 +293,15 @@ scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_38t8r")
 script = ExtResource("3_7ycvg")
 
-[node name="MainBaobao" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin" unique_id=1074492689 node_paths=PackedStringArray("world", "sprite", "game")]
+[node name="MainBaobao" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin" unique_id=720733550 instance=ExtResource("14_ek5vw")]
 position = Vector2(0, -150.42186)
-script = ExtResource("7_1n88h")
-world = NodePath("../../../../../../World")
-sprite = NodePath("AnimatedSprite2D2")
-sprNormal = ExtResource("7_gfmxp")
-sprNormalBlink = ExtResource("9_w30ff")
-sprHappy = ExtResource("10_xy6fp")
-sprWaaa = ExtResource("11_uws2o")
-game = NodePath("../..")
-isBase = true
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin/MainBaobao" unique_id=1318370852]
-sprite_frames = ExtResource("7_gfmxp")
+[node name="Line2D" type="Line2D" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameOrigin" unique_id=281034625]
+points = PackedVector2Array(-121.875, -249.1875, -6.25, -180.4375)
+width = 9.61
+texture = SubResource("CanvasTexture_uacds")
+texture_mode = 1
+sharp_limit = 1.425
 
 [node name="GameUI" type="Control" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame" unique_id=354606766]
 layout_mode = 3
@@ -559,8 +558,9 @@ axis_stretch_vertical = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Camera/Camera2D/CanvasGroup/TextBox2" unique_id=2090288078]
 clip_contents = false
+offset_top = -2.0
 offset_right = 600.0
-offset_bottom = 1147.0
+offset_bottom = 1145.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_constants/line_separation = 8
 theme_override_constants/paragraph_separation = 8

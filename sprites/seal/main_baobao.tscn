@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c58itd87l8kwo"]
+
+[ext_resource type="Script" uid="uid://do4eetmtrv5f4" path="res://scripts/Baobao.cs" id="1_nkuau"]
+[ext_resource type="SpriteFrames" uid="uid://cpcaa28hqf801" path="res://sprites/seal/seal0/seal0.tres" id="2_ogkky"]
+[ext_resource type="SpriteFrames" uid="uid://7efaap178fkj" path="res://sprites/seal/seal1/seal1.tres" id="3_hgynf"]
+[ext_resource type="SpriteFrames" uid="uid://b2noapd00qoju" path="res://sprites/seal/seal2/seal2.tres" id="4_sqxx5"]
+[ext_resource type="SpriteFrames" uid="uid://c15sdldxreds0" path="res://sprites/seal/seal3/seal3.tres" id="5_ge6cg"]
+
+[node name="MainBaobao" type="Node2D" unique_id=720733550 node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_nkuau")
+sprite = NodePath("AnimatedSprite2D2")
+sprNormal = ExtResource("2_ogkky")
+sprNormalBlink = ExtResource("3_hgynf")
+sprHappy = ExtResource("4_sqxx5")
+sprWaaa = ExtResource("5_ge6cg")
+isBase = true
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=807809587]
+sprite_frames = ExtResource("2_ogkky")
