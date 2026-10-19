@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 public partial class World : Node2D
 {
     [Export] public TextBox textBox1;
+    [Export] public ColorRect colorRect;
+    [Export] public Sprite2D title;
+    [Export] public Sprite2D badend;
+    [Export] public Sprite2D happyend;
     [Export] public TextBox textBox2;
     [Export] public SelectBoxMgr selectBox;
     [Export] public Label TasksLabel;
@@ -78,6 +82,7 @@ public partial class World : Node2D
         mainbaobao.world = this;
         mainbaobao.game = game;
         startDialog(DialogStatus.Init);
+        colorRect.Visible = true;
     }
 
     public override void _Process(double delta)
@@ -114,12 +119,22 @@ public partial class World : Node2D
         if(badending)
         {
             cam.Modulate = new Color(1,1,1,Mathf.Lerp(cam.Modulate.A,0,Mathf.Clamp(0.15f*(float)delta,0,0.2f)));
-            
+            badend.Modulate = new Color(1,1,1,Mathf.Lerp(badend.Modulate.A,1,Mathf.Clamp(0.3f*(float)delta,0,1f)));
+            badend.Scale = badend.Scale.Lerp(Vector2.One * 1.2f, Mathf.Clamp(0.1f*(float)delta,0,0.2f));
         }
-        if(happyending)
+        else if(happyending)
         {
             cam.Modulate = new Color(1,1,1,Mathf.Lerp(cam.Modulate.A,0,Mathf.Clamp(0.4f*(float)delta,0,0.2f)));
+            happyend.Modulate = new Color(1,1,1,Mathf.Lerp(happyend.Modulate.A,1,Mathf.Clamp(1f*(float)delta,0,1f)));
+            happyend.Scale = happyend.Scale.Lerp(Vector2.One * 1.2f, Mathf.Clamp(0.1f*(float)delta,0,0.2f));
         }
+        if(dialogStatus != DialogStatus.Init)
+        {
+            title.Modulate = new Color(1,1,1,Mathf.Lerp(title.Modulate.A,0,Mathf.Clamp(8f*(float)delta,0,0.2f)));
+        }
+        colorRect.Modulate = new Color(1,1,1,Mathf.Lerp(colorRect.Modulate.A,0,Mathf.Clamp(2f*(float)delta,0,0.2f)));
+        Vector2 BreathScale = new Vector2(Mathf.Cos(time * 3), Mathf.Sin(time * 3)) * 0.02f + Vector2.One;
+        title.Scale = BreathScale;
     }
 
     public bool isMouseJustPressed() => !justPressed && pressed;
@@ -144,6 +159,7 @@ public partial class World : Node2D
             nyako.setShow(false);
             cam.TamaCenter();
             dialogDone = false;
+            regTimer(0.5f,()=>{
             string[] options = new string[]{
                 "中文",
                 "English"
@@ -154,6 +170,7 @@ public partial class World : Node2D
                 dialogDone = true;
                 dialogCounter = 0;
                 regTimer(0.5f, ()=>{startDialog(DialogStatus.Nyako1, true);});
+            });
             });
         }
         else if(dialogStatus == DialogStatus.Nyako1)
@@ -1832,6 +1849,7 @@ public partial class World : Node2D
         game.IsTiming = false;
         tamaScreen.setTrue(false);
         game.targetGameAlpha = 0.0f;
+        game.GameUI.Modulate = new Color(0,0,0,0);
         regTimer(2.0f, () => {
             startDialog(DialogStatus.HappyEnd);
         });
@@ -1843,6 +1861,7 @@ public partial class World : Node2D
         game.IsGaming = false;
         game.IsTiming = false;
         tamaScreen.setTrue(false);
+        game.GameUI.Modulate = new Color(0,0,0,0);
         regTimer(2.0f, () => {
             startDialog(DialogStatus.BadEnd);
         });

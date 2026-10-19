@@ -42,10 +42,13 @@
 [ext_resource type="Texture2D" uid="uid://b874yvj2xy2of" path="res://sprites/nyako/nyako_cry_1.png" id="25_meb7l"]
 [ext_resource type="Texture2D" uid="uid://cwd6v2nisot5h" path="res://sprites/nyako/nyako_cry_2.png" id="26_w30ff"]
 [ext_resource type="Texture2D" uid="uid://bod6pm05uu6hv" path="res://sprites/nyako/nyako_cry_3.png" id="27_xy6fp"]
+[ext_resource type="Texture2D" uid="uid://fbju03xnsvcj" path="res://sprites/badend.png" id="29_jef5d"]
+[ext_resource type="Texture2D" uid="uid://cr4diigdnmw0f" path="res://sprites/happyend.png" id="30_q1yuq"]
 [ext_resource type="FontFile" uid="uid://xv5w1h33viej" path="res://fonts/unifont.ttf" id="32_p8s74"]
 [ext_resource type="Script" uid="uid://d0xkpw3hklpgd" path="res://scripts/SelectBoxMgr.cs" id="43_ek5vw"]
 [ext_resource type="Texture2D" uid="uid://sslcodfnjsh6" path="res://sprites/ui/selectbox.png" id="43_jtbqm"]
 [ext_resource type="FontFile" uid="uid://dt0o1a4utkun4" path="res://fonts/AaJinRiHuaQing-ChunLanMaoKun-2.ttf" id="44_ek5vw"]
+[ext_resource type="Texture2D" uid="uid://bv06dexx1tsnq" path="res://sprites/title.png" id="47_38t8r"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1vivr"]
 animations = [{
@@ -128,10 +131,14 @@ font_color = Color(0.29219002, 0.29219005, 0.29219002, 1)
 
 [node name="MainScene" type="Node2D" unique_id=1969188385]
 
-[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "textBox2", "selectBox", "TasksLabel", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
+[node name="World" type="Node2D" parent="." unique_id=1424186671 node_paths=PackedStringArray("textBox1", "colorRect", "title", "badend", "happyend", "textBox2", "selectBox", "TasksLabel", "cam", "tamagroup", "nyako", "tamaScreen", "mainbaobao", "game", "paperWords")]
 position = Vector2(-102, 943)
 script = ExtResource("1_66tet")
 textBox1 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox1/TextBox")
+colorRect = NodePath("../Camera/Camera2D/CanvasGroup/ColorRect")
+title = NodePath("../Camera/Camera2D/CanvasGroup/Title")
+badend = NodePath("../badend")
+happyend = NodePath("../happyend")
 textBox2 = NodePath("../Camera/Camera2D/CanvasGroup/TextBox2/TextBox")
 selectBox = NodePath("../Camera/Camera2D/CanvasGroup/SelectBoxs")
 TasksLabel = NodePath("../PaperWords/Tasks")
@@ -411,6 +418,18 @@ rotation = -0.3038425
 text = "08:00"
 label_settings = SubResource("LabelSettings_ek5vw")
 
+[node name="badend" type="Sprite2D" parent="." unique_id=991235486]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-320, 0)
+scale = Vector2(0.99999976, 0.99999976)
+texture = ExtResource("29_jef5d")
+
+[node name="happyend" type="Sprite2D" parent="." unique_id=1859878514]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-320, 0)
+scale = Vector2(0.99999976, 0.99999976)
+texture = ExtResource("30_q1yuq")
+
 [node name="Camera" type="Node2D" parent="." unique_id=152232985 node_paths=PackedStringArray("cam", "frontCards")]
 script = ExtResource("5_7ycvg")
 cam = NodePath("Camera2D")
@@ -426,6 +445,10 @@ zoom = Vector2(0.8, 0.8)
 
 [node name="CanvasGroup" type="CanvasGroup" parent="Camera/Camera2D" unique_id=1017450565]
 scale = Vector2(0.79999995, 0.79999995)
+
+[node name="Title" type="Sprite2D" parent="Camera/Camera2D/CanvasGroup" unique_id=1151785710]
+scale = Vector2(0.9999998, 0.9999998)
+texture = ExtResource("47_38t8r")
 
 [node name="nyako" type="Node2D" parent="Camera/Camera2D/CanvasGroup" unique_id=114360856 node_paths=PackedStringArray("world", "base_spr_relax", "base_spr_tama", "face_spr")]
 position = Vector2(-436, 72)
@@ -767,3 +790,12 @@ modulate = Color(1, 1, 1, 0.3372549)
 scale = Vector2(1.27, 1.27)
 sprite_frames = ExtResource("5_8mm7a")
 script = ExtResource("3_7ycvg")
+
+[node name="ColorRect" type="ColorRect" parent="Camera/Camera2D/CanvasGroup" unique_id=499984303]
+visible = false
+offset_left = -826.0
+offset_top = -615.0
+offset_right = -786.0
+offset_bottom = -575.0
+scale = Vector2(43.41817, 34.193283)
+color = Color(0, 0, 0, 1)
