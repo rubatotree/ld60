@@ -15,7 +15,7 @@ public partial class World : Node2D
     [Export] CanvasGroup tamagroup;
     [Export] NyakoMgr nyako;
     [Export] TamaScreen tamaScreen;
-    [Export] Baobao mainbaobao;
+    [Export] public Baobao mainbaobao;
     [Export] BaobaoGame game;
     [Export] Node2D paperWords;
     [Export] public int Language;

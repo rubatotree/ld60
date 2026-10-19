@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://dkf2h3gtonp8v" path="res://scripts/TamaScreen.cs" id="4_o4fqm"]
 [ext_resource type="Texture2D" uid="uid://cckfcu665e732" path="res://sprites/faketama/tamascr-2.png" id="4_yh4yk"]
 [ext_resource type="Script" uid="uid://dossm4xqhga0j" path="res://scripts/Camera.cs" id="5_7ycvg"]
-[ext_resource type="SpriteFrames" uid="uid://bogloqhqbj3p4" path="res://sprites/vig/vigf.tres" id="5_8mm7a"]
 [ext_resource type="Texture2D" uid="uid://uqk0wo2t2w7x" path="res://sprites/tama/buttons/a.png" id="5_671wp"]
 [ext_resource type="Texture2D" uid="uid://b1xy5t4c3u4x6" path="res://sprites/faketama/tamascr-3.png" id="5_p8s74"]
 [ext_resource type="Script" uid="uid://dd3l0i1q618v2" path="res://scripts/TamaButton.cs" id="6_42l1d"]
@@ -421,13 +420,6 @@ ZoomSpd = 0.8
 position = Vector2(-320, 0)
 scale = Vector2(1.25, 1.25)
 zoom = Vector2(0.8, 0.8)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Camera/Camera2D" unique_id=496569315]
-modulate = Color(1, 1, 1, 0.31764707)
-position = Vector2(2.3999999, -4.7999997)
-sprite_frames = ExtResource("5_8mm7a")
-frame_progress = 0.14211316
-script = ExtResource("3_7ycvg")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="Camera/Camera2D" unique_id=1017450565]
 scale = Vector2(0.79999995, 0.79999995)

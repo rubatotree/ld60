@@ -5,15 +5,76 @@
 [ext_resource type="SpriteFrames" uid="uid://7efaap178fkj" path="res://sprites/seal/seal1/seal1.tres" id="3_hgynf"]
 [ext_resource type="SpriteFrames" uid="uid://b2noapd00qoju" path="res://sprites/seal/seal2/seal2.tres" id="4_sqxx5"]
 [ext_resource type="SpriteFrames" uid="uid://c15sdldxreds0" path="res://sprites/seal/seal3/seal3.tres" id="5_ge6cg"]
+[ext_resource type="SpriteFrames" uid="uid://bnhirbyyviacc" path="res://sprites/seal/seal4/seal4.tres" id="6_ogkky"]
+[ext_resource type="Script" uid="uid://psyarpwq7d61" path="res://scripts/TextBox.cs" id="7_ge6cg"]
+[ext_resource type="Texture2D" uid="uid://cmw6m4bf6kgnk" path="res://sprites/ui/textbox.png" id="8_vxlwm"]
+[ext_resource type="FontFile" uid="uid://xv5w1h33viej" path="res://fonts/unifont.ttf" id="9_su06w"]
 
-[node name="MainBaobao" type="Node2D" unique_id=720733550 node_paths=PackedStringArray("sprite")]
+[node name="MainBaobao" type="Node2D" unique_id=720733550 node_paths=PackedStringArray("sprite", "cowsayBox")]
 script = ExtResource("1_nkuau")
 sprite = NodePath("AnimatedSprite2D2")
 sprNormal = ExtResource("2_ogkky")
 sprNormalBlink = ExtResource("3_hgynf")
 sprHappy = ExtResource("4_sqxx5")
 sprWaaa = ExtResource("5_ge6cg")
+sprDie = ExtResource("6_ogkky")
+cowsayBox = NodePath("TextBox1/TextBox")
 isBase = true
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=807809587]
 sprite_frames = ExtResource("2_ogkky")
+
+[node name="TextBox1" type="Node2D" parent="." unique_id=1614577176]
+position = Vector2(80, 71)
+scale = Vector2(0.9, 0.9)
+
+[node name="TextBox" type="Control" parent="TextBox1" unique_id=1088037980 node_paths=PackedStringArray("richTextLabel", "ninePatchRect", "NodeParent")]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("7_ge6cg")
+richTextLabel = NodePath("../RichTextLabel")
+ninePatchRect = NodePath("NinePatchRect")
+NodeParent = NodePath("..")
+textSpd = 40.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="TextBox1/TextBox" unique_id=1727929701]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_vxlwm")
+region_rect = Rect2(0, 0, 108, 108)
+patch_margin_left = 45
+patch_margin_top = 29
+patch_margin_right = 42
+patch_margin_bottom = 49
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextBox1" unique_id=871464766]
+clip_contents = false
+offset_right = 320.0
+offset_bottom = 1147.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 8
+theme_override_constants/paragraph_separation = 8
+theme_override_fonts/normal_font = ExtResource("9_su06w")
+theme_override_fonts/bold_font = ExtResource("9_su06w")
+theme_override_fonts/bold_italics_font = ExtResource("9_su06w")
+theme_override_fonts/italics_font = ExtResource("9_su06w")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+theme_override_font_sizes/bold_italics_font_size = 32
+theme_override_font_sizes/italics_font_size = 32
+theme_override_font_sizes/mono_font_size = 32
+bbcode_enabled = true
+fit_content = true
+scroll_active = false

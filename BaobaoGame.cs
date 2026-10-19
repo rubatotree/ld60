@@ -29,7 +29,7 @@ public partial class BaobaoGame : Node2D
     [Export] public float MouseYScrollDown = 135;
     [Export] public float MouseScrollSpeed = 4f;
     [Export] public float EachHeight = 48f;
-    [Export] public float SummonTimerMax = 6.0f;
+    [Export] public float SummonTimerMax = 4.0f;
     [Export] public float SummonTimerNoise = 0.5f;
     public float SummonTimer = -1.0f;
     public float targetGameAlpha = 0.0f;
@@ -40,6 +40,12 @@ public partial class BaobaoGame : Node2D
     Vector2 originStartPos = Vector2.Zero;
     public List<Baobao> baobaostack = new List<Baobao>();
     public bool doAutoScrollUp = false;
+
+    public int maxStackN = 0;
+    public int sumStackN = 0;
+    public int FailN = 0;
+    public int prevFailN = 0;
+    bool firstfail = false;
     public override void _Ready()
     {
         Line0m.Position = new Vector2(0f, -TargetY * 0f / 10f);
@@ -95,7 +101,7 @@ public partial class BaobaoGame : Node2D
 
                 if(AnyDragged != null)
                 {
-                    if(HintLineVec.Length() < 90f)
+                    if(HintLineVec.Length() < 80f)
                     {
                         AnyDragged.onMagnet = true;
                         AnyDragged.MagnetPos = new Vector2(GameTargetPosOffseted.X + Mathf.Clamp((GameMousePos.X - GameTargetPosOffseted.X) / 4, -40f, +40f), GameTargetPosOffseted.Y);
@@ -140,5 +146,150 @@ public partial class BaobaoGame : Node2D
     public void StartGame()
     {
         IsGaming = true;
+        string[] str = {
+            "[font_size=18][wave amp=24.0 freq=8.0 connected=1][color=red]抚摸[/color][/wave]每一只掉下来的[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]，把他们放在我的头上吧！[/font_size]", 
+            "placeholder"
+        };
+        world.mainbaobao.cowsayBox.showText(str[world.Language]);
+        world.regTimer(5f, ()=>{world.mainbaobao.cowsayBox.showText("");});
+    }
+    public void OnFail(Baobao failinst)
+    {
+        world.SetScreenShake(16f, 0.2f);
+        SummonTimer = Mathf.Max(SummonTimer, 2f);
+        if(FailN == 0)
+        {
+            string[] str = {
+                "[shake rate=20.0 level=5 connected=1]呀啊，地震了...[/shake]！", 
+                "placeholder"
+            };
+            failinst.cowsayBox.showText(str[world.Language]);
+            world.regTimer(2f, ()=>{failinst.cowsayBox.showText("");});
+        }
+        FailN++;
+        if(baobaostack.Count > 1)
+        {
+            float killratio = world.rng.RandfRange(0.05f, 0.4f);
+            int killn = (int)(baobaostack.Count * killratio);
+            killn = Mathf.Clamp(killn, 1, 6);
+            int cnt = baobaostack.Count;
+            for(int i = cnt - 1; i >= cnt - killn; i--)
+            {
+                if(i <= 0) break;
+                baobaostack[i].MakeFailFalling();
+                baobaostack.RemoveAt(i);
+                FailN++;
+            }
+        }
+    }
+    public void OnAttached(Baobao attachinst)
+    {
+        // cowsayBox.showText("aaaaaa");
+        // world.regTimer(2, ()=>{
+        //     cowsayBox.showText("");
+        // });
+        baobaostack.Add(attachinst);
+        sumStackN++;
+        int prevMaxStackN = maxStackN;
+        maxStackN = Mathf.Max(baobaostack.Count, maxStackN);
+        float maxHeight = maxStackN * EachHeight;
+        if(maxStackN > prevMaxStackN)
+        {
+            if(maxStackN == 2)
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]没错，就是这样！[/wave][/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+            if(maxStackN == 4)
+            {
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]的身体是非常非常重的哦......[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+            if(maxStackN == 5)
+            {
+                string[] str = {
+                    "[font_size=24]一旦摔到地上，\n就会引发[shake rate=20.0 level=5 connected=1][color=red][font_size=36]地震[/font_size][/color][/shake]......[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Die;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+            if(maxStackN == 6)
+            {
+                if(FailN == 0)
+                {
+                    string[] str = {
+                        "[font_size=24][shake rate=20.0 level=5 connected=1]海豹塔会因为地震而[color=red]崩塌[/color]！[/shake][font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                    world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+                }
+                else
+                {
+                    string[] str = {
+                        "[font_size=24][shake rate=20.0 level=5 connected=1]发生地震后，海豹塔会[color=red]崩塌[/color]！就像刚才那样！[/shake][font_size]", 
+                        "placeholder"
+                    };
+                    attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                    attachinst.cowsayBox.showText(str[world.Language]);
+                    world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+                }
+            }
+            if(maxStackN == 7)
+            {
+                string[] str = {
+                    "[font_size=18]所以请务必好好抚摸[wave amp=24.0 freq=8.0 connected=1][color=blue]每一只豹豹[/color][/wave]！[font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+            if(FailN > 0 && !firstfail)
+            {
+                firstfail = true;
+                string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]不要灰心，摔倒了还能继续~[/wave][font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+            if(maxHeight >= 0.3f * TargetY - 2 * EachHeight && maxHeight < 0.3f * TargetY - EachHeight)
+            {
+                string[] str = {
+                    "[font_size=24]准备好[wave amp=24.0 freq=8.0 connected=1][color=red]约会[/color][/wave]了吗？[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Waaa;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+            if(maxHeight >= 0.3f * TargetY - EachHeight && maxHeight < 0.3f * TargetY)
+            {
+                string[] str = {
+                    "[font_size=24]和[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]的[wave amp=24.0 freq=8.0 connected=1][color=red]初次约会[/color][/wave]要开始了哦！[/font_size]", 
+                    "placeholder"
+                };
+                attachinst.faceStatus = Baobao.FaceStatus.Happy;
+                attachinst.cowsayBox.showText(str[world.Language]);
+                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
+            }
+        }
+        prevFailN = FailN;
     }
 }

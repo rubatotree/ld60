@@ -21,8 +21,8 @@ public partial class TextBox : Control
     public Vector2 curSize = new Vector2(40f, 40f);
     public Vector2 targetSize = new Vector2(40f, 40f);
     public bool Complete{get;set;}
-    float alpha = 0;
-    float targetAlpha = 0;
+    public float alpha = 0;
+    public float targetAlpha = 0;
 
     public override void _Ready()
     {
@@ -40,6 +40,7 @@ public partial class TextBox : Control
             alpha = 1;
             targetAlpha = 1;
         }
+        Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, alpha);
     }
     public override void _Process(double delta)
     {
@@ -67,7 +68,7 @@ public partial class TextBox : Control
         Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, alpha);
         // Scale = new Vector2(1.0f / world.Zoom, 1.0f / world.Zoom);
         // ninePatchRect.Scale = Scale;
-        if(Following != null)
+        if(Following != null && world != null)
         {
             NodeParent.GlobalPosition = NodeParent.GlobalPosition.Lerp((Following.GetScreenTransform().Origin - new Vector2(640, 480) + FollowingOffset) / world.Zoom, Mathf.Clamp(FollowingSpd * (float)delta, 0.0f, 1.0f));
         }
