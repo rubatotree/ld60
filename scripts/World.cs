@@ -14,7 +14,7 @@ public partial class World : Node2D
     [Export] Camera cam;
     [Export] CanvasGroup tamagroup;
     [Export] NyakoMgr nyako;
-    [Export] TamaScreen tamaScreen;
+    [Export] public TamaScreen tamaScreen;
     [Export] public Baobao mainbaobao;
     [Export] BaobaoGame game;
     [Export] Node2D paperWords;
@@ -33,7 +33,7 @@ public partial class World : Node2D
     string autoprefix = "";
     string autosuffix = "";
 
-    public enum DialogStatus { None, Init, Nyako1, Baobao1, Gaming }
+    public enum DialogStatus { None, Init, Nyako1, Nyako2, Nyako3, Nyako4, Nyako5, Baobao1, Baobao2, Baobao3, Gaming }
     public DialogStatus dialogStatus = DialogStatus.None;
     int dialogCounter = 0;
     bool dialogDone = true;
@@ -143,6 +143,22 @@ public partial class World : Node2D
             });
             Debug.WriteLine("generate a timer");
         }
+        else if(dialogStatus == DialogStatus.Nyako2)
+        {
+            setTamaShow(true);
+            nyako.setShow(true);
+            cam.TamaRight();
+            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+            nyako.faceStatus = NyakoMgr.FaceStatus.Smile;
+            string[] str = {
+                "哈啊，我回来了！", 
+                "placeholder"
+            };
+            regTimer(0.5f, () => { 
+                textBox1.showText(autoprefix + str[Language] + autosuffix);
+            });
+            Debug.WriteLine("generate a timer");
+        }
         else if(dialogStatus == DialogStatus.Baobao1)
         {
             setTamaShow(true);
@@ -180,8 +196,12 @@ public partial class World : Node2D
             nyako.setShow(false);
             cam.TamaZoom(); 
             mainbaobao.DragAble = false;
-            game.baobaostack.Add(mainbaobao);
-            game.StartGame();
+            if(!game.IsGaming)
+            {
+                game.baobaostack.Add(mainbaobao);
+                game.StartGame();
+            }
+            cam.ZoomSpd = 4f;
             if(FromInit)
             {
                 cam.UpdateNow();
@@ -202,7 +222,7 @@ public partial class World : Node2D
         {
             if(isMouseJustPressed())
             {
-                startDialog(DialogStatus.Gaming, true);
+                startDialog(DialogStatus.Nyako1, true);
             }
         }
         else if(dialogStatus == DialogStatus.Nyako1)
@@ -614,9 +634,53 @@ public partial class World : Node2D
                 }
             }
         }
+        else if(dialogStatus == DialogStatus.Nyako2)
+        {
+            if(isMouseJustPressed() && !isTamaJustPressed)
+            {
+                if(textBox1.Complete && dialogDone)
+                {
+                    if(dialogCounter == 0)
+                    {
+                        dialogDone = false;
+                        nyako.baseStatus = NyakoMgr.BaseStatus.HoldTama;
+                        nyako.faceStatus = NyakoMgr.FaceStatus.Happy;
+                        
+                        string[] str = {
+                            "哈！",
+                            "placeholder"
+                        };
+                        textBox1.showText(autoprefix + str[Language] + autosuffix);
+                        regTimer(1.0f, () => { 
+                            nyako.baseStatus = NyakoMgr.BaseStatus.Relax;
+                            setTamaShow(true);
+                            dialogDone = true;
+                        });
+                    }
+                    else if(dialogCounter == 1)
+                    {
+                        tamaScreen.setTrue(true);
+                        startDialog(DialogStatus.Gaming);
+                        textBox1.showText("");
+                    }
+                    dialogCounter++;
+                }
+            }
+        }
     }
     public void setTamaShow(bool show)
     {
         targetTamaAlpha = show ? 1.0f : 0.0f;
+    }
+    public void FirstGetTime(int hour, int minute)
+    {
+        if(hour == 9 && minute == 0)
+        {
+            tamaScreen.setTrue(false);
+            cam.TamaCenter();
+            regTimer(2.0f, () => {
+                startDialog(DialogStatus.Nyako2);
+            });
+        }
     }
 }

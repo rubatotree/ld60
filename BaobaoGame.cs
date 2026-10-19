@@ -17,11 +17,14 @@ public partial class BaobaoGame : Node2D
     [Export] public Line2D HintLine;
     [Export] public Control GameUI;
     [Export] public Label TimeLabel;
-    [Export] public Label LifeLabel;
+    [Export] public Label TimeLabelOut;
     [Export] public PackedScene BaobaoScene;
     [Export] public float YOffset = 36f;
-    [Export] public float TargetY = 2 * 2010f;
+    [Export] public float TargetY = 2.0f * 2010f;
     [Export] public bool IsGaming = false;
+    [Export] public bool IsTiming = false;
+    [Export] public float MaxGameTime = 400;
+    public float GameTimer = 0;
     [Export] public float spdGameAlpha = 8f;
     [Export] public float spdYScroll = 5f;
     [Export] public float maxspdScroll = 6f;
@@ -39,6 +42,7 @@ public partial class BaobaoGame : Node2D
     public Baobao AnyDragged = null;
     Vector2 originStartPos = Vector2.Zero;
     public List<Baobao> baobaostack = new List<Baobao>();
+    Baobao stacktop => baobaostack.Last();
     public bool doAutoScrollUp = false;
 
     public int maxStackN = 0;
@@ -46,6 +50,13 @@ public partial class BaobaoGame : Node2D
     public int FailN = 0;
     public int prevFailN = 0;
     bool firstfail = false;
+    float normalized_timing => GameTimer / MaxGameTime * 5;
+    int normalized_hour => 8 + (int)(normalized_timing * 2);
+    float normalized_5min => (normalized_timing * 2 - Mathf.Floor(normalized_timing * 2)) * 12;
+    int normalized_minute => ((int)normalized_5min) * 5;
+    bool view_colon => world.time - Mathf.Floor(world.time) < 0.5f;
+    string time_text => normalized_hour.ToString("D2") + (view_colon ? ":" : " ") + normalized_minute.ToString("D2");
+    int prev_minute = -1;
     public override void _Ready()
     {
         Line0m.Position = new Vector2(0f, -TargetY * 0f / 10f);
@@ -71,6 +82,15 @@ public partial class BaobaoGame : Node2D
         Vector2 MousePos = GetGlobalMousePosition();
         if(IsGaming)
         {
+            if(IsTiming)
+            {
+                GameTimer += (float)delta;
+                if(normalized_minute != prev_minute)
+                {
+                    FirstGetTime(normalized_hour, normalized_minute);
+                }
+                prev_minute = normalized_minute;
+            }
             int scrolld = 0;
             if(MousePos.Y < MouseYScrollUp)
             {
@@ -112,26 +132,29 @@ public partial class BaobaoGame : Node2D
                     }
                 }
 
-                SummonTimer -= (float)delta;
-                if(SummonTimer < 0.0f)
+                if(IsTiming)
                 {
-                    var instance = BaobaoScene.Instantiate<Baobao>();
-                    GameOrigin.AddChild(instance);
-                    instance.Position = new Vector2(world.rng.RandfRange(-120f, 120f), stacktop.Position.Y - 288);
-                    instance.Rotation = world.rng.RandfRange(-3f, 3f);
-                    instance.Falling = true;
-                    instance.targetNaturalScale = Vector2.One * 0.6f;
-                    instance.Scale = instance.targetNaturalScale;
-                    instance.Frame = world.rng.RandiRange(0, 16);
-                    instance.PlayingFPS = world.rng.RandiRange(0, 2) == 0 ? -12 : 12;
-                    instance.Playing = true;
-                    instance.DragAble = true;
-                    instance.world = world;
-                    instance.game = this;
-                    instance.isBase = false;
-                    instance.curAlpha = 0.0f;
-                    instance.FallingSpeed = 60f;
-                    SummonTimer = SummonTimerMax + world.rng.RandfRange(-SummonTimerNoise, SummonTimerNoise);
+                    SummonTimer -= (float)delta;
+                    if(SummonTimer < 0.0f)
+                    {
+                        var instance = BaobaoScene.Instantiate<Baobao>();
+                        GameOrigin.AddChild(instance);
+                        instance.Position = new Vector2(world.rng.RandfRange(-120f, 120f), stacktop.Position.Y - 288);
+                        instance.Rotation = world.rng.RandfRange(-3f, 3f);
+                        instance.Falling = true;
+                        instance.targetNaturalScale = Vector2.One * 0.6f;
+                        instance.Scale = instance.targetNaturalScale;
+                        instance.Frame = world.rng.RandiRange(0, 16);
+                        instance.PlayingFPS = world.rng.RandiRange(0, 2) == 0 ? -12 : 12;
+                        instance.Playing = true;
+                        instance.DragAble = true;
+                        instance.world = world;
+                        instance.game = this;
+                        instance.isBase = false;
+                        instance.curAlpha = 0.0f;
+                        instance.FallingSpeed = 60f;
+                        SummonTimer = SummonTimerMax + world.rng.RandfRange(-SummonTimerNoise, SummonTimerNoise);
+                    }
                 }
             }
         }
@@ -140,12 +163,19 @@ public partial class BaobaoGame : Node2D
         float scrollSpeed = Mathf.Clamp(nextCurYScroll - curYScroll, -maxspdScroll, maxspdScroll);
         curYScroll += scrollSpeed;
         GameOrigin.Position = originStartPos + new Vector2(0f, curYScroll);
+
+        TimeLabel.Text = time_text;
+        bool redText = false;
+        if(normalized_hour == 8 && normalized_minute >= 45) redText = true;
+        TimeLabel.Modulate = redText ? new Color(1f, 0.2f, 0.2f, 1f) : new Color(0.5f, 0.5f, 0.5f, 1f);
+        TimeLabelOut.Text = time_text;
     }
     public Vector2 ToWorldPos(Vector2 pos) => -pos;
     public Vector2 ToGamePos(Vector2 pos) => -pos;
     public void StartGame()
     {
         IsGaming = true;
+        IsTiming = true;
         string[] str = {
             "[font_size=18][wave amp=24.0 freq=8.0 connected=1][color=red]抚摸[/color][/wave]每一只掉下来的[wave amp=24.0 freq=8.0 connected=1][color=blue]豹豹[/color][/wave]，把他们放在我的头上吧！[/font_size]", 
             "placeholder"
@@ -188,6 +218,7 @@ public partial class BaobaoGame : Node2D
         // world.regTimer(2, ()=>{
         //     cowsayBox.showText("");
         // });
+        if(attachinst.isBase) return;
         baobaostack.Add(attachinst);
         sumStackN++;
         int prevMaxStackN = maxStackN;
@@ -203,7 +234,6 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
             if(maxStackN == 4)
             {
@@ -213,7 +243,6 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
             if(maxStackN == 5)
             {
@@ -223,7 +252,6 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Die;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
             if(maxStackN == 6)
             {
@@ -256,7 +284,6 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
             if(FailN > 0 && !firstfail)
             {
@@ -267,7 +294,6 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Waaa;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
             if(maxHeight >= 0.3f * TargetY - 2 * EachHeight && maxHeight < 0.3f * TargetY - EachHeight)
             {
@@ -277,7 +303,6 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Waaa;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
             if(maxHeight >= 0.3f * TargetY - EachHeight && maxHeight < 0.3f * TargetY)
             {
@@ -287,9 +312,30 @@ public partial class BaobaoGame : Node2D
                 };
                 attachinst.faceStatus = Baobao.FaceStatus.Happy;
                 attachinst.cowsayBox.showText(str[world.Language]);
-                world.regTimer(5f, ()=>{attachinst.cowsayBox.showText("");});
             }
         }
         prevFailN = FailN;
+    }
+    void FirstGetTime(int hour, int minute)
+    {
+        if(hour == 8 && minute == 45)
+        {
+            string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]不好，主人要回来了！！\n我要赶紧躲起来！[/wave][/font_size]", 
+                    "placeholder"
+                };
+            stacktop.faceStatus = Baobao.FaceStatus.Waaa;
+            stacktop.cowsayBox.showText(str[world.Language]);
+        }
+        if(hour == 8 && minute == 55)
+        {
+            string[] str = {
+                    "[font_size=24][wave amp=24.0 freq=8.0 connected=1]忘了说了，躲起来的时候，豹豹们也依然会掉下来哦！！[/wave][/font_size]", 
+                    "placeholder"
+                };
+            stacktop.faceStatus = Baobao.FaceStatus.Waaa;
+            stacktop.cowsayBox.showText(str[world.Language]);
+        }
+        world.FirstGetTime(hour, minute);
     }
 }

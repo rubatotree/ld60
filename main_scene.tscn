@@ -29,7 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://c58itd87l8kwo" path="res://sprites/seal/main_baobao.tscn" id="14_ek5vw"]
 [ext_resource type="Texture2D" uid="uid://bohd0gwnyqsx6" path="res://sprites/lines/0_2.png" id="14_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://c47tj71any0lt" path="res://sprites/nyako/nyako_base2.png" id="16_ijoax"]
-[ext_resource type="Texture2D" uid="uid://du2mhqrf42rol" path="res://sprites/seal/seal0/0001.png" id="16_yj5sn"]
 [ext_resource type="Texture2D" uid="uid://b6a76npqhqn11" path="res://sprites/nyako/nyako_happy_2.png" id="18_j8kkg"]
 [ext_resource type="Texture2D" uid="uid://clr164j7m815i" path="res://sprites/ui/Lines/linetex.png" id="19_jef5d"]
 [ext_resource type="Texture2D" uid="uid://dojiy5xm220d0" path="res://sprites/nyako/nyako_smile.png" id="19_yh4yk"]
@@ -112,7 +111,6 @@ texture_repeat = 2
 [sub_resource type="LabelSettings" id="LabelSettings_1vivr"]
 font = ExtResource("32_p8s74")
 font_size = 24
-font_color = Color(0.28485027, 0.28485027, 0.28485027, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_jtbqm"]
 font = ExtResource("44_ek5vw")
@@ -242,7 +240,7 @@ pivot_offset = Vector2(144, 144)
 offset_transform_enabled = true
 offset_transform_position = Vector2(-144, -144)
 
-[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "LifeLabel")]
+[node name="TrueGame" type="Node2D" parent="CanvasGroup_TAMA/Screen/TrueTama" unique_id=17378949 node_paths=PackedStringArray("world", "GameOrigin", "Line0m", "Line3m", "Line6m", "Line10m", "Lines", "HintLine", "GameUI", "TimeLabel", "TimeLabelOut")]
 scale = Vector2(0.08, 0.08)
 script = ExtResource("7_xy6fp")
 world = NodePath("../../../../World")
@@ -256,7 +254,7 @@ Lines = NodePath("GameOrigin/Lines")
 HintLine = NodePath("GameOrigin/Line2D")
 GameUI = NodePath("GameUI")
 TimeLabel = NodePath("GameUI/TimeLabel")
-LifeLabel = NodePath("GameUI/LifeLabel")
+TimeLabelOut = NodePath("../../../../PaperWords/Time")
 BaobaoScene = ExtResource("14_ek5vw")
 MouseYScrollUp = -120.0
 EachHeight = 72.0
@@ -310,35 +308,17 @@ offset_bottom = 40.0
 
 [node name="TimeLabel" type="Label" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=2131550977]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 112.0
-offset_top = -216.0
-offset_right = 172.0
-offset_bottom = -192.0
-grow_horizontal = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -49.6875
+offset_top = -218.42189
+offset_right = 10.3125
+offset_bottom = -194.42189
+grow_horizontal = 2
 text = "08:00"
 label_settings = SubResource("LabelSettings_1vivr")
-horizontal_alignment = 2
-
-[node name="LifeLabel" type="Label" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1430728596]
-layout_mode = 1
-offset_left = -159.375
-offset_top = -215.29688
-offset_right = -99.375
-offset_bottom = -191.29688
-text = "10"
-label_settings = SubResource("LabelSettings_1vivr")
-
-[node name="TextureRect" type="TextureRect" parent="CanvasGroup_TAMA/Screen/TrueTama/TrueGame/GameUI" unique_id=1301181072]
-layout_mode = 0
-offset_left = -242.18748
-offset_top = -249.67188
-offset_right = 269.8125
-offset_bottom = 262.32813
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("16_yj5sn")
+horizontal_alignment = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup_TAMA" unique_id=707215492]
 texture_filter = 1
@@ -400,11 +380,11 @@ text = "喵喵酱的假日计划
 label_settings = SubResource("LabelSettings_jtbqm")
 
 [node name="Time" type="Label" parent="PaperWords" unique_id=1958450117]
-offset_left = -399.0
-offset_top = 282.99997
-offset_right = 141.0
-offset_bottom = 553.0
-rotation = 0.6194906
+offset_left = 127.0
+offset_top = 444.0
+offset_right = 667.0
+offset_bottom = 714.0
+rotation = -0.60172194
 text = "08:00"
 label_settings = SubResource("LabelSettings_ek5vw")
 

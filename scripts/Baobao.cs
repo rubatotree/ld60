@@ -60,122 +60,125 @@ public partial class Baobao : Node2D
     }
     public override void _Process(double delta)
     {
-        Vector2 mousePos = GetGlobalMousePosition() - GlobalPosition;
-        bool onSquash = onHover && Clickable && Input.IsMouseButtonPressed(MouseButton.Left);
-        if(!FailFalling)
+        if(game != null && (game.IsTiming || isBase))
         {
-            if(onHover && !onSquash)
+            Vector2 mousePos = GetGlobalMousePosition() - GlobalPosition;
+            bool onSquash = onHover && Clickable && Input.IsMouseButtonPressed(MouseButton.Left);
+            if(!FailFalling)
             {
-                targetSquashScale = new Vector2(1.05f, 1.05f);
-                targetSquashRotation = -mousePos.X / 9 / 180 * Mathf.Pi;
-            }
-            else if(onSquash || dragged)
-            {
-                targetSquashScale = new Vector2(1.1f, 0.8f);
-                targetSquashRotation = -mousePos.X / 4 / 180 * Mathf.Pi;
-                if(world.isMouseJustPressed())
+                if(onHover && !onSquash)
                 {
-                    Scale *= 1.1f;
+                    targetSquashScale = new Vector2(1.05f, 1.05f);
+                    targetSquashRotation = -mousePos.X / 9 / 180 * Mathf.Pi;
                 }
-                if(dragged)
+                else if(onSquash || dragged)
                 {
-                    float dy = mousePos.Y - dragMousePos.Y;
-                    if(dy < -2) targetSquashRotation /= 2;
-                    else if(dy > 4) targetSquashRotation *= 2;
-                }
-            }
-            else
-            {
-                targetSquashScale = Vector2.One;
-                targetSquashRotation = 0;
-            }
-
-            if(!Input.IsMouseButtonPressed(MouseButton.Left))
-            {
-                dragged = false;
-                game.AnyDragged = null;
-                if(onMagnet && !Attached)
-                {
-                    onAttached();
-                }
-            }
-            if(onSquash && !dragged && game.AnyDragged == null)
-            {
-                if(DragAble)
-                {
-                    dragMousePos = mousePos;
-                    dragged = true;
-                    game.AnyDragged = this;
-                    dragFrame = sprite.Frame;
-                    Scale *= new Vector2(1.05f, 1.05f);
-                }
-            }
-            if(dragged)
-            {
-                if(!onMagnet) GlobalPosition = GlobalPosition.Lerp(GetGlobalMousePosition() - dragMousePos, Mathf.Clamp(30f * (float)delta, 0.0f, 1.0f));
-                sprite.Frame = dragFrame;
-            }
-            if(onMagnet) Position = Position.Lerp(MagnetPos, 12f * (float)delta);
-            if(Falling && !dragged && !onMagnet)
-            {
-                Position += new Vector2(0.0f, FallingSpeed * (float)delta);
-            }
-            if(Falling && game.AnyDragged != null && game.AnyDragged != this)
-            {
-                TargetAlpha = 0.7f;
-            }
-            else
-            {
-                TargetAlpha = 1.0f;
-            }
-            if(Position.Y > -game.YOffset && !(Attached || Failed))
-            {
-                if(isBase)
-                {
-                    Attached = true;
-                    onAttached();
+                    targetSquashScale = new Vector2(1.1f, 0.8f);
+                    targetSquashRotation = -mousePos.X / 4 / 180 * Mathf.Pi;
+                    if(world.isMouseJustPressed())
+                    {
+                        Scale *= 1.1f;
+                    }
+                    if(dragged)
+                    {
+                        float dy = mousePos.Y - dragMousePos.Y;
+                        if(dy < -2) targetSquashRotation /= 2;
+                        else if(dy > 4) targetSquashRotation *= 2;
+                    }
                 }
                 else
                 {
-                    Failed = true;
-                    onFail();
-                    return;
+                    targetSquashScale = Vector2.One;
+                    targetSquashRotation = 0;
+                }
+
+                if(!Input.IsMouseButtonPressed(MouseButton.Left))
+                {
+                    dragged = false;
+                    game.AnyDragged = null;
+                    if(onMagnet && !Attached)
+                    {
+                        onAttached();
+                    }
+                }
+                if(onSquash && !dragged && game.AnyDragged == null)
+                {
+                    if(DragAble)
+                    {
+                        dragMousePos = mousePos;
+                        dragged = true;
+                        game.AnyDragged = this;
+                        dragFrame = sprite.Frame;
+                        Scale *= new Vector2(1.05f, 1.05f);
+                    }
+                }
+                if(dragged)
+                {
+                    if(!onMagnet) GlobalPosition = GlobalPosition.Lerp(GetGlobalMousePosition() - dragMousePos, Mathf.Clamp(30f * (float)delta, 0.0f, 1.0f));
+                    sprite.Frame = dragFrame;
+                }
+                if(onMagnet) Position = Position.Lerp(MagnetPos, 12f * (float)delta);
+                if(Falling && !dragged && !onMagnet)
+                {
+                    Position += new Vector2(0.0f, FallingSpeed * (float)delta);
+                }
+                if(Falling && game.AnyDragged != null && game.AnyDragged != this)
+                {
+                    TargetAlpha = 0.7f;
+                }
+                else
+                {
+                    TargetAlpha = 1.0f;
+                }
+                if(Position.Y > -game.YOffset && !(Attached || Failed))
+                {
+                    if(isBase)
+                    {
+                        Attached = true;
+                        onAttached();
+                    }
+                    else
+                    {
+                        Failed = true;
+                        onFail();
+                        return;
+                    }
+                }
+                Position = new Vector2(Mathf.Clamp(Position.X, -120f, 120f), Mathf.Clamp(Position.Y, -10000f, -game.YOffset));
+                shakeTime -= (float)delta;
+                if(shakeTime > 0 && !onSquash)
+                    sprite.Position = new Vector2(world.rng.Randf() * 2.0f - 1.0f, world.rng.Randf() * 2.0f - 1.0f) * shakeSize;
+                else sprite.Position = Vector2.Zero;
+                Rotation = Mathf.Lerp(Rotation, targetSquashRotation, spdRotating * (float)delta);
+                BlinkTime -= (float)delta;
+                bool isBlink = BlinkTime <= BlinkHold;
+                if(BlinkTime <= 0.0f)
+                    BlinkTime = BlinkResetTime + (world.rng.Randf() * 2.0f - 1.0f) * BlinkNoise;
+                if(faceStatus == FaceStatus.Happy || onSquash)
+                    sprite.SpriteFrames = sprHappy;
+                else if(faceStatus == FaceStatus.Normal)
+                    sprite.SpriteFrames = isBlink ? sprNormalBlink : sprNormal;
+                else if(faceStatus == FaceStatus.NormalBlink)
+                    sprite.SpriteFrames = sprNormalBlink;
+                else if(faceStatus == FaceStatus.Waaa)
+                    sprite.SpriteFrames = sprWaaa;
+                else if(faceStatus == FaceStatus.Die)
+                    sprite.SpriteFrames = sprDie;
+
+            }
+            else
+            {
+                FailFallingSpd += FailFallingGravity * (float)delta;
+                Position += FailFallingSpd * (float)delta;
+                if(Position.Y > 200)
+                {
+                    QueueFree();
                 }
             }
-            Position = new Vector2(Mathf.Clamp(Position.X, -120f, 120f), Mathf.Clamp(Position.Y, -10000f, -game.YOffset));
-            shakeTime -= (float)delta;
-            if(shakeTime > 0 && !onSquash)
-                sprite.Position = new Vector2(world.rng.Randf() * 2.0f - 1.0f, world.rng.Randf() * 2.0f - 1.0f) * shakeSize;
-            else sprite.Position = Vector2.Zero;
-            Rotation = Mathf.Lerp(Rotation, targetSquashRotation, spdRotating * (float)delta);
-            BlinkTime -= (float)delta;
-            bool isBlink = BlinkTime <= BlinkHold;
-            if(BlinkTime <= 0.0f)
-                BlinkTime = BlinkResetTime + (world.rng.Randf() * 2.0f - 1.0f) * BlinkNoise;
-            if(faceStatus == FaceStatus.Happy || onSquash)
-                sprite.SpriteFrames = sprHappy;
-            else if(faceStatus == FaceStatus.Normal)
-                sprite.SpriteFrames = isBlink ? sprNormalBlink : sprNormal;
-            else if(faceStatus == FaceStatus.NormalBlink)
-                sprite.SpriteFrames = sprNormalBlink;
-            else if(faceStatus == FaceStatus.Waaa)
-                sprite.SpriteFrames = sprWaaa;
-            else if(faceStatus == FaceStatus.Die)
-                sprite.SpriteFrames = sprDie;
 
+            if(Playing && !dragged) Frame += PlayingFPS * (float)delta * (PlayingInverse ? -1f : 1f);
+            sprite.Frame = ((int)Frame + 16 * 32) % 16;
         }
-        else
-        {
-            FailFallingSpd += FailFallingGravity * (float)delta;
-            Position += FailFallingSpd * (float)delta;
-            if(Position.Y > 200)
-            {
-                QueueFree();
-            }
-        }
-
-        if(Playing && !dragged) Frame += PlayingFPS * (float)delta * (PlayingInverse ? -1f : 1f);
-        sprite.Frame = ((int)Frame + 16 * 32) % 16;
 
         Scale = Scale.Lerp(targetNaturalScale * targetSquashScale, spdScaling * (float)delta);
         curAlpha = Mathf.Lerp(curAlpha, TargetAlpha, 16.0f * (float)delta);

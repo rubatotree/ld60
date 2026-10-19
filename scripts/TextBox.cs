@@ -17,6 +17,8 @@ public partial class TextBox : Control
 
     [Export] float sizeSpd = 10f;
     [Export] float alphaSpd = 10f;
+    [Export] float fadeTime = -1f;
+    float fadeTimer = 0f;
 
     public Vector2 curSize = new Vector2(40f, 40f);
     public Vector2 targetSize = new Vector2(40f, 40f);
@@ -72,6 +74,11 @@ public partial class TextBox : Control
         {
             NodeParent.GlobalPosition = NodeParent.GlobalPosition.Lerp((Following.GetScreenTransform().Origin - new Vector2(640, 480) + FollowingOffset) / world.Zoom, Mathf.Clamp(FollowingSpd * (float)delta, 0.0f, 1.0f));
         }
+        fadeTimer -= (float)delta;
+        if(fadeTime > 0 && fadeTimer < 0)
+        {
+            showText("");
+        }
     }
     public void showText(string text, float spd = 20f)
     {
@@ -85,6 +92,7 @@ public partial class TextBox : Control
             textSpd = spd;
             texn = 0;
         }
+        fadeTimer = fadeTime;
         richTextLabel.Text = text;
         richTextLabel.VisibleCharacters = (int)texn;
         Debug.WriteLine("Show: ", text);

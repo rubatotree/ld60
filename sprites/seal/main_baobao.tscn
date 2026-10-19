@@ -38,6 +38,7 @@ richTextLabel = NodePath("../RichTextLabel")
 ninePatchRect = NodePath("NinePatchRect")
 NodeParent = NodePath("..")
 textSpd = 40.0
+fadeTime = 3.0
 
 [node name="NinePatchRect" type="NinePatchRect" parent="TextBox1/TextBox" unique_id=1727929701]
 layout_mode = 1

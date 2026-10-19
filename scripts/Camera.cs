@@ -14,7 +14,7 @@ public partial class Camera : Node2D
     [Export] float NormalScale = 1.25f;
     [Export] float ZoomScale = 0.3f;
     [Export] float PosSpd = 2f;
-    [Export] float ZoomSpd = 1f;
+    [Export] public float ZoomSpd = 1f;
     public float Zoom => 1.0f / curScale;
     public Vector2 Shake = Vector2.Zero;
     Vector2 mousePos = Vector2.Zero;
